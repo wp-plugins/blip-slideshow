@@ -1,0 +1,37 @@
+/**
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.  This file is offered as-is,
+without any warranty.
+
+HTML:
+	<div class="slideshow">
+		<div class="slideshow-images" />
+		<div class="slideshow-captions" />
+		<div class="slideshow-controller" />
+		<div class="slideshow-loader" />
+		<div class="slideshow-thumbnails" />
+	</div>
+	
+Notes:
+	These are examples of user-defined styles.
+	Customize these classes to your usage of Holly's Slideshow.
+
+*/
+
+.slideshow {
+	height: 300px;
+	width: 400px;
+	margin: 0 auto;
+}
+.slideshow-images {
+	height: 300px;
+}
+.slideshow-thumbnails {
+	// height: 55px;
+}
+.slideshow a img {
+	border: 0;
+}
+
