@@ -325,10 +325,20 @@ Dependencies:
 				var obj = data[image] || {},
 					image = this.options.hu + image,
 					caption = obj.caption ? obj.caption.trim() : '',
-					href = obj.href ? obj.href.trim() : (this.options.linked ? image : this.options.href),
 					target = obj.target ? obj.target.trim() : '_self',
 					thumbnail = obj.thumbnail ? this.options.hu + obj.thumbnail.trim() : image.replace(this.options.replace[0], this.options.replace[1]),
 					title = caption.replace(/<.+?>/gm, '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, "'");
+				if(this.options.linked == "none") {
+					href = '';
+				} else if(this.options.linked == "global_href") {
+					href = this.options.href;
+				} else if(this.options.linked == "image_href") {
+					href = obj.href;
+				} else if(this.options.linked == "image_src") {
+					href = image;
+				} else {
+					href = obj.href ? obj.href.trim() : (this.options.linked ? image : this.options.href)
+				}
 				this.data.images.push(image);
 				this.data.captions.push(caption);
 				this.data.hrefs.push(href);
