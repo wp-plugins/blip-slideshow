@@ -23,11 +23,11 @@ Development began Apr 11th, 2011 and this is the first release. **Blip currently
 
 **Examples for use**
 
-*As a single slideshow:*
+*As a simple slideshow:*
 
 [slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
 
-*As a single slideshow with thumbs and captions:*
+*As a slideshow with thumbs and captions:*
 
 [slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small captions="true" thumbnails="true"]
 
