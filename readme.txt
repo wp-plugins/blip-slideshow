@@ -23,6 +23,16 @@ Blip incorporates[ Slideshow 2!](http://www.electricprism.com/aeron/slideshow/) 
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Place the [slideshow] shortcode in your posts and/or pages
 
+**Example for use**
+
+*As a single slideshow:*
+
+[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
+
+*As a single slideshow with thumbs and captions:*
+
+[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small captions="true" thumbnails="true"]
+
 == Frequently Asked Questions ==
 
 = What is Media RSS? =
