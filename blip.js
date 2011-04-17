@@ -1,8 +1,5 @@
 /*
 
-    Plugin Name: Blip Slideshow
-    Description: A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
- 
     Copyright (C) 2011  Jason Hendriks
 
     This program is free software: you can redistribute it and/or modify
@@ -77,7 +74,7 @@ var SmugMugRSSParser = new Class({
 			var defaultImage = Slick.find(item, 'media_group > media_content[isDefault]');
 			allImages.each(function(oneImage){
 				if(oneImage.getProperty) {
-					if(oneImage.getProperty('url').match('-Th(-[0-9])?.(jpg|gif)$')) {
+					if(oneImage.getProperty('width') == 100) {
 						image.thumbUrl = oneImage.getProperty('url');
 					}
 				} else {
