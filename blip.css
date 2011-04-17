@@ -6,32 +6,46 @@ notice and this notice are preserved.  This file is offered as-is,
 without any warranty.
 
 HTML:
-	<div class="slideshow">
-		<div class="slideshow-images" />
-		<div class="slideshow-captions" />
-		<div class="slideshow-controller" />
-		<div class="slideshow-loader" />
-		<div class="slideshow-thumbnails" />
-	</div>
-	
+
+<div class="slideshow">
+  <div class="slideshow-images">
+    <a><img /></a>
+    <div class="slideshow-loader"></div>
+  </div>
+
+  <div class="slideshow-captions"></div>
+
+  <div class="slideshow-controller">
+    <ul>
+      <li class="first"><a></a></li>
+      <li class="prev"><a></a></li>
+      <li class="pause play"><a></a></li>
+      <li class="next"><a></a></li>
+      <li class="last"><a></a></li>
+    </ul>
+  </div>
+
+  <div class="slideshow-thumbnails">
+    <ul>
+      <li><a class="slideshow-thumbnails-active"><img /></a></li>
+      <li><a class="slideshow-thumbnails-inactive"><img /></a></li>
+      <li><a class="slideshow-thumbnails-inactive"><img /></a></li>
+      ...
+    </ul>
+  </div>
+</div>	
+
 Notes:
-	These are examples of user-defined styles.
-	Customize these classes to your usage of Holly's Slideshow.
+	Customize these classes to your usage of Blip.
 
 */
 
 .slideshow {
-	height: 300px;
-	width: 400px;
-	margin: 0 auto;
-}
-.slideshow-images {
-	height: 300px;
-}
-.slideshow-thumbnails {
-	// height: 55px;
-}
-.slideshow a img {
-	border: 0;
 }
 
+.slideshow-images {
+}
+
+.slideshow-thumbnails {
+	bottom:0;
+}

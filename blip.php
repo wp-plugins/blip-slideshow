@@ -85,6 +85,7 @@ function blip_create_slideshow($atts, $content = null) {
 		'height' => 'false',
 		'href' => '',
 		'linked' => 'false',
+		'loader' => 'true',
 		'loop' => 'true',
 		'overlap' => 'true',
 		'paused' => 'false',
@@ -101,7 +102,7 @@ function blip_create_slideshow($atts, $content = null) {
 	//$output .= "//<![CDATA[";
 	$output .= "window.addEvent('domready', function(){";
 	$output .= "var rssUrl = '" . $rss . "';";
-	$output .= "var options = {captions: " . $captions . ", controller: " . $controller . ", height: " . $height . ", linked: " . $linked . ", overlap: " . $overlap . ", resize: '" . $resize . "', thumbnails: " . $thumbnails . ", width: " . $width . "};";
+	$output .= "var options = {captions: " . $captions . ", controller: " . $controller . ", height: " . $height . ", href: \"" . $href . "\", loader: " . $loader . ", linked: " . $linked . ", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ", width: " . $width . "};";
 	$output .= "new Blip('" . $id . "', rssUrl, options);";
 	$output .= "});";
 	//$output .= "//]]>";
@@ -168,6 +169,8 @@ function blip_enqueue_script() {
 		// only load if it is not the admin area
 		wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__) );
 		wp_enqueue_style( 'slideshow2');
+		wp_register_style( 'blip', plugins_url('/blip.css', __FILE__) );
+		wp_enqueue_style( 'blip');
 		wp_register_script( 'mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__));
 		wp_enqueue_script( 'mootools' );
 		wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));

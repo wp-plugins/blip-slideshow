@@ -52,6 +52,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.1.1 =
+* Added a loader[true/false] property to the shortcode to control display of the loader icon
+* Added CSS to override Slideshow's bottom:50px
+
 = 0.1 =
 * Initial release: 2011-04-16
 
