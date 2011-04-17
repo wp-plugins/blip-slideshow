@@ -12,7 +12,7 @@ A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pur
 
 A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
 
-Development began Apr 11th, 2011 and this is the first release. **Blip currently supports SmugMug RSS feeds only.**
+Development began Apr 11th, 2011 and this is the first release. **Blip currently supports SmugMug RSS feeds only.** Other media RSS feed types will be added soon.
 
 == Installation ==
 
@@ -51,10 +51,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.1 =
-* Initial release.
+* Initial release: 2011-04-16
 
 == Upgrade Notice ==
 
 = 0.1 =
-2011-04-16: The first version. Yay!
+The first version. Yay!
 
