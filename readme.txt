@@ -59,7 +59,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.1.1 =
 * Enabled hyperlinking via the href and linked properties
-* Switch from SmugMug's tiny images (100x100) to thumb images (150x150) for thumbnails
+* Switch to SmugMug's tiny images (100x100) from thumb images (150x150) for thumbnails
 * Added a loader[true/false] property to the shortcode to control display of the loader icon
 * Added CSS to override Slideshow's bottom:50px in the slideshow-thumbnail DIV
 

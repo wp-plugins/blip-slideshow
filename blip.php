@@ -102,7 +102,7 @@ function blip_create_slideshow($atts, $content = null) {
 	//$output .= "//<![CDATA[";
 	$output .= "window.addEvent('domready', function(){";
 	$output .= "var rssUrl = '" . $rss . "';";
-	$output .= "var options = {captions: " . $captions . ", controller: " . $controller . ", height: " . $height . ", href: \"" . $href . "\", loader: " . $loader . ", linked: " . $linked . ", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ", width: " . $width . "};";
+	$output .= "var options = {captions: " . $captions . ", controller: " . $controller . ", height: " . $height . ", href: \"" . $href . "\", loader: " . $loader . ", linked: \"" . $linked . "\", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ", width: " . $width . "};";
 	$output .= "new Blip('" . $id . "', rssUrl, options);";
 	$output .= "});";
 	//$output .= "//]]>";
