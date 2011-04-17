@@ -12,7 +12,7 @@ A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pur
 
 A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
 
-Development began Apr 11th, 2011 and this is first release. **Blip currently supports SmugMug RSS feeds only.**
+Development began Apr 11th, 2011 and this is the first release. **Blip currently supports SmugMug RSS feeds only.**
 
 == Installation ==
 
@@ -40,7 +40,7 @@ RSS news feed, media RSS lists pictures instead of articles from websites like *
 
 = Where can I find my SmugMug RSS feed URL? =
 
-SmugMug Help has a [WordPress](http://www.smugmug.com/help/rss-atom-feeds "How to subscribe to RSS feeds") page. 
+SmugMug has a [Help](http://www.smugmug.com/help/rss-atom-feeds "How to subscribe to RSS feeds") page. 
 
 == Screenshots ==
 
