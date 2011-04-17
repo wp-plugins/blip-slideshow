@@ -66,10 +66,10 @@ function blip_set_album_id($newCounter) {
 	$_SESSION['blip_counter'] = $newCounter;
 }
 
-function kailie() {
+function blip_cache_enabled() {
 	$options = get_option('blip');
 	$cache_enabled = $options['cache_enabled'];
-	echo "big tits. cache_enabled = " . $cache_enabled;
+	echo "cache_enabled = " . $cache_enabled;
 }
 
 function blip_create_slideshow($atts, $content = null) {

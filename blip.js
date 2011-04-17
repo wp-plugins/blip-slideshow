@@ -82,13 +82,18 @@ var SmugMugRSSParser = new Class({
 					}
 				} else {
 					// stupid internet explorer crap
+					var thumbUrl = '';
+					var isThumb = false;
 					for(var i=0; i<oneImage.attributes.length; i++) {
-						if (oneImage.attributes[i].name == "url") {
-							var url = oneImage.attributes[i].value;
-							if(url.match('-Th(-[0-9])?.(jpg|gif)$')) {
-								image.thumbUrl = url;
-							}
+						if (oneImage.attributes[i].name == "width" && oneImage.attributes[i].value == 100) {
+							isThumb = true;
 						}
+						if (oneImage.attributes[i].name == "url") {
+							var thumbUrl = oneImage.attributes[i].value;
+						}
+					}
+					if(isThumb) {
+						image.thumbUrl = thumbUrl;
 					}
 				}
 			});
