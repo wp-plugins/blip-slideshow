@@ -32,7 +32,7 @@ Other media RSS feed types will be added soon.
 
 >[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small captions=true thumbnails=true]
 
-More code examples can be found at [The Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/blip-slideshow-examples/).
+More code examples can be found at [The Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/).
 
 == Frequently Asked Questions ==
 
