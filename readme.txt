@@ -23,7 +23,7 @@ Blip incorporates[ Slideshow 2!](http://www.electricprism.com/aeron/slideshow/) 
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Place the [slideshow] shortcode in your posts and/or pages
 
-**Example for use**
+**Examples for use**
 
 *As a single slideshow:*
 
