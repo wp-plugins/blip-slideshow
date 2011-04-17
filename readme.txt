@@ -12,9 +12,7 @@ A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pur
 
 A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
 
-Blip incorporates[ Slideshow 2!](http://www.electricprism.com/aeron/slideshow/) by Aeron Glemann with some nifty RSS-reading magic. If you like Blip, please show your support to him.
-
-**Blip currently supports SmugMug RSS feeds only.**
+Development began Apr 11th, 2011 and this is first release. **Blip currently supports SmugMug RSS feeds only.**
 
 == Installation ==
 
