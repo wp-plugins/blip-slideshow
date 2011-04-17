@@ -27,11 +27,13 @@ Other media RSS feed types will be added soon.
 
 *As a simple slideshow:*
 
-[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
+>[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
 
 *As a slideshow with thumbs and captions:*
 
-[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small captions="true" thumbnails="true"]
+>[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small captions=true thumbnails=true]
+
+More code examples can be found at [The Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/blip-slideshow-examples/).
 
 == Frequently Asked Questions ==
 
@@ -53,8 +55,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.1.1 =
+* Switch from SmugMug's tiny images (100x100) to thumb images (150x150) for thumbnails
 * Added a loader[true/false] property to the shortcode to control display of the loader icon
-* Added CSS to override Slideshow's bottom:50px in the slideshow-thumbnail <div>
+* Added CSS to override Slideshow's bottom:50px in the slideshow-thumbnail DIV
 
 = 0.1 =
 * Initial release: 2011-04-16
