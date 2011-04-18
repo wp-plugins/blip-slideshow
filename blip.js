@@ -19,10 +19,10 @@
  
 var Blip = new Class({
   Implements: [Options, Events],
-  initialize: function(newElement, newRssUrl, newLinked, newOptions){
+  initialize: function(newElement, newRssUrl, newLink, newOptions){
 		this.element = newElement;
 		this.rssUrl = newRssUrl;
-		this.linked = newLinked;
+		this.link = newLink;
 		this.setOptions(newOptions);
 		var request = this.createRequest(this);
 		request.send();
@@ -37,7 +37,7 @@ var Blip = new Class({
 		return request;
 	},
 	processRequest: function(newResponseText, newResponseXml){
-		var parser = MediaRssParser.createParser(this.linked, newResponseText, newResponseXml);
+		var parser = MediaRssParser.createParser(this.link, newResponseText, newResponseXml);
 		this.createSlideshow(parser.images);
 	},
 	createSlideshow: function(images){
@@ -50,30 +50,31 @@ var MediaRssParser = new Class({
     whoIs: function(){
         return 'Super';
     },
-		smartLink: function(image, newLinked) {
-			if(newLinked == "full") {
+		smartLink: function(image, newLink) {
+			if(newLink == "full") {
 				image.linkUrl = image.largeUrl;
-			} else if(newLinked == "none") {
+			} else if(newLink == "none") {
 				image.linkUrl = '';
-			} else if(newLinked == "href") {
+			} else if(newLink == "href") {
 				// leave image.linkUrl alone
 			} else {
-				image.linkUrl = newLinked;
+				image.linkUrl = newLink;
 			}
 		}
 });
-MediaRssParser.createParser = function(newLinked, newResponseText, newResponseXml){
+
+MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml){
 	var generator = Slick.find(newResponseXml, 'generator').textContent;
 	if(generator == "http://www.smugmug.com/") {
-		return new SmugMugRssParser(newLinked, newResponseText, newResponseXml);
+		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
 	} else {
-		return new SmugMugRssParser(newLinked, newResponseText, newResponseXml);
+		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
 	}
 }
 
 var SmugMugRssParser = new Class({
 	Extends: MediaRssParser,
-	initialize: function(newLinked, newResponseText, newResponseXml){
+	initialize: function(newLink, newResponseText, newResponseXml){
 		var responseXml = newResponseXml;
 		//var responseText = newResponseText.replace(/<(\/)?([A-Z]+):([a-z]+)/gi,'<$1$2_$3');
 		//responseXml = new DOMParser().parseFromString(responseText, 'text/xml');
@@ -88,7 +89,7 @@ var SmugMugRssParser = new Class({
 			image.caption = Slick.find(item, 'title').textContent;
 			this.setSlideImage(image, Slick.find(item, 'media_group > media_content[isDefault]'));
 			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'));
-			this.smartLink(image, newLinked);
+			this.smartLink(image, newLink);
 			images[counter++] = image;
 		}, this);
 	},
