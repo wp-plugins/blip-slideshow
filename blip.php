@@ -45,7 +45,7 @@ if (isset($_REQUEST['url'])) {
 	}
 	if($content != FALSE) {
 		header('HTTP/1.1 200 OK');
-		header("Content-Type: text/xml"); 
+		header("Content-Type: text/xml");
 		$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
 		print $content;
 	}
@@ -76,38 +76,40 @@ function blip_create_slideshow($atts, $content = null) {
 	// extract rss from shortcode attributes
 	$sample_feed = plugins_url('/sample_feed.php', __FILE__);
 	extract(shortcode_atts(array(
-		'id' => 'show-' . blip_get_album_id(),
-		'rss' => $sample_feed,
-		'controller' => 'false',
 		'captions' => 'false',
+		'center' => 'true',
+		'controller' => 'false',
 		'delay' => '2000',
 		'duration' => '750',
+		'fast' => 'false',
 		'height' => 'false',
-		'href' => '',
-		'linked' => 'false',
+		'id' => 'show-' . blip_get_album_id(),
+		'link' => 'full',
 		'loader' => 'true',
 		'loop' => 'true',
 		'overlap' => 'true',
 		'paused' => 'false',
 		'random' => 'false',
 		'resize' => 'fill',
+		'rss' => $sample_feed,
 		'slide' => 0,
 		'thumbnails' => 'false',
 		'titles' => 'false',
 		'width' => 'false',
 	), $atts));
 	$rss = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
-
-	$output = '<script type="text/javascript">';
-	//$output .= "//<![CDATA[";
-	$output .= "window.addEvent('domready', function(){";
-	$output .= "var rssUrl = '" . $rss . "';";
-	$output .= "var options = {captions: " . $captions . ", controller: " . $controller . ", height: " . $height . ", href: \"" . $href . "\", loader: " . $loader . ", linked: " . $linked . ", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ", width: " . $width . "};";
-	$output .= "new Blip('" . $id . "', rssUrl, options);";
-	$output .= "});";
-	//$output .= "//]]>";
-	$output .= "</script>";
-	$output .= '<div id="' . $id . '" class="slideshow">';
+	$output = '<script type="text/javascript">
+	//<![CDATA[
+	';
+	if(!$resize) {
+		$output .= "// resize = false;";
+	};
+	$output .= "window.addEvent('domready', function(){" . "var options = {captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
+	$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($rss) . ', ' . json_encode($link) . ', options); });
+	//]] >';
+	$output .= '
+</script>
+<div id="' . $id . '" class="slideshow">';
 	if(!empty( $content )) {
 		$output .= '<span class="slideshow-content">' . $content . '</span>';
 	}

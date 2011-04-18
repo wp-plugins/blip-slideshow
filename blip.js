@@ -17,12 +17,13 @@
 
  */
  
- var Blip = new Class({
-    Implements: [Options, Events],
-    initialize: function(newElement, newRssUrl, newOptions){
+var Blip = new Class({
+  Implements: [Options, Events],
+  initialize: function(newElement, newRssUrl, newLinked, newOptions){
 		this.element = newElement;
 		this.rssUrl = newRssUrl;
-        this.setOptions(newOptions);
+		this.linked = newLinked;
+		this.setOptions(newOptions);
 		var request = this.createRequest(this);
 		request.send();
 	},
@@ -36,7 +37,7 @@
 		return request;
 	},
 	processRequest: function(newResponseText, newResponseXml){
-		var parser = MediaRSSParser.createParser(newResponseText, newResponseXml);
+		var parser = MediaRssParser.createParser(this.linked, newResponseText, newResponseXml);
 		this.createSlideshow(parser.images);
 	},
 	createSlideshow: function(images){
@@ -45,20 +46,34 @@
 	}
 });
 
-var MediaRSSParser = new Class({
+var MediaRssParser = new Class({
+    whoIs: function(){
+        return 'Super';
+    },
+		smartLink: function(image, newLinked) {
+			if(newLinked == "full") {
+				image.linkUrl = image.largeUrl;
+			} else if(newLinked == "none") {
+				image.linkUrl = '';
+			} else if(newLinked == "href") {
+				// leave image.linkUrl alone
+			} else {
+				image.linkUrl = newLinked;
+			}
+		}
 });
-MediaRSSParser.createParser = function(newResponseText, newResponseXml){
+MediaRssParser.createParser = function(newLinked, newResponseText, newResponseXml){
 	var generator = Slick.find(newResponseXml, 'generator').textContent;
 	if(generator == "http://www.smugmug.com/") {
-		return new SmugMugRSSParser(newResponseText, newResponseXml);
+		return new SmugMugRssParser(newLinked, newResponseText, newResponseXml);
 	} else {
-		return new SmugMugRSSParser(newResponseText, newResponseXml);
+		return new SmugMugRssParser(newLinked, newResponseText, newResponseXml);
 	}
 }
 
-var SmugMugRSSParser = new Class({
-	Implements: MediaRSSParser,
-	initialize: function(newResponseText, newResponseXml){
+var SmugMugRssParser = new Class({
+	Extends: MediaRssParser,
+	initialize: function(newLinked, newResponseText, newResponseXml){
 		var responseXml = newResponseXml;
 		//var responseText = newResponseText.replace(/<(\/)?([A-Z]+):([a-z]+)/gi,'<$1$2_$3');
 		//responseXml = new DOMParser().parseFromString(responseText, 'text/xml');
@@ -68,55 +83,55 @@ var SmugMugRSSParser = new Class({
 		this.images = images;
 		items.each(function(item){
 			var image = {};
-			image.linkUrl = Slick.find(item, 'guid').textContent;
-			image.caption = Slick.find(item, 'media_title').textContent;
-			var allImages = Slick.search(item, 'media_group > media_content[url]');
-			var defaultImage = Slick.find(item, 'media_group > media_content[isDefault]');
-			allImages.each(function(oneImage){
-				if(oneImage.getProperty) {
-					if(oneImage.getProperty('width') == 100) {
-						image.thumbUrl = oneImage.getProperty('url');
-					}
-				} else {
-					// stupid internet explorer crap
-					var thumbUrl = '';
-					var isThumb = false;
-					for(var i=0; i<oneImage.attributes.length; i++) {
-						if (oneImage.attributes[i].name == "width" && oneImage.attributes[i].value == 100) {
-							isThumb = true;
-						}
-						if (oneImage.attributes[i].name == "url") {
-							var thumbUrl = oneImage.attributes[i].value;
-						}
-					}
-					if(isThumb) {
-						image.thumbUrl = thumbUrl;
-					}
-				}
-			});
-			if(defaultImage.getProperty) {
-				image.largeUrl = defaultImage.getProperty('url');
-			} else {
-				// stupid internet explorer crap
-				image.largeUrl = defaultImage.attributes[0].value;
-			}
+			image.linkUrl = Slick.find(item, 'link').textContent; // the SmugMug gallery
+			image.largeUrl = Slick.find(item, 'guid').textContent; // the Original image
+			image.caption = Slick.find(item, 'title').textContent;
+			this.setSlideImage(image, Slick.find(item, 'media_group > media_content[isDefault]'));
+			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'));
+			this.smartLink(image, newLinked);
 			images[counter++] = image;
-		});
+		}, this);
+	},
+	processMediaGroup: function(newImage, newMediaGroup) {
+		var previousBiggest = 0;
+		newMediaGroup.each(function(oneImage){
+			var height = 0;
+			var url = '';
+			for(var i=0; i<oneImage.attributes.length; i++) {
+				if (oneImage.attributes[i].name == "height") {
+					height = parseInt(oneImage.attributes[i].value);
+				}
+				if (oneImage.attributes[i].name == "url") {
+					url = oneImage.attributes[i].value;
+				}
+			}
+			if(height == 100) {
+				newImage.thumbUrl = url;
+			}
+			if(height > previousBiggest) {
+				previousBiggest = height;
+				newImage.largeUrl = url;
+			}
+		}, this);
+	},
+	setSlideImage: function(newImage, defaultImage) {
+		if(defaultImage.getProperty) {
+			newImage.slideUrl = defaultImage.getProperty('url'); // the sideshow-sized image
+		} else {
+			// stupid internet explorer crap
+			newImage.slideUrl = defaultImage.attributes[0].value;
+		}
 	}
 });
 
 var Slideshow2Creator = new Class({
 	Implements: [Options],
-	options: {
-	},
-	initialize: function(newImages, newOptions){
-		this.setOptions(newOptions);
+	initialize: function(newImages){
 		var object = new Object();
 		this.data = object;
 		newImages.each(function(image){
-			var key = image.largeUrl;
+			var key = image.slideUrl;
 			object[key] = {caption: image.caption, href: image.linkUrl, thumbnail: image.thumbUrl};
 		});
 	}
 });
-
