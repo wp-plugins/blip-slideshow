@@ -60,6 +60,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.3 =
+* Integration with Slimbox
+* Fixed resize=false option
+
 = 0.2 =
 * Release date: 2011-04-18
 * Bundled with Slideshow-1.3.1.110417
@@ -92,3 +96,28 @@ Thanks for beta testing! Various enhancements are ready.
 = 0.1 =
 The first version. Yay!
 
+== Resources ==
+
+I found these links invaluable for the creation of this plugin:
+
+ * http://groups.google.com/group/mootools-users/browse_thread/thread/4858bdee5b1d0f56/d6ad5aa2fcc99dba?fwc=1
+ * http://mootools.net/docs/more/Request/Request.Queue
+ * http://mootools.net/demos/?demo=Slick.Finder
+ * http://mootools-users.660466.n2.nabble.com/Moo-XML-parsing-1-3-and-today-td5187586.html
+ * https://gist.github.com/775347
+ * http://www.regular-expressions.info/javascript.html
+ * https://mootools.lighthouseapp.com/projects/2706/tickets/182-request-html-only-parses-xml
+ * http://ryanflorence.com/mootools-class/
+ * http://stackoverflow.com/questions/1178511/accessing-a-mootools-class-method-from-outside-the-class
+ * http://stackoverflow.com/questions/1091022/how-do-i-write-a-simple-php-transparent-proxy
+ * http://www.howtogeek.com/howto/programming/php-get-the-contents-of-a-web-page-rss-feed-or-xml-file-into-a-string-variable/
+ * http://www.tek-tips.com/viewthread.cfm?qid=1268652&page=1
+ * http://www.permadi.com/tutorial/urlEncoding/
+ * http://php.net/manual/en/function.parse-url.php
+ * http://php.net/manual/en/language.operators.comparison.php
+ * http://www.php.net/manual/en/function.html-entity-decode.php
+ * http://www.w3schools.com/PHP/php_sessions.asp
+ * http://keetology.com/blog/2009/10/27/up-the-moo-herd-iv-theres-a-class-for-this
+ * http://stackoverflow.com/questions/66837/when-is-a-cdata-section-necessary-within-a-script-tag
+ * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a (slimbox integration)
+ * http://codex.wordpress.org/Managing_Plugins
