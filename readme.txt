@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2
 Requires at least: 2.8
 Tested up to: 3.1.1
-Stable tag: 0.1.1
+Stable tag: 0.2
 
 A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
 
@@ -60,13 +60,14 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 0.1.2 =
+= 0.2 =
+* Release date: 2011-04-18
 * Bundled with Slideshow-1.3.1.110417
 * Fixed the way SmugMug thumbnails are found (by height=100px).
-* new shortcode options: center, linked and resize.
+* new shortcode options: center, link and resize.
 * added JSON encoding of options for those that might include Javascript characters such as ' and /
 * added a CDATA section to the Javascript call for proper parsing and XHTML validation
-* Moved hyperlinking code from slideshow.js to blip.php based on http://code.google.com/p/slideshow/issues/detail?id=192
+* Moved hyperlinking code from slideshow.js to blip.php based (see http://code.google.com/p/slideshow/issues/detail?id=192)
 
 = 0.1.1 =
 * Release date: 2011-04-16
@@ -81,6 +82,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Bundled with Slideshow-1.3.1
 
 == Upgrade Notice ==
+
+= 0.2 =
+Thanks for beta testing! New options! center, link and resize.
 
 = 0.1.1 =
 Thanks for beta testing! Various enhancements are ready.

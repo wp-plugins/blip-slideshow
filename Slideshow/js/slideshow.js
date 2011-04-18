@@ -84,10 +84,10 @@ Dependencies:
 
 			// styles
 
-			var keys = ['slideshow', 'first', 'prev', 'play', 'pause', 'next', 'last', 'images', 'captions', 'controller', 'thumbnails', 'hidden', 'visible', 'inactive', 'active', 'loader'],
+			var keys = 'slideshow first prev play pause next last images captions controller thumbnails hidden visible inactive active loader'.split(' '),
 				values = keys.map(function(key, i){
-				return this.options.classes[i] || key;
-			}, this);
+					return this.options.classes[i] || key;
+				}, this);
 			this.classes = values.associate(keys);
 			this.classes.get = function(){
 				var str = '.' + this.slideshow;
@@ -325,20 +325,10 @@ Dependencies:
 				var obj = data[image] || {},
 					image = this.options.hu + image,
 					caption = obj.caption ? obj.caption.trim() : '',
+					href = obj.href ? obj.href.trim() : (this.options.linked ? image : this.options.href),
 					target = obj.target ? obj.target.trim() : '_self',
 					thumbnail = obj.thumbnail ? this.options.hu + obj.thumbnail.trim() : image.replace(this.options.replace[0], this.options.replace[1]),
 					title = caption.replace(/<.+?>/gm, '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, "'");
-				if(this.options.linked == "none") {
-					href = '';
-				} else if(this.options.linked == "global_href") {
-					href = this.options.href;
-				} else if(this.options.linked == "image_href") {
-					href = obj.href;
-				} else if(this.options.linked == "image_src") {
-					href = image;
-				} else {
-					href = obj.href ? obj.href.trim() : (this.options.linked ? image : this.options.href)
-				}
 				this.data.images.push(image);
 				this.data.captions.push(caption);
 				this.data.hrefs.push(href);
@@ -378,16 +368,15 @@ Dependencies:
 
 		destroy: function(p){
 			Object.each(this.events, function(array, e){
-				array.each(function(fn){ document.removeEvent(e, fn); });
+				if ('each' in array)
+					array.each(function(fn){ document.removeEvent(e, fn); });
 			});
 			this.pause(1);
-			if (this.options.loader)
-				clearTimeout(this.el.retrieve('loader').retrieve('timer'));		
-			if (this.options.thumbnails)
-				clearTimeout(this.el.retrieve('thumbnails').retrieve('timer'));
-			this.el.uid = Native.UID++;
-			if (p)
-				this.el[p]();
+			'caption loader thumbnails'.split(' ').each(function(i, timer){
+				this.options[i] && (timer = this[i].retrieve('timer')) && clearTimeout(timer);
+			}, this);
+			typeOf(this.el[p]) == 'function' && this.el[p]();
+			delete this.el.uid;
 		},
 
 	/**
@@ -398,18 +387,16 @@ Dependencies:
 		_preload: function(fast){
 			var src = this.data.images[this._slide].replace(/([^?]+).*/, '$1'),
 				cached = loaded = !!this.cache[src];
-			var error = false;
 			if (!cached){
-				if (!this.preloader) {
+				if (!this.preloader)
 				 	this.preloader = new Asset.image(src, {
-					'onload': function(){
-						this.store('loaded', true);
-					},
-					'onerror': function(e){
-						this.store('loaded', true);
-						this.store('error', true);
-					}});
-				}
+						'onerror': function(){
+							// do something
+						},
+						'onload': function(){
+							this.store('loaded', true);
+						}
+					});
 				loaded = this.preloader.retrieve('loaded') && this.preloader.get('width');
 			}
 			if (loaded && Date.now() > this.delay && Date.now() > this.duration){
@@ -418,8 +405,7 @@ Dependencies:
 					this.cache[src] = {
 						'height': this.preloader.get('height'),
 						'src': src,
-						'width': this.preloader.get('width'),
-						'error': this.preloader.get('error')
+						'width': this.preloader.get('width')
 					}
 				}
 				if (this.stopped){
@@ -432,20 +418,12 @@ Dependencies:
 					return;				
 				}
 				this.image = this.counter % 2 ? this.b : this.a;
-				if(!this.cache[error]) {
-					this.image.set('styles', {'display': 'block', 'height': 'auto', 'visibility': 'hidden', 'width': 'auto', 'zIndex': this.counter});
-				} else {
-					this.image.set('styles', {'display': 'none', 'height': 'auto', 'visibility': 'hidden', 'width': 'auto', 'zIndex': this.counter});
-				}			
+				this.image.set('styles', {'display': 'block', 'height': null, 'visibility': 'hidden', 'width': null, 'zIndex': this.counter});
 				this.image.set(this.cache[src]);
-				if (this.options.resize) {
-//this._resize(this.image);
-var newImg = new Image();
-newImg.src = this.image.get('src');
-var tmpHeight = newImg.height;
-var tmpWidth = newImg.width;
-
-this._resize(this.image, tmpWidth, tmpHeight);				}
+				this.image.width = this.cache[src].width;
+				this.image.height = this.cache[src].height;
+				if (this.options.resize)
+					this._resize(this.image);
 				if (this.options.center)
 					this._center(this.image);
 				var anchor = this.image.getParent();
@@ -500,12 +478,12 @@ this._resize(this.image, tmpWidth, tmpHeight);				}
 					this.image.get('morph').set(hidden).start(visible);
 				} 
 				else {
-					var fn = function(hidden, visible){
+					var fn = function(visible){
 						this.image.get('morph').start(visible);
-					}.pass([hidden, visible], this);
-					hidden = this.classes.get('images', (this.direction == 'left' ? 'prev' : 'next'));
+					}.pass(visible, this);
 					if (this.firstrun)
 						return fn();
+					hidden = this.classes.get('images', (this.direction == 'left' ? 'prev' : 'next'));
 					this.image.get('morph').set(hidden);				
 					img.get('morph').set(visible).start(hidden).chain(fn);
 				}
@@ -562,14 +540,9 @@ this._resize(this.image, tmpWidth, tmpHeight);				}
 		Resizes an image.
 	*/
 
-_resize: function(img, tw, th){
-//_resize: function(img){
-     // var size = img.getSize(),
-     // 	h = size.y, w = size.x,
-     // 	dh = this.height / h, dw = this.width / w;
-	var size = {x:tw, y:th},
-		h = size.y, w = size.x,
-		dh = this.height / h, dw = this.width / w;
+		_resize: function(img){
+			var h = img.get('height').toFloat(), w = img.get('width').toFloat(),
+				dh = this.height / h, dw = this.width / w;
 			if (this.options.resize == 'fit')
 				dh = dw = dh > dw ? dw : dh;
 			if (this.options.resize == 'fill')
@@ -614,6 +587,7 @@ _resize: function(img, tw, th){
 			fps: 50,
 			transition: 'sine:in:out',
 			unit: false, */
+			delay: 0,
 			link: 'cancel'			
 		},
 
@@ -634,7 +608,7 @@ _resize: function(img, tw, th){
 				'events': { 'update': this.update.bind(slideshow) },
 				'morph': this.options,
 				'role': 'description'
-			});
+			}).store('delay', this.options.delay);
 		    if (!caption.get('id'))
 		    	caption.set('id', 'Slideshow-' + Date.now());
 		    slideshow.el.retrieve('images').set('aria-labelledby', caption.get('id'));
@@ -642,15 +616,19 @@ _resize: function(img, tw, th){
 		},
 
 		update: function(fast){
-		    var empty = (this.data.captions[this._slide] === '');
+		    var empty = !this.data.captions[this._slide].length, timer;
+			if (timer = this.caption.retrieve('timer'))
+				clearTimeout(timer);
 		    if (fast){
 		      var p = empty ? 'hidden' : 'visible';
 		      this.caption.set({'aria-hidden': empty, 'html': this.data.captions[this._slide]}).get('morph').cancel().set(this.classes.get('captions', p));
 		    }
 		    else {
-		      var fn1 = empty ? function(){} : function(n){
-		        this.caption.set('html', this.data.captions[n]).morph(this.classes.get('captions', 'visible'));
-		      }.pass(this._slide, this);    
+		      var fn1 = empty ? function(){} : function(caption){
+				this.caption.store('timer', setTimeout(function(caption){
+			        this.caption.set('html', caption).morph(this.classes.get('captions', 'visible'));
+				}.pass(caption, this), this.caption.retrieve('delay')));
+		      }.pass(this.data.captions[this._slide], this);    
 		      var fn2 = function(){ 
 		        this.caption.set('aria-busy', false); 
 		      }.bind(this);
@@ -733,7 +711,7 @@ _resize: function(img, tw, th){
 
 		keydown: function(e){
 			Object.each(this.accesskeys, function(accesskey, action){
-				if (e.key == accesskey.key && e.shift == accesskey.shift && e.control == accesskey.control && e.alt == accesskey.alt && e.meta == accesskey.meta){
+				if (e.key == accesskey.key && e.shift == accesskey.shift && e.control == accesskey.control && e.alt == accesskey.alt){
 					if (this.controller.get('aria-hidden') == 'true')
 						this.controller.get('morph').set(this.classes.get('controller', 'visible'));
 					this.el.retrieve(action).fireEvent('mouseenter');
@@ -743,7 +721,7 @@ _resize: function(img, tw, th){
 
 		keyup: function(e){
 			Object.each(this.accesskeys, function(accesskey, action){
-				if (e.key == accesskey.key && e.shift == accesskey.shift && e.control == accesskey.control && e.alt == accesskey.alt && e.meta == accesskey.meta){
+				if (e.key == accesskey.key && e.shift == accesskey.shift && e.control == accesskey.control && e.alt == accesskey.alt){
 					if (this.controller.get('aria-hidden') == 'true')
 						this.controller.set('aria-hidden', false).fireEvent('hide'); 
 					this.el.retrieve(action).fireEvent('mouseleave');
@@ -906,8 +884,8 @@ _resize: function(img, tw, th){
 			var coords = thumbnails.getCoordinates();
 			if (!options.scroll)
 				options.scroll = (coords.height > coords.width) ? 'y' : 'x';
-			var props = (options.scroll == 'y') ? ['top', 'bottom', 'height', 'y', 'width'] 
-				: ['left', 'right', 'width', 'x', 'height'];
+			var props = (options.scroll == 'y') ? 'top bottom height y width'.split(' ') 
+				: 'left right width x height'.split(' ');
 			thumbnails.store('props', props).store('delay', 1000 / this.options.fps);
 			slideshow.events.push('mousemove', this.mousemove.bind(thumbnails));
 			thumbnails.inject(slideshow.el);
