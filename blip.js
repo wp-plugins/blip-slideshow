@@ -51,9 +51,9 @@ var MediaRssParser = new Class({
         return 'Super';
     },
 		smartLink: function(image, newLink) {
-			if(newLink == "full") {
+			if(newLink == "full" || newLink == "true") {
 				image.linkUrl = image.largeUrl;
-			} else if(newLink == "none") {
+			} else if(newLink == "none" || newLink == "false") {
 				image.linkUrl = '';
 			} else if(newLink == "href") {
 				// leave image.linkUrl alone
