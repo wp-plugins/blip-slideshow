@@ -26,7 +26,7 @@
     <title>Holly's Slideshow</title>
     <link>http://www.jasonhendriks.com/programmer/HollysSlideshow/</link>
     <description></description>
-    <generator>http://www.jasonhendriks.com/programmer/HollysSlideshow/</generator>
+    <generator>http://www.smugmug.com/</generator>
     <copyright>Copyright 2011, the copyright holder of each photograph.</copyright>
     <image>
       <url><?php echo plugins_url('/Slideshow/images/1t.jpg', __FILE__) ?></url>
