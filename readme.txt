@@ -66,7 +66,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Integration with plugin "WP Slimbox Reloaded" (3,158 downloads) - failed on installation "TypeError: Result of expression 'new Element("div",{id:"lbImage"}).injectInside' [undefined] is not a function."
 * Integration with plugin "Slimbox" (10,380 downloads)
 * Added link boolean options
-* Fixed resize=false option
+* Fixed resize boolean options
 
 = 0.2 =
 * Release date: 2011-04-18
