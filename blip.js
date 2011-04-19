@@ -65,13 +65,14 @@ var MediaRssParser = new Class({
 });
 
 MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml){
-	var generator = Slick.find(newResponseXml, 'generator').textContent;
+	var generator = Slick.find(newResponseXml, 'generator').firstChild.nodeValue;
 	if(generator == "http://www.smugmug.com/") {
 		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
 	} if(generator == "http://www.flickr.com/") {
 		return new FlickrRssParser(newLink, newResponseText, newResponseXml);
 	} else {
-		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
+		// unsupported RSS type
+		return;
 	}
 }
 
@@ -87,22 +88,15 @@ var SmugMugRssParser = new Class({
 		this.slideshowImages = slideshowImages;
 		items.each(function(item){
 			var image = {};
-			image.linkUrl = Slick.find(item, 'link').textContent; // the SmugMug gallery
-			image.largeUrl = Slick.find(item, 'guid').textContent; // the Original image
-			image.caption = Slick.find(item, 'title').textContent;
-			this.setSlideImage(image, Slick.find(item, 'media_group > media_content[isDefault]'));
+			image.linkUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
+			image.largeUrl = Slick.find(item, 'guid').firstChild.nodeValue; // the Original image
+			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
+			// image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getProperty('url'); // the sized image
+			image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').attributes[0].value;
 			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'));
 			this.smartLink(image, newLink);
 			slideshowImages[counter++] = image;
 		}, this);
-	},
-	setSlideImage: function(newImage, defaultImage) {
-		if(defaultImage.getProperty) {
-			newImage.slideUrl = defaultImage.getProperty('url'); // the sized image
-		} else {
-			// stupid internet explorer crap
-			newImage.slideUrl = defaultImage.attributes[0].value;
-		}
 	},
 	processMediaGroup: function(newImage, newMediaGroup) {
 		var previousBiggest = 0;
@@ -137,23 +131,13 @@ var FlickrRssParser = new Class({
 		this.slideshowImages = slideshowImages;
 		items.each(function(item){
 			var image = {};
-			image.linkUrl = Slick.find(item, 'link').textContent; // the Flickr gallery
-			image.slideUrl = Slick.find(item, 'description').textContent.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the Flickr gallery
-			image.caption = Slick.find(item, 'media_title').textContent;
-			var largeUrl = Slick.find(item, 'media_content'); // the sized image
-			if(largeUrl.getProperty) {
-				image.largeUrl = largeUrl.getProperty('url');
-			} else {
-				// stupid internet explorer crap
-				image.largeUrl = largeUrl.attributes[0].value;
-			}
-			var thumbnail = Slick.find(item, 'media_thumbnail'); // the thumbnail
-			if(thumbnail.getProperty) {
-				image.thumbUrl = thumbnail.getProperty('url');
-			} else {
-				// stupid internet explorer crap
-				image.thumbUrl = thumbnail.attributes[0].value;
-			}
+			image.linkUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
+			image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the Flickr gallery
+			image.caption = Slick.find(item, 'media_title').firstChild.nodeValue;
+			// image.largeUrl = Slick.find(item, 'media_content').getProperty('url'); // the sized image
+			image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the sized image
+			// image.thumbUrl = Slick.find(item, 'media_thumbnail').getProperty('url'); // the thumbnail
+			image.thumbUrl = Slick.find(item, 'media_thumbnail').attributes[0].value; // the thumbnail
 			this.smartLink(image, newLink);
 			slideshowImages[counter++] = image;
 		}, this);
