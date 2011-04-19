@@ -6,11 +6,11 @@ Requires at least: 2.8
 Tested up to: 3.1.1
 Stable tag: 0.3
 
-A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
 == Description ==
 
-A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
 Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/blip-slideshow?forum_id=10).
