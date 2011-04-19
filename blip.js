@@ -43,7 +43,9 @@ var Blip = new Class({
 	createSlideshow: function(images){
 		var slideshowData = SlideshowHelper.createSlideshowData(images);
 		var myShow = new Slideshow(this.element, slideshowData, this.options);
-		JQuerySlimboxHelper.addEvents(images, myShow);
+		if(this.link == "slimbox") {
+			JQuerySlimboxHelper.addEvents(images, myShow);
+		}
 	}
 });
 
