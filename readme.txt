@@ -61,9 +61,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.3 =
+* Integration with plugin "SlimBox2 for WordPress" (769 downloads) - failed "Can't find variable: jQuery"
 * Integration with plugin "WP-Slimbox2 Plugin" (34,000 downloads)
-* Integration with plugin "Slimbox Plugin" (54,074 downloads) - failed on installation "TypeError: Result of expression 'item.$family' [[object Object]] is not a function."
-* Integration with plugin "WP Slimbox Reloaded" (3,158 downloads) - failed on installation "TypeError: Result of expression 'new Element("div",{id:"lbImage"}).injectInside' [undefined] is not a function."
+* Integration with plugin "Slimbox Plugin" (54,074 downloads) - failed "TypeError: Result of expression 'item.$family' [[object Object]] is not a function."
+* Integration with plugin "WP Slimbox Reloaded" (3,158 downloads) - failed "TypeError: Result of expression 'new Element("div",{id:"lbImage"}).injectInside' [undefined] is not a function."
 * Integration with plugin "Slimbox" (10,380 downloads)
 * Added link boolean options
 * Fixed resize boolean options
