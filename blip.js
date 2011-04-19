@@ -1,4 +1,5 @@
 /*
+		** Requires MooTools 1.3 **
 
     Copyright (C) 2011  Jason Hendriks
 
@@ -60,7 +61,6 @@ var MediaRssParser = new Class({
 			} else {
 				image.linkUrl = newLink;
 			}
-			image.linkUrl = ' ';
 		}
 });
 
@@ -68,6 +68,8 @@ MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml)
 	var generator = Slick.find(newResponseXml, 'generator').textContent;
 	if(generator == "http://www.smugmug.com/") {
 		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
+	} if(generator == "http://www.flickr.com/") {
+		return new FlickrRssParser(newLink, newResponseText, newResponseXml);
 	} else {
 		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
 	}
@@ -94,6 +96,14 @@ var SmugMugRssParser = new Class({
 			slideshowImages[counter++] = image;
 		}, this);
 	},
+	setSlideImage: function(newImage, defaultImage) {
+		if(defaultImage.getProperty) {
+			newImage.slideUrl = defaultImage.getProperty('url'); // the sized image
+		} else {
+			// stupid internet explorer crap
+			newImage.slideUrl = defaultImage.attributes[0].value;
+		}
+	},
 	processMediaGroup: function(newImage, newMediaGroup) {
 		var previousBiggest = 0;
 		newMediaGroup.each(function(oneImage){
@@ -115,14 +125,38 @@ var SmugMugRssParser = new Class({
 				newImage.largeUrl = url;
 			}
 		}, this);
-	},
-	setSlideImage: function(newImage, defaultImage) {
-		if(defaultImage.getProperty) {
-			newImage.slideUrl = defaultImage.getProperty('url'); // the sideshow-sized image
-		} else {
-			// stupid internet explorer crap
-			newImage.slideUrl = defaultImage.attributes[0].value;
-		}
+	}
+});
+
+var FlickrRssParser = new Class({
+	Extends: MediaRssParser,
+	initialize: function(newLink, newResponseText, newResponseXml){
+		var items = Slick.search(newResponseXml, 'item');
+		var counter = 0;
+		var slideshowImages = new Array(items.length);
+		this.slideshowImages = slideshowImages;
+		items.each(function(item){
+			var image = {};
+			image.linkUrl = Slick.find(item, 'link').textContent; // the Flickr gallery
+			image.slideUrl = Slick.find(item, 'description').textContent.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the Flickr gallery
+			image.caption = Slick.find(item, 'media_title').textContent;
+			var largeUrl = Slick.find(item, 'media_content'); // the sized image
+			if(largeUrl.getProperty) {
+				image.largeUrl = largeUrl.getProperty('url');
+			} else {
+				// stupid internet explorer crap
+				image.largeUrl = largeUrl.attributes[0].value;
+			}
+			var thumbnail = Slick.find(item, 'media_thumbnail'); // the thumbnail
+			if(thumbnail.getProperty) {
+				image.thumbUrl = thumbnail.getProperty('url');
+			} else {
+				// stupid internet explorer crap
+				image.thumbUrl = thumbnail.attributes[0].value;
+			}
+			this.smartLink(image, newLink);
+			slideshowImages[counter++] = image;
+		}, this);
 	}
 });
 
