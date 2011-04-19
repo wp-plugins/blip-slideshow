@@ -6,7 +6,7 @@ Requires at least: 2.8
 Tested up to: 3.1.1
 Stable tag: 0.3
 
-A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
 
 == Description ==
 
@@ -111,36 +111,36 @@ The first version. Yay!
 
 == External Plugin Compatibility ==
 
-* [Slimbox](http://wordpress.org/extend/plugins/slimbox/): (10,380 downloads) - OK
-* [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): (3,158 downloads) - failed - coded for MooTools 1.2, not MooTools 1.3
-* [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): (54,074 downloads) - failed - this guy hardcoded mootools, which is a no-no repeated in every WP doc i read
-* [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): (34,000 downloads) - OK
-* [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): (769 downloads) - failed - "Can't find variable: jQuery"
-* [Lightbox 2.0 for WordPress](http://zeo.unic.net.my/lightbox2-for-wordpress/): - failed Blip is currently incompatible with Scriptaculous
+* [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
+* [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - coded for MooTools 1.2, not MooTools 1.3
+* [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the mootools API, which is a no-no
+* [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): OK
+* [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - "Can't find variable: jQuery"
+* [Lightbox 2.0 for WordPress](http://zeo.unic.net.my/lightbox2-for-wordpress/): - failed - Blip is currently incompatible with Scriptaculous
 
 == Resources ==
 
-I found these links invaluable for the creation of this plugin:
+Some information I found invaluable for this project:
 
- * http://groups.google.com/group/mootools-users/browse_thread/thread/4858bdee5b1d0f56/d6ad5aa2fcc99dba?fwc=1
- * http://mootools.net/docs/more/Request/Request.Queue
- * http://mootools.net/demos/?demo=Slick.Finder
- * http://mootools-users.660466.n2.nabble.com/Moo-XML-parsing-1-3-and-today-td5187586.html
- * https://gist.github.com/775347
- * http://www.regular-expressions.info/javascript.html
- * https://mootools.lighthouseapp.com/projects/2706/tickets/182-request-html-only-parses-xml
- * http://ryanflorence.com/mootools-class/
- * http://stackoverflow.com/questions/1178511/accessing-a-mootools-class-method-from-outside-the-class
- * http://stackoverflow.com/questions/1091022/how-do-i-write-a-simple-php-transparent-proxy
- * http://www.howtogeek.com/howto/programming/php-get-the-contents-of-a-web-page-rss-feed-or-xml-file-into-a-string-variable/
- * http://www.tek-tips.com/viewthread.cfm?qid=1268652&page=1
- * http://www.permadi.com/tutorial/urlEncoding/
- * http://php.net/manual/en/function.parse-url.php
- * http://php.net/manual/en/language.operators.comparison.php
- * http://www.php.net/manual/en/function.html-entity-decode.php
- * http://www.w3schools.com/PHP/php_sessions.asp
- * http://keetology.com/blog/2009/10/27/up-the-moo-herd-iv-theres-a-class-for-this
- * http://stackoverflow.com/questions/66837/when-is-a-cdata-section-necessary-within-a-script-tag
- * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a (slimbox integration)
- * http://codex.wordpress.org/Managing_Plugins
- * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
+* http://groups.google.com/group/mootools-users/browse_thread/thread/4858bdee5b1d0f56/d6ad5aa2fcc99dba?fwc=1
+* http://mootools.net/docs/more/Request/Request.Queue
+* http://mootools.net/demos/?demo=Slick.Finder
+* http://mootools-users.660466.n2.nabble.com/Moo-XML-parsing-1-3-and-today-td5187586.html
+* https://gist.github.com/775347
+* http://www.regular-expressions.info/javascript.html
+* https://mootools.lighthouseapp.com/projects/2706/tickets/182-request-html-only-parses-xml
+* http://ryanflorence.com/mootools-class/
+* http://stackoverflow.com/questions/1178511/accessing-a-mootools-class-method-from-outside-the-class
+* http://stackoverflow.com/questions/1091022/how-do-i-write-a-simple-php-transparent-proxy
+* http://www.howtogeek.com/howto/programming/php-get-the-contents-of-a-web-page-rss-feed-or-xml-file-into-a-string-variable/
+* http://www.tek-tips.com/viewthread.cfm?qid=1268652&page=1
+* http://www.permadi.com/tutorial/urlEncoding/
+* http://php.net/manual/en/function.parse-url.php
+* http://php.net/manual/en/language.operators.comparison.php
+* http://www.php.net/manual/en/function.html-entity-decode.php
+* http://www.w3schools.com/PHP/php_sessions.asp
+* http://keetology.com/blog/2009/10/27/up-the-moo-herd-iv-theres-a-class-for-this
+* http://stackoverflow.com/questions/66837/when-is-a-cdata-section-necessary-within-a-script-tag
+* http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a (slimbox integration)
+* http://codex.wordpress.org/Managing_Plugins
+* http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
