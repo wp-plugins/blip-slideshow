@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2
 Requires at least: 2.8
 Tested up to: 3.1.1
-Stable tag: 0.2
+Stable tag: 0.1.1
 
 A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
 
@@ -65,6 +65,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Integration with plugin "Slimbox Plugin" (54,074 downloads) - failed on installation "TypeError: Result of expression 'item.$family' [[object Object]] is not a function."
 * Integration with plugin "WP Slimbox Reloaded" (3,158 downloads) - failed on installation "TypeError: Result of expression 'new Element("div",{id:"lbImage"}).injectInside' [undefined] is not a function."
 * Integration with plugin "Slimbox" (10,380 downloads)
+* Added link boolean options
 * Fixed resize=false option
 
 = 0.2 =
