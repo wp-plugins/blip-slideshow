@@ -104,6 +104,8 @@ function blip_create_slideshow($atts, $content = null) {
 	// handle lightbox link options
 	if($link == "lightbox" && function_exists('slimbox')) {
 		$link = "slimbox";
+	} else if($link == "lightbox" && function_exists('wp_slimbox_activate')) {
+		$link = "slimbox";
 	} else if($link == "lightbox") {
 		// no supported lightbox plugins
 		$link = "full";
