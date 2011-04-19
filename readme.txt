@@ -6,15 +6,14 @@ Requires at least: 2.8
 Tested up to: 3.1.1
 Stable tag: 0.2
 
-A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
 == Description ==
 
-A WordPress slideshow plugin fed from a SmugMug RSS feed and displayed using pure Javascript.
-Blip does not hardcode what it finds into your blog. Instead the most recent images are always loaded in real-time by the web browser.
+A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
+Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
-Development began Apr 11th, 2011 so Blip is still in *early development*.
-**Blip currently supports SmugMug RSS feeds only.** Other media RSS feed types will be added soon.
+Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/blip-slideshow?forum_id=10).
 
 == Installation ==
 
@@ -37,7 +36,7 @@ Development began Apr 11th, 2011 so Blip is still in *early development*.
 
 = How does it work? =
 
-Blip is a wrapper for [Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
+Blip is a wrapper for MooTools [Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
 
 = What is Media RSS? =
 
@@ -61,12 +60,12 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.3 =
-* Integration with plugin "SlimBox2 for WordPress" (769 downloads) - failed "Can't find variable: jQuery"
-* Integration with plugin "WP-Slimbox2 Plugin" (34,000 downloads)
-* Integration with plugin "Slimbox Plugin" (54,074 downloads) - failed "TypeError: Result of expression 'item.$family' [[object Object]] is not a function."
-* Integration with plugin "WP Slimbox Reloaded" (3,158 downloads) - failed "TypeError: Result of expression 'new Element("div",{id:"lbImage"}).injectInside' [undefined] is not a function."
-* Integration with plugin "Slimbox" (10,380 downloads)
-* Added link boolean options
+* Removed blip.css
+* Compatible with Flickr RSS feeds 
+* Compatible with plugin [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) 
+* Compatible with plugin [Slimbox](http://wordpress.org/extend/plugins/slimbox/)
+* Integration with Lightbox! w00t! Use new link=lightbox option and add a compatible plugin
+* Fixed link boolean options
 * Fixed resize boolean options
 
 = 0.2 =
@@ -87,6 +86,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.1 =
 * Release date: 2011-04-16
+* Compatible with SmugMug RSS feeds 
 * Development began: 2011-04-11
 * Bundled with Slideshow-1.3.1
 
@@ -100,6 +100,15 @@ Thanks for beta testing! Various enhancements are ready.
 
 = 0.1 =
 The first version. Yay!
+
+== External Plugin Compatibility ==
+
+* [Slimbox](http://wordpress.org/extend/plugins/slimbox/): (10,380 downloads) - OK
+* [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): (3,158 downloads) - failed - coded for MooTools 1.2, not MooTools 1.3
+* [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): (54,074 downloads) - failed - this guy hardcoded mootools, which is a no-no repeated in every WP doc i read
+* [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): (34,000 downloads) - OK
+* [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): (769 downloads) - failed - "Can't find variable: jQuery"
+* [Lightbox 2.0 for WordPress](http://zeo.unic.net.my/lightbox2-for-wordpress/): - failed Blip is currently incompatible with Scriptaculous
 
 == Resources ==
 
@@ -126,3 +135,4 @@ I found these links invaluable for the creation of this plugin:
  * http://stackoverflow.com/questions/66837/when-is-a-cdata-section-necessary-within-a-script-tag
  * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a (slimbox integration)
  * http://codex.wordpress.org/Managing_Plugins
+ * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
