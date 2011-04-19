@@ -8,6 +8,8 @@
     Author: Jason Hendriks
     Author URI: http://jasonhendriks.com/
     License: GPL version 3 or any later version
+
+		** Requires WordPress 3.0 **
  
     Copyright (C) 2011  Jason Hendriks
 
@@ -102,9 +104,7 @@ function blip_create_slideshow($atts, $content = null) {
 	$rss = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
 
 	// handle lightbox link options
-	if($link == "lightbox" && function_exists('slimbox')) {
-		$link = "slimbox";
-	} else if($link == "lightbox" && function_exists('wp_slimbox_activate')) {
+	if($link == "lightbox" && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 		$link = "slimbox";
 	} else if($link == "lightbox") {
 		// no supported lightbox plugins
@@ -116,17 +116,20 @@ function blip_create_slideshow($atts, $content = null) {
 	//<![CDATA[
 	';
 	
-	// handle passing of strings and boolean resize option
+	// build remainder of script options
+	$output .= "window.addEvent('domready', function(){" . "var options = {";
+
+	// build resize option (handle string and boolean)
 	if($resize == "true") {
-		$output .= "resize = true, ";
-	} else if($resize == "false") {
-		$output .= "resize = false, ";
+		$output .= "resize: true, ";
+	} else if($resize == "false" || $resize == "none") {
+		$output .= "resize: false, ";
 	} else {
-		$output .= "resize = '$resize', ";
+		$output .= "resize: '$resize', ";
 	}
 
 	// build remainder of script options
-	$output .= "window.addEvent('domready', function(){" . "var options = {captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
+	$output .= "captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
 	$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($rss) . ', ' . json_encode($link) . ', options); });
 	//]] >
 </script>
@@ -192,8 +195,6 @@ function blip_enqueue_script() {
 		// only load if it is not the admin area
 		wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__) );
 		wp_enqueue_style( 'slideshow2');
-		wp_register_style( 'blip', plugins_url('/blip.css', __FILE__) );
-		wp_enqueue_style( 'blip');
 		wp_register_script( 'mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__));
 		wp_enqueue_script( 'mootools' );
 		wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));
