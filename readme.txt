@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2
 Requires at least: 2.8
 Tested up to: 3.1.1
-Stable tag: 0.2
+Stable tag: 0.3
 
 A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
@@ -36,7 +36,7 @@ Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/bl
 
 = How does it work? =
 
-Blip is a wrapper for MooTools [Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
+Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
 
 = What is Media RSS? =
 
@@ -96,6 +96,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Bundled with Slideshow-1.3.1
 
 == Upgrade Notice ==
+
+= 0.3 =
+Thanks for beta testing! Now with Slimbox and Flickr support
 
 = 0.2 =
 Thanks for beta testing! New options! center, link and resize.
