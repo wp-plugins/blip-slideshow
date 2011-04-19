@@ -97,17 +97,36 @@ function blip_create_slideshow($atts, $content = null) {
 		'titles' => 'false',
 		'width' => 'false',
 	), $atts));
+
+	// encode rss url for passing via HTTP back to blip.php
 	$rss = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
+
+	// handle lightbox link options
+	if($link == "lightbox" && function_exists('slimbox')) {
+		$link = "slimbox";
+	} else if($link == "lightbox") {
+		// no supported lightbox plugins
+		$link = "full";
+	}
+
+	// build Javascript output
 	$output = '<script type="text/javascript">
 	//<![CDATA[
 	';
-	if(!$resize) {
-		$output .= "// resize = false;";
-	};
+	
+	// handle passing of strings and boolean resize option
+	if($resize == "true") {
+		$output .= "resize = true, ";
+	} else if($resize == "false") {
+		$output .= "resize = false, ";
+	} else {
+		$output .= "resize = '$resize', ";
+	}
+
+	// build remainder of script options
 	$output .= "window.addEvent('domready', function(){" . "var options = {captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", resize: \"" . $resize . "\", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
 	$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($rss) . ', ' . json_encode($link) . ', options); });
-	//]] >';
-	$output .= '
+	//]] >
 </script>
 <div id="' . $id . '" class="slideshow">';
 	if(!empty( $content )) {

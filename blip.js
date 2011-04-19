@@ -51,13 +51,14 @@ var MediaRssParser = new Class({
 		smartLink: function(image, newLink) {
 			if(newLink == "full" || newLink == "true") {
 				image.linkUrl = image.largeUrl;
-			} else if(newLink == "none" || newLink == "false") {
+			} else if(newLink == "none" || newLink == "false" || newLink == "slimbox") {
 				image.linkUrl = '';
 			} else if(newLink == "href") {
 				// leave image.linkUrl alone
 			} else {
 				image.linkUrl = newLink;
 			}
+			image.linkUrl = ' ';
 		}
 });
 
@@ -142,7 +143,7 @@ JQuerySlimboxHelper.addEvents = function(newImages, newSlideshow) {
 		data[counter++] = [image.largeUrl, image.caption];
 	});
 	$$('.slideshow-images a').addEvent('click', function() {
-			jQuery.slimbox(data, newSlideshow.slide);
+			jQuery.slimbox(data, newSlideshow.slide, {resizeDuration: 200, overlayFadeDuration: 200, captionAnimationDuration: 100});
 			newSlideshow.pause(1);
 	});
 			
