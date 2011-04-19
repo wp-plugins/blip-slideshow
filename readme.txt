@@ -60,6 +60,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.3 =
+* Release date: 2011-04-19
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Removed blip.css
 * Compatible with Flickr RSS feeds 
 * Compatible with plugin [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) 
@@ -70,6 +72,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.2 =
 * Release date: 2011-04-18
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Bundled with Slideshow-1.3.1.110417
 * Fixed the way SmugMug thumbnails are found (by height=100px).
 * new shortcode options: center, link and resize.
@@ -79,6 +82,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.1.1 =
 * Release date: 2011-04-16
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Enabled hyperlinking via the href and linked properties
 * Switch to SmugMug's tiny images (100x100) from thumb images (150x150) for thumbnails
 * Added a loader[true/false] property to the shortcode to control display of the loader icon
@@ -86,6 +90,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.1 =
 * Release date: 2011-04-16
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Compatible with SmugMug RSS feeds 
 * Development began: 2011-04-11
 * Bundled with Slideshow-1.3.1
