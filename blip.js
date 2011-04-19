@@ -144,11 +144,13 @@ JQuerySlimboxHelper.addEvents = function(newImages, newSlideshow) {
 	newImages.each(function(image){
 		data[counter++] = [image.largeUrl, image.caption];
 	});
-	$$('.slideshow-images a').addEvent('click', function() {
+	$$('.slideshow-images a').each(function(a) {
+		a.style.cursor = 'pointer';
+	}).addEvent('click', function() {
 			jQuery.slimbox(data, newSlideshow.slide, {resizeDuration: 200, overlayFadeDuration: 200, captionAnimationDuration: 100});
 			newSlideshow.pause(1);
 	});
-			
+
 	$$('#lbOverlay, #lbCloseLink').addEvent('click', function(){
 		// theres no callback for the close() function in slimbox so we'll have to manually add
 		// a function to the elements that trigger close in order to resume the show
