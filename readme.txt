@@ -47,6 +47,8 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 
 Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 
+Multiple slideshows may appear within the same post or page, however only one of those slideshows may connect to a Lightbox.
+
 = What is Media RSS? =
 
 Media RSS (MRSS) is an RSS extension used for syndicating multimedia files (audio, video, image) in RSS feeds. Like your WordPress
