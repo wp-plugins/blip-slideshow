@@ -220,11 +220,11 @@ Notes:
 	display: block;
 }
 .slideshow-thumbnails-hidden {
-	background-color: #FFF; opacity: 0;
+	opacity: 0;
 }
 .slideshow-thumbnails-inactive {
-	background-color: #FFF; opacity: .5;
+	opacity: .5;
 }
 .slideshow-thumbnails-active {
-	background-color: #9FF; opacity: 1;
+	opacity: 1;
 }
