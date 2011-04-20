@@ -62,8 +62,8 @@ class Blip_Slideshow {
 	static $slimbox = false;
 		
 	function init() {
-		register_activation_hook(__FILE__, 'create_options');
-		register_uninstall_hook(__FILE__, 'destroy_options' );
+		register_activation_hook(__FILE__, array(__CLASS__, 'create_options'));
+		register_uninstall_hook(__FILE__, array(__CLASS__, 'destroy_options'));
 		add_shortcode('slideshow', array(__CLASS__, 'blip_create_slideshow'));
 		add_action('wp_footer', array(__CLASS__, 'add_footer_scripts'));
 		add_action('admin_menu', array(__CLASS__, 'add_admin_menu_item'));
