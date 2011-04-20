@@ -74,7 +74,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will show only SmugMug images smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
-* @TODO: Mod Slimbox to show images no larger than the browser window
+* @TODO [click slimbox image and close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
+
 
 = 0.3 =
 * Release date: 2011-04-19

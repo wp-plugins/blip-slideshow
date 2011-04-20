@@ -182,9 +182,6 @@ JQuerySlimboxHelper.addEvents = function(newElement, newImages, newSlideshow) {
 		// a function to the elements that trigger close in order to resume the show
 		newSlideshow.pause(0);
 	});
-			
-	$$('#lbPrevLink').addEvent('click', newSlideshow.prev.bind(newSlideshow));
-	$$('#lbNextLink').addEvent('click', newSlideshow.next.bind(newSlideshow));			
 
 }
 

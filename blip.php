@@ -34,8 +34,8 @@ if (isset($_REQUEST['url'])) {
 	$url = preg_replace("/^feed\:\/\//", "http://", $url);
 	// make the HTTP request
 	if(function_exists('curl_init')) {
-     		$crl = curl_init();
-     		$timeout = 5;
+		$crl = curl_init();
+		$timeout = 5;
 		curl_setopt ($crl, CURLOPT_URL, $url);
 		curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -57,8 +57,9 @@ if (isset($_REQUEST['url'])) {
 Blip_Slideshow::init();
 
 class Blip_Slideshow {
-	static $add_script = false;
 	static $counter = 0;
+	static $add_script = false;
+	static $slimbox = false;
 		
 	function init() {
 		register_activation_hook(__FILE__, 'create_options');
@@ -112,13 +113,14 @@ class Blip_Slideshow {
 		// handle lightbox link options
 		if($link == "lightbox" && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 			$link = "slimbox";
+			self::$slimbox = true;
 		} else if($link == "lightbox") {
 			// no supported lightbox plugins
 			$link = "full";
 		}
 
 		// build Javascript output
-		$output = '<script type="text/javascript">
+		$output = '<!-- blip --><script type="text/javascript">
 		//<![CDATA[
 		';
 	
@@ -138,12 +140,12 @@ class Blip_Slideshow {
 		$output .= "captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
 		$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($rss) . ', ' . json_encode($link) . ', options); });
 		//]] >
-		</script>
-		<div id="' . $id . '" class="slideshow">';
+		</script><div id="' . $id . '" class="slideshow">';
+		
 		if(!empty( $content )) {
 			$output .= '<span class="slideshow-content">' . $content . '</span>';
 		}
-		$output .= '</div>';
+		$output .= '</div><!-- blip -->';
 		
 		self::$counter++;
 		self::$add_script = true;
@@ -158,7 +160,8 @@ class Blip_Slideshow {
 	}
 
 	function add_footer_scripts() {
-		if ( self::$add_script ) {
+		if ( self::$add_script ) {
+			echo '<!-- blip -->';
 			wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__));
 			wp_print_styles( 'slideshow2');
 
@@ -169,6 +172,12 @@ class Blip_Slideshow {
 			wp_print_scripts( 'mootools-more' );
 			wp_print_scripts( 'slideshow2' );
 			wp_print_scripts( 'blip');
+
+			// disable the prev/next buttons on simbox
+			if(self::$slimbox) {
+				echo '<style>#lbPrevLink, #lbNextLink {width:0}</style><!-- blip -->';
+			}
+
 		}
 	}
 
