@@ -70,9 +70,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.3.1 =
+* Removed CSS stlye background-color from slideshow-thumbnails-hidden, slideshow-thumbnails-inactive and slideshow-thumbnails-active. Overriding this inline was not working.
 * Fixed bug where only one lightbox was working in posts with multiple slideshows
 * Fixed bug in parsing SmugMug thumbnails that aren't square
-* For link=full or link=lightbox, will show only SmugMug images smaller than the viewport
+* For link=full or link=lightbox, will download SmugMug images that are smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
 * @TODO [click slimbox image and close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 
