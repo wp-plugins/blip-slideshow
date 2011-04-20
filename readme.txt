@@ -60,8 +60,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.3.1 =
- * Scripts and CSS are only loaded on pages with slideshows
- * @TODO: Mod Slimbox to show images no larger than the browser window
+* Fixed bug in parsing SmugMug thumbnails that aren't square
+* For link=full or link=lightbox, will show only SmugMug images smaller than the viewport
+* Scripts and CSS are only loaded on pages with slideshows
+* @TODO: Mod Slimbox to show images no larger than the browser window
 
 = 0.3 =
 * Release date: 2011-04-19
@@ -113,7 +115,12 @@ Thanks for beta testing! Various enhancements are ready.
 = 0.1 =
 The first version. Yay!
 
-== External Plugin Compatibility ==
+== Features ==
+
+* Reads SmugMug and Flickr Media RSS Feeds
+* Supports Slimbox plugin functionality ([Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
+
+== Plugin Compatibility ==
 
 * [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
 * [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - coded for MooTools 1.2, not MooTools 1.3

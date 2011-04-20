@@ -57,15 +57,16 @@ if (isset($_REQUEST['url'])) {
 Blip_Slideshow::init();
 
 class Blip_Slideshow {
-	static $add_script;
+	static $add_script = false;
 	static $counter = 0;
 		
 	function init() {
 		register_activation_hook(__FILE__, 'create_options');
 		register_uninstall_hook(__FILE__, 'destroy_options' );
 		add_shortcode('slideshow', array(__CLASS__, 'blip_create_slideshow'));
-		add_action('wp_footer', array(__CLASS__, 'add_style_and_scripts'));
+		add_action('wp_footer', array(__CLASS__, 'add_footer_scripts'));
 		add_action('admin_menu', array(__CLASS__, 'add_admin_menu_item'));
+		self::add_header_scripts();
 	}
 
 	// default options
@@ -122,7 +123,7 @@ class Blip_Slideshow {
 		';
 	
 		// build remainder of script options
-		$output .= "jQuery(document).ready(function(){" . "var options = {";
+		$output .= "window.addEvent('domready', function(){" . "var options = {";
 
 		// build resize option (handle string and boolean)
 		if($resize == "true") {
@@ -149,17 +150,22 @@ class Blip_Slideshow {
 		return $output;
 	}
 
-	function add_style_and_scripts() {
+	function add_header_scripts() {
+		if (!is_admin()) {
+			wp_register_script('mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__));
+			wp_enqueue_script('mootools');
+		}
+	}
+
+	function add_footer_scripts() {
 		if ( self::$add_script ) {
 			wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__));
 			wp_print_styles( 'slideshow2');
 
-			wp_register_script( 'mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__));
 			wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));
 			wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__));
 			wp_register_script( 'blip', plugins_url('/blip.js', __FILE__), null, false, false);
 
-			wp_print_scripts( 'mootools' );
 			wp_print_scripts( 'mootools-more' );
 			wp_print_scripts( 'slideshow2' );
 			wp_print_scripts( 'blip');

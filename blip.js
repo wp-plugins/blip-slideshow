@@ -86,35 +86,41 @@ var SmugMugRssParser = new Class({
 		var counter = 0;
 		var slideshowImages = new Array(items.length);
 		this.slideshowImages = slideshowImages;
+		var viewport = new Viewport();
 		items.each(function(item){
 			var image = {};
 			image.linkUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
-			image.largeUrl = Slick.find(item, 'guid').firstChild.nodeValue; // the Original image
+			//image.largeUrl = Slick.find(item, 'guid').firstChild.nodeValue; // the Original image
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
 			// image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getProperty('url'); // the sized image
 			image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').attributes[0].value;
-			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'));
+			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'), viewport);
 			this.smartLink(image, newLink);
 			slideshowImages[counter++] = image;
 		}, this);
 	},
-	processMediaGroup: function(newImage, newMediaGroup) {
+	processMediaGroup: function(newImage, newMediaGroup, newViewport) {
+		// determine the thumb image and the large image
 		var previousBiggest = 0;
 		newMediaGroup.each(function(oneImage){
+			var width = 0;
 			var height = 0;
 			var url = '';
 			for(var i=0; i<oneImage.attributes.length; i++) {
 				if (oneImage.attributes[i].name == "height") {
 					height = parseInt(oneImage.attributes[i].value);
 				}
-				if (oneImage.attributes[i].name == "url") {
+				else if (oneImage.attributes[i].name == "width") {
+					width = parseInt(oneImage.attributes[i].value);
+				}
+				else if (oneImage.attributes[i].name == "url") {
 					url = oneImage.attributes[i].value;
 				}
 			}
-			if(height == 100) {
+			if(height == 100 || width == 100) {
 				newImage.thumbUrl = url;
 			}
-			if(height > previousBiggest) {
+			if(height > previousBiggest && height <=newViewport.height) {
 				previousBiggest = height;
 				newImage.largeUrl = url;
 			}
@@ -179,3 +185,26 @@ JQuerySlimboxHelper.addEvents = function(newImages, newSlideshow) {
 	$$('#lbNextLink').addEvent('click', newSlideshow.next.bind(newSlideshow));			
 
 }
+
+var Viewport = new Class({
+	initialize: function(){
+    if (typeof window.innerWidth != 'undefined'){
+			// the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+      this.width = window.innerWidth,
+      this.height = window.innerHeight
+    }
+    
+    else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0){
+			// IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+      this.width = document.documentElement.clientWidth,
+      this.height = document.documentElement.clientHeight
+    }
+    
+    else
+    {
+	    // older versions of IE
+      this.width = document.getElementsByTagName('body')[0].clientWidth,
+      this.height = document.getElementsByTagName('body')[0].clientHeight
+    }
+  }
+});
