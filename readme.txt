@@ -59,8 +59,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 0.3.1 = 
- * @TODO: Enqueue scripts only on pages with slideshows: http://scribu.net/wordpress/optimal-script-loading.html
+= 0.3.1 =
+ * Scripts and CSS are only loaded on pages with slideshows
  * @TODO: Mod Slimbox to show images no larger than the browser window
 
 = 0.3 =
@@ -82,7 +82,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * new shortcode options: center, link and resize.
 * added JSON encoding of options for those that might include Javascript characters such as ' and /
 * added a CDATA section to the Javascript call for proper parsing and XHTML validation
-* Moved hyperlinking code from slideshow.js to blip.php based (see http://code.google.com/p/slideshow/issues/detail?id=192)
+* Moved hyperlinking code from slideshow.js to blip.php (see http://code.google.com/p/slideshow/issues/detail?id=192)
 
 = 0.1.1 =
 * Release date: 2011-04-16
@@ -148,3 +148,4 @@ Some information I found invaluable for this project:
 * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a (slimbox integration)
 * http://codex.wordpress.org/Managing_Plugins
 * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
+* http://scribu.net/wordpress/optimal-script-loading.html
