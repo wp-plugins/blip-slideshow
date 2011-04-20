@@ -13,7 +13,7 @@ A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed
 A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
-Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/blip-slideshow?forum_id=10).
+See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website. Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/blip-slideshow?forum_id=10).
 
 == Installation ==
 
@@ -30,13 +30,22 @@ Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/bl
 
 *As a slideshow with thumbs and captions:*
 
->[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small captions=true thumbnails=true]
+>[slideshow captions=true thumbnails=true rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
 
 == Frequently Asked Questions ==
+
+= What are the main features? =
+
+* Reads SmugMug and Flickr Media RSS Feeds
+* Supports Slimbox plugin functionality ([Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
 
 = How does it work? =
 
 Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
+
+= Are there known issues? =
+
+Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 
 = What is Media RSS? =
 
@@ -62,7 +71,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 = 0.3.1 =
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will show only SmugMug images smaller than the viewport
-* Scripts and CSS are only loaded on pages with slideshows
+* Scripts and CSS are no longer loaded on pages that don't use Blip
 * @TODO: Mod Slimbox to show images no larger than the browser window
 
 = 0.3 =
@@ -115,11 +124,6 @@ Thanks for beta testing! Various enhancements are ready.
 = 0.1 =
 The first version. Yay!
 
-== Features ==
-
-* Reads SmugMug and Flickr Media RSS Feeds
-* Supports Slimbox plugin functionality ([Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
-
 == Plugin Compatibility ==
 
 * [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
@@ -152,7 +156,7 @@ Some information I found invaluable for this project:
 * http://www.w3schools.com/PHP/php_sessions.asp
 * http://keetology.com/blog/2009/10/27/up-the-moo-herd-iv-theres-a-class-for-this
 * http://stackoverflow.com/questions/66837/when-is-a-cdata-section-necessary-within-a-script-tag
-* http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a (slimbox integration)
+* http://groups.google.com/group/mootools-slideshow/browse_thread/thread/9b10474b60cf7f1a/564f16f97c82167a?lnk=gst&q=slimbox#564f16f97c82167a
 * http://codex.wordpress.org/Managing_Plugins
 * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
 * http://scribu.net/wordpress/optimal-script-loading.html
