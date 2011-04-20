@@ -1,7 +1,7 @@
 === Blip Slideshow ===
 Contributors: jasonhendriks
 Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
-Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2
+Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox
 Requires at least: 2.8
 Tested up to: 3.1.1
 Stable tag: 0.3
@@ -37,7 +37,8 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 = What are the main features? =
 
 * Reads SmugMug and Flickr Media RSS Feeds
-* Supports Slimbox plugin functionality ([Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
+* Supports multiple slideshows in a single post/page
+* Supports Lightbox plugin functionality ([Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
 
 = How does it work? =
 
@@ -46,8 +47,6 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 = Are there known issues? =
 
 Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
-
-Multiple slideshows may appear within the same post or page, however only one of those slideshows may connect to a Lightbox.
 
 = What is Media RSS? =
 
@@ -71,6 +70,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.3.1 =
+* Fixed bug where only one lightbox was working in posts with multiple slideshows
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will show only SmugMug images smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
