@@ -205,5 +205,10 @@ var Viewport = new Class({
       this.width = document.getElementsByTagName('body')[0].clientWidth,
       this.height = document.getElementsByTagName('body')[0].clientHeight
     }
+    this.adjustForSlimbox();
+  },
+  adjustForSlimbox: function() {
+  	this.width = this.width - 20; // 10 left 10 right
+  	this.height = this.height - 62; // 10 top 52 bottom
   }
 });
