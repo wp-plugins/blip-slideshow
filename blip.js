@@ -101,7 +101,8 @@ var SmugMugRssParser = new Class({
 	},
 	processMediaGroup: function(newImage, newMediaGroup, newViewport) {
 		// determine the thumb image and the large image
-		var previousBiggest = 0;
+		var previousBiggestHeight = 0;
+		var previousBiggestWidth = 0;
 		newMediaGroup.each(function(oneImage){
 			var width = 0;
 			var height = 0;
@@ -120,8 +121,9 @@ var SmugMugRssParser = new Class({
 			if(height == 100 || width == 100) {
 				newImage.thumbUrl = url;
 			}
-			if(height > previousBiggest && height <=newViewport.height) {
-				previousBiggest = height;
+			if((height > previousBiggestHeight || width > previousBiggestWidth) && height <=newViewport.height && width <=newViewport.width) {
+				previousBiggestHeight = height;
+				previousBiggestWidth = width;
 				newImage.largeUrl = url;
 			}
 		}, this);
