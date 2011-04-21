@@ -13,7 +13,8 @@ A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed
 A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
-See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website. Development began 2011-04-11. [Feedback is welcome](http://wordpress.org/tags/blip-slideshow?forum_id=10).
+See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
+Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?forum_id=10)* so I can grab a screenshot :-)
 
 == Installation ==
 
@@ -38,7 +39,7 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 
 * Reads SmugMug and Flickr Media RSS Feeds
 * Supports multiple slideshows in a single post/page
-* Supports external Lightbox plugin functionality ([Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/))
+* Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
 = How does it work? =
 
@@ -65,9 +66,9 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
-2. This is the second screen shot
+1. Blip running at [Ambient Photography](http://www.ambientphotography.ca/)
+1. Blip running at [Ambient Photography - Services](http://www.ambientphotography.ca/services/)
+1. Blip running at [Ambient Photography - Wedding Gallery](http://www.ambientphotography.ca/gallery/wedding-gallery/)
 
 == Changelog ==
 
@@ -141,11 +142,6 @@ Thanks for beta testing! Various enhancements are ready.
 = 0.1 =
 The first version. Yay!
 
-== ToDo ==
-
-* Fix: When multiple slideshows per page are attached to Slimbox, they crash when the Slimbox closes
-* Enhance: [Click a Lightbox image to close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
-
 == External Plugin Compatibility ==
 
 * [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
@@ -160,6 +156,11 @@ The first version. Yay!
 * [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): OK
 * [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - "Can't find variable: jQuery"
 * [Lightbox 2.0 for WordPress](http://zeo.unic.net.my/lightbox2-for-wordpress/): - failed - Blip is currently incompatible with Scriptaculous
+
+== To Do ==
+
+* Fix: When multiple slideshows per page are attached to Slimbox, they crash when the Slimbox closes
+* Enhance: [Click a Lightbox image to close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 
 == Resources ==
 
