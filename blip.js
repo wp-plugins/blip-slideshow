@@ -70,7 +70,8 @@ var Link = new Class({
 		if(this.linkNum == 1) {
 			return false;
 		} else if(this.linkNum == 4) {
-			return imageWidth > this.viewportWidth || imageHeight > this.viewportHeight;
+			var result = imageWidth > this.viewportWidth || imageHeight > this.viewportHeight;
+			return result;
 		} else {
 			return true;
 		}
@@ -81,7 +82,7 @@ var Link = new Class({
 		} else if(this.linkNum == 0 || this.linkNum == 4) {
 			image.linkUrl = '';
 		} else if(this.linkNum == 2) {
-			// leave image.linkUrl alone
+			image.linkUrl = image.hrefUrl;
 		} else {
 			image.linkUrl = this.link;
 		}
@@ -116,7 +117,7 @@ var SmugMugRssParser = new Class({
 		this.slideshowImages = slideshowImages;
 		items.each(function(item){
 			var image = {};
-			image.linkUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
+			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
 			//image.largeUrl = Slick.find(item, 'guid').firstChild.nodeValue; // the Original image
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
 			// image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getProperty('url'); // the sized image
@@ -166,7 +167,7 @@ var FlickrRssParser = new Class({
 		this.slideshowImages = slideshowImages;
 		items.each(function(item){
 			var image = {};
-			image.linkUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
+			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
 			image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the Flickr gallery
 			image.caption = Slick.find(item, 'media_title').firstChild.nodeValue;
 			// image.largeUrl = Slick.find(item, 'media_content').getProperty('url'); // the sized image
@@ -215,21 +216,18 @@ var SlimboxHelper = new Class({
 		return true;
 	},
 	addEvents: function(newElement, newImages, newSlideshow) {
-		var data = new Object();
-		var counter = 0;
-		newImages.each(function(image){
-			data[counter++] = [image.largeUrl, image.caption];
-		});
 		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
 			a.style.cursor = 'pointer';
 		}).addEvent('click', function() {
-				jQuery.slimbox(data, newSlideshow.slide, {resizeDuration: 200, overlayFadeDuration: 200, captionAnimationDuration: 100});
-				newSlideshow.pause(1);
+			var slide = newImages[newSlideshow.slide];
+			jQuery.slimbox(slide.largeUrl, slide.caption, {resizeDuration: 200, overlayFadeDuration: 200, captionAnimationDuration: 100});
+			newSlideshow.pause(1);
 		});
 
 		$$('#lbOverlay, #lbCloseLink').addEvent('click', function(){
 			// theres no callback for the close() function in slimbox so we'll have to manually add
 			// a function to the elements that trigger close in order to resume the show
+			// this breaks with multiple slideshows in a page
 			newSlideshow.pause(0);
 		});
 	}
@@ -243,14 +241,15 @@ var ColorboxHelper = new Class({
 	addEvents: function(newElement, newImages, newSlideshow) {
 		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
 			a.style.cursor = 'pointer';
-			jQuery(a).colorbox({
+			jQuery('div#'+newElement).colorbox({
 				onClosed: function() {
 					newSlideshow.pause(0);
 				}
 			});
 		}).addEvent('click', function() {
-				jQuery.colorbox({href:newImages[newSlideshow.slide].largeUrl, maxWidth:'100%', maxHeight:'100%', scalePhotos:true});
-				newSlideshow.pause(1);
+			var slide = newImages[newSlideshow.slide];
+			jQuery.colorbox({title:slide.caption, href:slide.largeUrl, width:"100%", height:"100%", scalePhotos:true});
+			newSlideshow.pause(1);
 		});
 	}
 });

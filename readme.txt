@@ -69,6 +69,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.4.1 =
+* version 0.4 was released on WordPress.org prematurely
+
 = 0.4 =
 * Compatible with plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
 * Integration with Colorbox! Use link=lightbox and add a compatible plugin

@@ -59,8 +59,6 @@ Blip_Slideshow::init();
 class Blip_Slideshow {
 	static $counter = 0;
 	static $add_script = false;
-	static $slimbox = false;
-	static $colorbox = false;
 		
 	function init() {
 		register_activation_hook(__FILE__, array(__CLASS__, 'create_options'));
@@ -106,6 +104,7 @@ class Blip_Slideshow {
 			'thumbnails' => 'false',
 			'titles' => 'false',
 			'width' => 'false',
+			'debug' => 'false'
 		), $atts));
 
 		// encode rss url for passing via HTTP back to blip.php
@@ -114,17 +113,15 @@ class Blip_Slideshow {
 		// handle lightbox link options
 		if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 			$link = "slimbox";
-			self::$slimbox = true;
 		} else if($link == 'lightbox' && (class_exists('wp_lightboxplus'))) {
 			$link = "colorbox";
-			self::$colorbox = true;
 		} else if($link == "lightbox") {
 			// no supported lightbox plugins
 			$link = "full";
 		}
 
 		// build Javascript output
-		$output = '<!-- blip --><script type="text/javascript">
+		$output .= '<!-- blip --><script type="text/javascript">
 		//<![CDATA[
 		';
 	
@@ -176,12 +173,7 @@ class Blip_Slideshow {
 			wp_print_scripts( 'mootools-more' );
 			wp_print_scripts( 'slideshow2' );
 			wp_print_scripts( 'blip');
-
-			// disable the prev/next buttons on simbox
-			if(self::$slimbox) {
-				echo '<style>#lbPrevLink, #lbNextLink {width:0}</style><!-- blip -->';
-			}
-
+			echo '<!-- blip -->';
 		}
 	}
 
