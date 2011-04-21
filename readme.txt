@@ -71,6 +71,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.4.1 =
 * version 0.4 was released on WordPress.org prematurely
+* @TODO When multiple slideshows per page are attached to Slimbox, they crash on slideshow resume
+* @TODO [click slimbox image and close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 
 = 0.4 =
 * Compatible with plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
@@ -80,7 +82,6 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will download SmugMug images that are smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
-* @TODO [click slimbox image and close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 
 
 = 0.3 =
