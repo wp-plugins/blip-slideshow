@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox
 Requires at least: 2.8
 Tested up to: 3.1.1
-Stable tag: 0.3
+Stable tag: 0.4
 
 A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
@@ -38,7 +38,7 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 
 * Reads SmugMug and Flickr Media RSS Feeds
 * Supports multiple slideshows in a single post/page
-* Supports Lightbox plugin functionality ([Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
+* Supports Lightbox plugin functionality ([Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
 
 = How does it work? =
 
@@ -69,7 +69,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 0.3.1 =
+= 0.4 =
+* Compatible with plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
+* Integration with Colorbox! Use link=lightbox and add a compatible plugin
 * Removed CSS stlye background-color from slideshow-thumbnails-hidden, slideshow-thumbnails-inactive and slideshow-thumbnails-active. Overriding this inline was not working.
 * Fixed bug where only one lightbox was working in posts with multiple slideshows
 * Fixed bug in parsing SmugMug thumbnails that aren't square

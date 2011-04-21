@@ -46,6 +46,8 @@ var Blip = new Class({
 		var myShow = new Slideshow(this.element, slideshowData, this.options);
 		if(this.link == "slimbox") {
 			JQuerySlimboxHelper.addEvents(this.element, images, myShow);
+		} else if(this.link == "colorbox") {
+			JQueryColorboxHelper.addEvents(this.element, images, myShow);
 		}
 	}
 });
@@ -54,7 +56,7 @@ var MediaRssParser = new Class({
 		smartLink: function(image, newLink) {
 			if(newLink == "full" || newLink == "true") {
 				image.linkUrl = image.largeUrl;
-			} else if(newLink == "none" || newLink == "false" || newLink == "slimbox") {
+			} else if(newLink == "none" || newLink == "false" || newLink == "slimbox" || newLink == "colorbox") {
 				image.linkUrl = '';
 			} else if(newLink == "href") {
 				// leave image.linkUrl alone
@@ -162,7 +164,13 @@ SlideshowHelper.createSlideshowData = function(newImages) {
 	return data;
 }
 
+/* The lightbox helpers */
+
+var LightboxHelper = new Class({
+});
+
 var JQuerySlimboxHelper = new Class({
+	Extends: LightboxHelper
 });
 JQuerySlimboxHelper.addEvents = function(newElement, newImages, newSlideshow) {
 	var data = new Object();
@@ -185,8 +193,25 @@ JQuerySlimboxHelper.addEvents = function(newElement, newImages, newSlideshow) {
 
 }
 
+var JQueryColorboxHelper = new Class({
+	Extends: LightboxHelper
+});
+JQueryColorboxHelper.addEvents = function(newElement, newImages, newSlideshow) {
+	$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
+		a.style.cursor = 'pointer';
+		jQuery(a).colorbox({
+			onClosed: function() {
+				newSlideshow.pause(0);
+			}
+		});
+	}).addEvent('click', function() {
+			jQuery.colorbox({href:newImages[newSlideshow.slide].largeUrl, maxWidth:'100%', maxHeight:'100%', scalePhotos:true});
+			newSlideshow.pause(1);
+	});
+}
+
 var Viewport = new Class({
-	initialize: function(){
+	initialize: function(newLink){
     if (typeof window.innerWidth != 'undefined'){
 			// the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
       this.width = window.innerWidth,
@@ -205,7 +230,9 @@ var Viewport = new Class({
       this.width = document.getElementsByTagName('body')[0].clientWidth,
       this.height = document.getElementsByTagName('body')[0].clientHeight
     }
-    this.adjustForSlimbox();
+    if(newLink == "slimbox") {
+	    this.adjustForSlimbox();
+	  }
   },
   adjustForSlimbox: function() {
   	this.width = this.width - 20; // 10 left 10 right

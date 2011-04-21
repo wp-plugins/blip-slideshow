@@ -4,7 +4,7 @@
     Plugin Name: Blip Slideshow
     Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
     Description: A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
-    Version: 0.3.1
+    Version: 0.4
     Author: Jason Hendriks
     Author URI: http://jasonhendriks.com/
     License: GPL version 3 or any later version
@@ -60,6 +60,7 @@ class Blip_Slideshow {
 	static $counter = 0;
 	static $add_script = false;
 	static $slimbox = false;
+	static $colorbox = false;
 		
 	function init() {
 		register_activation_hook(__FILE__, array(__CLASS__, 'create_options'));
@@ -111,9 +112,12 @@ class Blip_Slideshow {
 		$rss = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
 
 		// handle lightbox link options
-		if($link == "lightbox" && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
+		if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 			$link = "slimbox";
 			self::$slimbox = true;
+		} else if($link == 'lightbox' && (class_exists('wp_lightboxplus'))) {
+			$link = "colorbox";
+			self::$colorbox = true;
 		} else if($link == "lightbox") {
 			// no supported lightbox plugins
 			$link = "full";
