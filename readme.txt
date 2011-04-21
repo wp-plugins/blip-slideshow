@@ -38,7 +38,7 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 
 * Reads SmugMug and Flickr Media RSS Feeds
 * Supports multiple slideshows in a single post/page
-* Supports Lightbox plugin functionality ([Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/) and [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/))
+* Supports Lightbox plugin functionality ([Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/))
 
 = How does it work? =
 
@@ -70,12 +70,14 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.4.1 =
-* version 0.4 was released on WordPress.org prematurely
+* version 0.4 was released on WordPress.org accidentally
+* Compatible with Colorbox plugin [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/)
+* Compatible with Colorbox plugin [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 * @TODO When multiple slideshows per page are attached to Slimbox, they crash on slideshow resume
 * @TODO [click slimbox image and close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 
 = 0.4 =
-* Compatible with plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
+* Compatible with Colorbox plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
 * Integration with Colorbox! Use link=lightbox and add a compatible plugin
 * Removed CSS stlye background-color from slideshow-thumbnails-hidden, slideshow-thumbnails-inactive and slideshow-thumbnails-active. Overriding this inline was not working.
 * Fixed bug where only one lightbox was working in posts with multiple slideshows
@@ -89,8 +91,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Removed blip.css
 * Compatible with Flickr RSS feeds 
-* Compatible with plugin [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) 
-* Compatible with plugin [Slimbox](http://wordpress.org/extend/plugins/slimbox/)
+* Compatible with Lightbox plugin [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) 
+* Compatible with Lightbox plugin [Slimbox](http://wordpress.org/extend/plugins/slimbox/)
 * Integration with Lightbox! w00t! Use new link=lightbox option and add a compatible plugin
 * Fixed link boolean options
 * Fixed resize boolean options
@@ -136,6 +138,12 @@ The first version. Yay!
 
 == Plugin Compatibility ==
 
+* [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
+* [Simple Cbox](http://wordpress.org/extend/plugins/simple-cbox/): failed - does not use jQuery in compatibility mode
+* [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/): OK
+* [JQuery Colorbox Zoom](http://wordpress.org/extend/plugins/jcolorboxzoom/): failed - uses jQuery, but doesn't load it
+* [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/): failed - no visible error, just won't show slideshow pics
+* [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/): OK
 * [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
 * [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - coded for MooTools 1.2, not MooTools 1.3
 * [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the mootools API, which is a no-no

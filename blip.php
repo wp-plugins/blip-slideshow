@@ -113,7 +113,7 @@ class Blip_Slideshow {
 		// handle lightbox link options
 		if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 			$link = "slimbox";
-		} else if($link == 'lightbox' && (class_exists('wp_lightboxplus'))) {
+		} else if($link == 'lightbox' && (class_exists('wp_lightboxplus') || class_exists('GameplorersWPColorBox') || class_exists('jQueryLightboxForNativeGalleries'))) {
 			$link = "colorbox";
 		} else if($link == "lightbox") {
 			// no supported lightbox plugins
