@@ -19,53 +19,79 @@
  */
  
 var Blip = new Class({
-  Implements: [Options, Events],
-  initialize: function(newElement, newRssUrl, newLink, newOptions){
-		this.element = newElement;
-		this.rssUrl = newRssUrl;
-		this.link = newLink;
-		this.setOptions(newOptions);
-		var request = this.createRequest(this);
-		request.send();
-	},
-	createRequest: function(newBlip){
-		var request = new Request({
-			url: this.rssUrl,
-			onSuccess: function(newResponseText, newResponseXml) {
-				newBlip.processRequest(newResponseText, newResponseXml);
-			},
-		});
-		return request;
+  Implements: [Options],
+  initialize: function(element, rss, link, options){
+		this.element = element;
+		this.link = new Link(link);
+		this.setOptions(options);
+		new Request({
+			url: rss,
+			onSuccess: this.processRequest.bind(this)
+		}).send();
 	},
 	processRequest: function(newResponseText, newResponseXml){
+		var lightboxHelper = LightboxHelper.createLightboxHelper(this.link);
 		var parser = MediaRssParser.createParser(this.link, newResponseText, newResponseXml);
-		this.createSlideshow(parser.slideshowImages);
-	},
-	createSlideshow: function(images){
-		var slideshowData = SlideshowHelper.createSlideshowData(images);
-		var myShow = new Slideshow(this.element, slideshowData, this.options);
-		if(this.link == "slimbox") {
-			JQuerySlimboxHelper.addEvents(this.element, images, myShow);
-		} else if(this.link == "colorbox") {
-			JQueryColorboxHelper.addEvents(this.element, images, myShow);
+		if(parser) {
+			var slideshowData = SlideshowHelper.createSlideshowData(parser.slideshowImages);
+			var myShow = new Slideshow(this.element, slideshowData, this.options);
+				if(this.link.lightboxHelper) {
+				this.link.lightboxHelper.addEvents(this.element, parser.slideshowImages, myShow);
+			}
 		}
 	}
 });
 
-var MediaRssParser = new Class({
-		smartLink: function(image, newLink) {
-			if(newLink == "full" || newLink == "true") {
-				image.linkUrl = image.largeUrl;
-			} else if(newLink == "none" || newLink == "false" || newLink == "slimbox" || newLink == "colorbox") {
-				image.linkUrl = '';
-			} else if(newLink == "href") {
-				// leave image.linkUrl alone
-			} else {
-				image.linkUrl = newLink;
-			}
+var Link = new Class({
+	initialize: function(link) {
+		this.link = link;
+		this.lightboxHelper = LightboxHelper.createLightboxHelper(link);
+		if(link == "full" || link == "true") {
+			this.linkNum = 1;
+		} else if(link == "none" || link == "false") {
+			this.linkNum = 0;
+		} else if(link == "href") {
+			this.linkNum = 2;
+		} else if(this.lightboxHelper) {
+			this.linkNum = 4;
+		} else {
+			this.linkNum = 3;
 		}
-});
+		var viewport = new Viewport();
+		this.viewportWidth = viewport.width;
+		this.viewportHeight = viewport.height;
+		if(this.lightboxHelper && this.lightboxHelper.isSlimbox()) {
+		  // adjust for Slimbox
+  		this.viewportWidth = this.viewportWidth - 20; // 10 left 10 right
+  		this.viewportHeight = this.viewportHeight - 62; // 10 top 52 bottom
+		}
+	},
+	isImageTooBig: function(imageWidth, imageHeight) {
+		if(this.linkNum == 1) {
+			return false;
+		} else if(this.linkNum == 4) {
+			return imageWidth > this.viewportWidth || imageHeight > this.viewportHeight;
+		} else {
+			return true;
+		}
+	},
+	setImageLink: function(image) {
+		if(this.linkNum == 1) {
+			image.linkUrl = image.largeUrl;
+		} else if(this.linkNum == 0 || this.linkNum == 4) {
+			image.linkUrl = '';
+		} else if(this.linkNum == 2) {
+			// leave image.linkUrl alone
+		} else {
+			image.linkUrl = this.link;
+		}
+	}
+})
 
+/* The RSS parsers */
+
+var MediaRssParser = new Class({
+});
 MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml){
 	var generator = Slick.find(newResponseXml, 'generator').firstChild.nodeValue;
 	if(generator == "http://www.smugmug.com/") {
@@ -80,7 +106,7 @@ MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml)
 
 var SmugMugRssParser = new Class({
 	Extends: MediaRssParser,
-	initialize: function(newLink, newResponseText, newResponseXml){
+	initialize: function(link, newResponseText, newResponseXml){
 		var responseXml = newResponseXml;
 		//var responseText = newResponseText.replace(/<(\/)?([A-Z]+):([a-z]+)/gi,'<$1$2_$3');
 		//responseXml = new DOMParser().parseFromString(responseText, 'text/xml');
@@ -88,7 +114,6 @@ var SmugMugRssParser = new Class({
 		var counter = 0;
 		var slideshowImages = new Array(items.length);
 		this.slideshowImages = slideshowImages;
-		var viewport = new Viewport();
 		items.each(function(item){
 			var image = {};
 			image.linkUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
@@ -96,12 +121,12 @@ var SmugMugRssParser = new Class({
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
 			// image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getProperty('url'); // the sized image
 			image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').attributes[0].value;
-			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'), viewport);
-			this.smartLink(image, newLink);
+			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'), link);
+			link.setImageLink(image);
 			slideshowImages[counter++] = image;
 		}, this);
 	},
-	processMediaGroup: function(newImage, newMediaGroup, newViewport) {
+	processMediaGroup: function(newImage, newMediaGroup, link) {
 		// determine the thumb image and the large image
 		var previousBiggestHeight = 0;
 		var previousBiggestWidth = 0;
@@ -123,7 +148,7 @@ var SmugMugRssParser = new Class({
 			if(height == 100 || width == 100) {
 				newImage.thumbUrl = url;
 			}
-			if((height > previousBiggestHeight || width > previousBiggestWidth) && height <=newViewport.height && width <=newViewport.width) {
+			if((height > previousBiggestHeight || width > previousBiggestWidth) && !link.isImageTooBig(width, height)) {
 				previousBiggestHeight = height;
 				previousBiggestWidth = width;
 				newImage.largeUrl = url;
@@ -134,7 +159,7 @@ var SmugMugRssParser = new Class({
 
 var FlickrRssParser = new Class({
 	Extends: MediaRssParser,
-	initialize: function(newLink, newResponseText, newResponseXml){
+	initialize: function(link, newResponseText, newResponseXml){
 		var items = Slick.search(newResponseXml, 'item');
 		var counter = 0;
 		var slideshowImages = new Array(items.length);
@@ -148,11 +173,13 @@ var FlickrRssParser = new Class({
 			image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the sized image
 			// image.thumbUrl = Slick.find(item, 'media_thumbnail').getProperty('url'); // the thumbnail
 			image.thumbUrl = Slick.find(item, 'media_thumbnail').attributes[0].value; // the thumbnail
-			this.smartLink(image, newLink);
+			link.setImageLink(image);
 			slideshowImages[counter++] = image;
 		}, this);
 	}
 });
+
+/* The MooTools Slideshow 2! helper */
 
 var SlideshowHelper = new Class({
 });
@@ -167,48 +194,66 @@ SlideshowHelper.createSlideshowData = function(newImages) {
 /* The lightbox helpers */
 
 var LightboxHelper = new Class({
+	isSlimbox: function() {
+		return false;
+	},
+	isColorbox: function() {
+		return false;
+	}
 });
-
-var JQuerySlimboxHelper = new Class({
-	Extends: LightboxHelper
-});
-JQuerySlimboxHelper.addEvents = function(newElement, newImages, newSlideshow) {
-	var data = new Object();
-	var counter = 0;
-	newImages.each(function(image){
-		data[counter++] = [image.largeUrl, image.caption];
-	});
-	$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
-		a.style.cursor = 'pointer';
-	}).addEvent('click', function() {
-			jQuery.slimbox(data, newSlideshow.slide, {resizeDuration: 200, overlayFadeDuration: 200, captionAnimationDuration: 100});
-			newSlideshow.pause(1);
-	});
-
-	$$('#lbOverlay, #lbCloseLink').addEvent('click', function(){
-		// theres no callback for the close() function in slimbox so we'll have to manually add
-		// a function to the elements that trigger close in order to resume the show
-		newSlideshow.pause(0);
-	});
-
+LightboxHelper.createLightboxHelper = function(link) {
+	if(link == 'slimbox') {
+		return new SlimboxHelper();
+	} else if(link == 'colorbox') {
+		return new ColorboxHelper();
+	}
 }
 
-var JQueryColorboxHelper = new Class({
-	Extends: LightboxHelper
-});
-JQueryColorboxHelper.addEvents = function(newElement, newImages, newSlideshow) {
-	$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
-		a.style.cursor = 'pointer';
-		jQuery(a).colorbox({
-			onClosed: function() {
-				newSlideshow.pause(0);
-			}
+var SlimboxHelper = new Class({
+	Extends: LightboxHelper,
+	isSlimbox: function() {
+		return true;
+	},
+	addEvents: function(newElement, newImages, newSlideshow) {
+		var data = new Object();
+		var counter = 0;
+		newImages.each(function(image){
+			data[counter++] = [image.largeUrl, image.caption];
 		});
-	}).addEvent('click', function() {
-			jQuery.colorbox({href:newImages[newSlideshow.slide].largeUrl, maxWidth:'100%', maxHeight:'100%', scalePhotos:true});
-			newSlideshow.pause(1);
-	});
-}
+		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
+			a.style.cursor = 'pointer';
+		}).addEvent('click', function() {
+				jQuery.slimbox(data, newSlideshow.slide, {resizeDuration: 200, overlayFadeDuration: 200, captionAnimationDuration: 100});
+				newSlideshow.pause(1);
+		});
+
+		$$('#lbOverlay, #lbCloseLink').addEvent('click', function(){
+			// theres no callback for the close() function in slimbox so we'll have to manually add
+			// a function to the elements that trigger close in order to resume the show
+			newSlideshow.pause(0);
+		});
+	}
+});
+
+var ColorboxHelper = new Class({
+	Extends: LightboxHelper,
+	isColorbox: function() {
+		return true;
+	},
+	addEvents: function(newElement, newImages, newSlideshow) {
+		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
+			a.style.cursor = 'pointer';
+			jQuery(a).colorbox({
+				onClosed: function() {
+					newSlideshow.pause(0);
+				}
+			});
+		}).addEvent('click', function() {
+				jQuery.colorbox({href:newImages[newSlideshow.slide].largeUrl, maxWidth:'100%', maxHeight:'100%', scalePhotos:true});
+				newSlideshow.pause(1);
+		});
+	}
+});
 
 var Viewport = new Class({
 	initialize: function(newLink){
@@ -230,12 +275,5 @@ var Viewport = new Class({
       this.width = document.getElementsByTagName('body')[0].clientWidth,
       this.height = document.getElementsByTagName('body')[0].clientHeight
     }
-    if(newLink == "slimbox") {
-	    this.adjustForSlimbox();
-	  }
-  },
-  adjustForSlimbox: function() {
-  	this.width = this.width - 20; // 10 left 10 right
-  	this.height = this.height - 62; // 10 top 52 bottom
   }
 });
