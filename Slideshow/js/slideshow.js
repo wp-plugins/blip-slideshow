@@ -391,7 +391,7 @@ Dependencies:
 				if (!this.preloader)
 				 	this.preloader = new Asset.image(src, {
 						'onerror': function(){
-							// do something
+							this.store('loaded', true);
 						},
 						'onload': function(){
 							this.store('loaded', true);
@@ -429,7 +429,7 @@ Dependencies:
 				var anchor = this.image.getParent();
 				if (this.data.hrefs[this._slide]){
 					anchor.set('href', this.data.hrefs[this._slide]);
-					anchor.set('target', this.data.targets[this._slide]);			
+					anchor.set('target', this.data.targets[this._slide]);
 				} 
 				else {
 					anchor.erase('href');
