@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox
 Requires at least: 2.8
 Tested up to: 3.1.1
-Stable tag: 0.3
+Stable tag: 0.4.1
 
 A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
@@ -38,7 +38,7 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 
 * Reads SmugMug and Flickr Media RSS Feeds
 * Supports multiple slideshows in a single post/page
-* Supports Lightbox plugin functionality ([Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/))
+* Supports external Lightbox plugin functionality ([Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/))
 
 = How does it work? =
 
@@ -46,7 +46,9 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 
 = Are there known issues? =
 
-Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
+Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
+
+Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If you require multiple slideshows per page with a Lightbox, use Colorbox instead.
 
 = What is Media RSS? =
 
@@ -70,11 +72,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.4.1 =
-* version 0.4 was released on WordPress.org accidentally
+* Release date: 2011-04-21
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Version 0.4 was released on WordPress.org accidentally
 * Compatible with Colorbox plugin [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/)
 * Compatible with Colorbox plugin [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
-* @TODO When multiple slideshows per page are attached to Slimbox, they crash on slideshow resume
-* @TODO [click slimbox image and close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 
 = 0.4 =
 * Compatible with Colorbox plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
@@ -124,6 +126,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Upgrade Notice ==
 
+= 0.4 =
+Thanks for beta testing! Now with Colorbox support and a variety of fixes and enhancements.
+
 = 0.3 =
 Thanks for beta testing! Now with Slimbox and Flickr support
 
@@ -136,7 +141,12 @@ Thanks for beta testing! Various enhancements are ready.
 = 0.1 =
 The first version. Yay!
 
-== Plugin Compatibility ==
+== ToDo ==
+
+* Fix: When multiple slideshows per page are attached to Slimbox, they crash when the Slimbox closes
+* Enhance: [Click a Lightbox image to close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
+
+== External Plugin Compatibility ==
 
 * [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
 * [Simple Cbox](http://wordpress.org/extend/plugins/simple-cbox/): failed - does not use jQuery in compatibility mode
