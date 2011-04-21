@@ -227,7 +227,7 @@ var SlimboxHelper = new Class({
 		$$('#lbOverlay, #lbCloseLink').addEvent('click', function(){
 			// theres no callback for the close() function in slimbox so we'll have to manually add
 			// a function to the elements that trigger close in order to resume the show
-			// this breaks with multiple slideshows in a page
+			// @TODO: this breaks with multiple slideshows in a page
 			newSlideshow.pause(0);
 		});
 	}
