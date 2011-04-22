@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox
 Requires at least: 2.8
 Tested up to: 3.1.1
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 
 A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
@@ -66,10 +66,18 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 == Changelog ==
 
+= 1.0.0 =
+* Official stable release
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Supports caching of RSS feeds (disabled by default)
+
+= 0.4.2 =
+* Fixed error on settings page
+
 = 0.4.1 =
 * Release date: 2011-04-21
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Version 0.4 was released on WordPress.org accidentally
+* Version 0.4 was released on WordPress.org prematurely
 * Compatible with Colorbox plugin [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/)
 * Compatible with Colorbox plugin [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
@@ -77,7 +85,7 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 * Compatible with Colorbox plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
 * Integration with Colorbox! Use link=lightbox and add a compatible plugin
 * Removed CSS stlye background-color from slideshow-thumbnails-hidden, slideshow-thumbnails-inactive and slideshow-thumbnails-active. Overriding this inline was not working.
-* Fixed bug where only one lightbox was working in posts with multiple slideshows
+* Fixed bug where only one Slimbox was working in posts with multiple slideshows
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will download SmugMug images that are smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
@@ -121,7 +129,7 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 == Upgrade Notice ==
 
-= 0.4 =
+= 0.4.1 =
 Thanks for beta testing! Now with Colorbox support and a variety of fixes and enhancements.
 
 = 0.3 =
