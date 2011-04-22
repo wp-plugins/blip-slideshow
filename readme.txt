@@ -45,12 +45,6 @@ Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?foru
 
 Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
 
-= Are there known issues? =
-
-Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
-
-Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If you require multiple slideshows per page with a Lightbox, use Colorbox instead.
-
 = What is Media RSS? =
 
 Media RSS (MRSS) is an RSS extension used for syndicating multimedia files (audio, video, image) in RSS feeds. Like your WordPress
@@ -141,6 +135,12 @@ Thanks for beta testing! Various enhancements are ready.
 
 = 0.1 =
 The first version. Yay!
+
+= Known Issues =
+
+Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
+
+Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If you require multiple slideshows per page with a Lightbox, use Colorbox instead.
 
 == External Plugin Compatibility ==
 
