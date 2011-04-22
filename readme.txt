@@ -66,12 +66,9 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 == Changelog ==
 
-= 1.0.0 =
-* Official stable release
-* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Supports caching of RSS feeds (disabled by default)
-
 = 0.4.2 =
+* Release date: 2011-04-22
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Fixed error on settings page
 
 = 0.4.1 =
