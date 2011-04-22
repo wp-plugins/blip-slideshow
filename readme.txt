@@ -67,11 +67,14 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 == Changelog ==
 
 = 1.0.0 =
-* Official stable release
+* Release date: TBD
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Official stable release
 * Supports caching of RSS feeds (disabled by default)
 
 = 0.4.2 =
+* Release date: 2011-04-22
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Fixed error on settings page
 
 = 0.4.1 =
@@ -89,7 +92,6 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will download SmugMug images that are smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
-
 
 = 0.3 =
 * Release date: 2011-04-19
@@ -167,6 +169,7 @@ Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If yo
 
 == To Do ==
 
+* Enhance: [Add caching](http://www.javascriptkit.com/dhtmltutors/ajaxticker/ajaxticker2.shtml)
 * Fix: When multiple slideshows per page are attached to Slimbox, they crash when the Slimbox closes
 * Enhance: [Click a Lightbox image to close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
 

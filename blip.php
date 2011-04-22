@@ -28,6 +28,13 @@
 
  */
 
+if (!defined('BLIP_SLIDESHOW_NAME')) {
+    define('BLIP_SLIDESHOW_NAME', 'Blip Slideshow');
+}
+if (!defined('BLIP_SLIDESHOW_DOMAIN')) {
+    define('BLIP_SLIDESHOW_DOMAIN', 'Blip_Slideshow');
+}
+
 // retrieve media rss via http
 if (isset($_REQUEST['url'])) {
 	$url = html_entity_decode(rawurldecode($_REQUEST['url']));
@@ -54,7 +61,7 @@ if (isset($_REQUEST['url'])) {
 	die;
 }
 
-if(!class_exists("Blip_Slideshow")) {
+if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 	class Blip_Slideshow {
 		var $counter = 0;
 		var $add_script = false;
@@ -65,18 +72,18 @@ if(!class_exists("Blip_Slideshow")) {
 			add_shortcode( 'slideshow', array( $this, 'blip_create_slideshow') );
 			add_action( 'wp_footer', array( $this, 'add_footer_scripts') );
 			add_action( 'admin_menu', array( $this, 'add_admin_menu_item') );
-			self::add_header_scripts();
+			$this->add_header_scripts();
 		}
 	
 		// default options
 		function create_options() {
 			$options = array();
 			$options['cache_enabled'] = true;
-			add_option('blip', $options, '', 'yes');
+			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
 		}
 	
 		function destroy_options() {
-			delete_option('blip');
+			delete_option(BLIP_SLIDESHOW_DOMAIN);
 		}
 	
 		function blip_create_slideshow($atts, $content = null) {
@@ -123,7 +130,8 @@ if(!class_exists("Blip_Slideshow")) {
 			}
 	
 			// build Javascript output
-			$output .= '<!-- blip --><script type="text/javascript">
+			$output .= '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
+			$output .= '<script type="text/javascript">
 			//<![CDATA[
 			';
 		
@@ -148,8 +156,9 @@ if(!class_exists("Blip_Slideshow")) {
 			if(!empty( $content )) {
 				$output .= '<span class="slideshow-content">' . $content . '</span>';
 			}
-			$output .= '</div><!-- blip -->';
-			
+			$output .= '</div>';
+			$output .= '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
+		
 			return $output;
 		}
 	
@@ -162,32 +171,43 @@ if(!class_exists("Blip_Slideshow")) {
 	
 		function add_footer_scripts() {
 			if ( $this->add_script ) {
-				echo '<!-- blip -->';
+				echo '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 				wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__));
 				wp_print_styles( 'slideshow2');
 	
 				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));
 				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__));
-				wp_register_script( 'blip', plugins_url('/blip.js', __FILE__), null, false, false);
+				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), null, false, false);
 	
 				wp_print_scripts( 'mootools-more' );
 				wp_print_scripts( 'slideshow2' );
-				wp_print_scripts( 'blip');
-				echo '<!-- blip -->';
+				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
+				echo '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 			}
 		}
 	
 		// Add a new submenu under Options:
 		function add_admin_menu_item() {
-			add_options_page('Blip Slideshow', 'Blip Slideshow', 'manage_options', 'blip_slideshow', array( $this, 'display_admin_page') );
+      if (current_user_can('manage_options')) {
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
+				add_options_page(BLIP_SLIDESHOW_NAME, BLIP_SLIDESHOW_NAME, 'manage_options', BLIP_SLIDESHOW_DOMAIN, array( $this, 'display_admin_page') );
+			}
 		}
+		
+		// display the settings link on the plugin page
+		// http://striderweb.com/nerdaphernalia/2008/06/wp-use-action-links/
+		function plugin_settings_link($links) {
+      $settings_link = '<a href="options-general.php?page=' . BLIP_SLIDESHOW_DOMAIN . '">' . __('Settings', BLIP_SLIDESHOW_DOMAIN) . '</a>';
+      $links[] = $settings_link;
+      return $links;
+    }
 	
 		// displays the options page content
 		function display_admin_page() {
 			?>
 			<div class="wrap">
 			<form method="post" id="next_page_form" action="">
-			<h2>Blip Slideshow Options</h2>
+			<h2><?php echo BLIP_SLIDESHOW_NAME ?> Options</h2>
 			<br/>
 			<div style="border:1px solid #ddd;width:60%;padding:1em;">
 			<label for="use_cache">
