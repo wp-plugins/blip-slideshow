@@ -39,6 +39,7 @@ Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?foru
 
 * Reads SmugMug and Flickr Media RSS Feeds
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
+* Caching of Media RSS Feeds for extra performance (must be enabled in Settings)
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
@@ -71,7 +72,8 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 * Release date: TBD
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Official stable release
-* Supports caching of RSS feeds (disabled by default)
+* Supports caching of RSS feeds (must be enabled in the Settings)
+* Loads "blip-slideshow.css" from the root of your theme directory if it exists
 
 = 0.4.2 =
 * Release date: 2011-04-22

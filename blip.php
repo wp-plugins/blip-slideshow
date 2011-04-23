@@ -4,7 +4,7 @@
     Plugin Name: Blip Slideshow
     Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
     Description: A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
-    Version: 0.4.1
+    Version: 1.0.0
     Author: Jason Hendriks
     Author URI: http://jasonhendriks.com/
     License: GPL version 3 or any later version
@@ -211,8 +211,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'thumbnails' => 'false',
 				'titles' => 'false',
 				'width' => 'false',
-				'debug' => 'false',
-				'cache' => ''
+				'cache' => 'true'
 			), $atts));
 	
 			// wordpress has encoded the HTML entities
@@ -237,7 +236,6 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 	
 			// build Javascript output
-			$output .= '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 			$output .= '<script type="text/javascript">
 			//<![CDATA[
 			';
@@ -265,7 +263,6 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				$output .= '<span class="slideshow-content">' . $content . '</span>';
 			}
 			$output .= '</div>';
-			$output .= '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 		
 			return $output;
 		}
@@ -324,10 +321,14 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 	
 		function add_footer_scripts() {
 			if ( $this->add_script ) {
-				echo '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 				wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__));
 				wp_print_styles( 'slideshow2');
-	
+
+				if(file_exists(get_theme_root() . '/' . get_template() . '/blip-slideshow.css')) {
+					?><link rel='stylesheet' id='blip-slideshow-css' href='<?php bloginfo("stylesheet_directory") ?>/blip-slideshow.css?ver=3.1' type='text/css' media='all' />
+<?php
+				}
+
 				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));
 				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__));
 				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), null, false, false);
@@ -335,7 +336,6 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				wp_print_scripts( 'mootools-more' );
 				wp_print_scripts( 'slideshow2' );
 				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
-				echo '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 			}
 		}
 	
@@ -374,6 +374,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			<form method="post" id="next_page_form" action="options.php"><?php settings_fields(BLIP_SLIDESHOW_DOMAIN); $options = get_option(BLIP_SLIDESHOW_DOMAIN); ?>
 			<input type="hidden" name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[cache_dir]" value="<?php echo $options['cache_dir']; ?>" style="width:50px"/>
 			<h2><?php echo BLIP_SLIDESHOW_NAME ?> Options</h2>
+			<p>Caching is disabled by default and must be enabled here.</p>
 			<table class="form-table">
 				<tr valign="top">
 				<th scope="row">Cache</th>
