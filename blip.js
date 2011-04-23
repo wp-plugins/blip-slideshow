@@ -30,7 +30,6 @@ var Blip = new Class({
 		}).send();
 	},
 	processRequest: function(newResponseText, newResponseXml){
-		console.log(newResponseXml);
 		var lightboxHelper = LightboxHelper.createLightboxHelper(this.link);
 		var parser = MediaRssParser.createParser(this.link, newResponseText, newResponseXml);
 		if(parser) {
@@ -98,7 +97,7 @@ MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml)
 	var generator = Slick.find(newResponseXml, 'generator').firstChild.nodeValue;
 	if(generator == "http://www.smugmug.com/") {
 		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
-	} if(generator == "http://www.flickr.com/" || generator == "Flickr") {
+	} if(generator == "http://www.flickr.com/") {
 		return new FlickrRssParser(newLink, newResponseText, newResponseXml);
 	} else {
 		// unsupported RSS type

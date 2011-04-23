@@ -39,7 +39,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 	class Blip_Slideshow_Rss_Reader {
 		
 		function Blip_Slideshow_Rss_Reader() {
-			$url = rawurldecode($_REQUEST['url']);
+			$url = html_entity_decode(urldecode($_REQUEST['url']));
 			if(function_exists("get_option")) {
 				// if we can talk to wordpress
 				$content = $this->get_rss_content_from_cache($url);
@@ -49,7 +49,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			}
 			$this->print_content($content);
 		}
-		
+
 		function get_rss_content($url) {
 			// sometimes the protocol is given as feed://, but this media type is not recognize by curl or php
 			$url = preg_replace("/^feed\:\/\//", "http://", $url);
@@ -185,6 +185,9 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'debug' => 'false',
 				'cache' => ''
 			), $atts));
+	
+			// wordpress has encoded the HTML entities
+			$rss = html_entity_decode($rss);
 	
 			// santize the rss url
 			$callback_url = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
@@ -354,7 +357,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 }
 
 if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
-	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-hesader.php", getcwd());
+	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
 	if (file_exists($blog_header_path)) {
 		require_once($blog_header_path);
 	}
