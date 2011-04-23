@@ -35,57 +35,84 @@ if (!defined('BLIP_SLIDESHOW_DOMAIN')) {
     define('BLIP_SLIDESHOW_DOMAIN', 'Blip_Slideshow');
 }
 
-/*
-if (file_exists('./wp-blog-header.php')) {
-	echo 'exists';
-}
-require_once('./wp-blog-header.php');
-*/
-
-// retrieve media rss via http
-if (isset($_REQUEST['url'])) {
-	$url = html_entity_decode(rawurldecode($_REQUEST['url']));
-	$url = preg_replace("/^feed\:\/\//", "http://", $url);
-	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
-	if (file_exists($blog_header_path)) {
-		// attempt to get from cache
-		require_once($blog_header_path);
-		$cache_dir = plugins_url('/cache', __FILE__);
-		$content = get_rss_content($url);
-	} else {
-		// no cache; get directly
-		$content = get_rss_content($url);
-	}
-	if($content != FALSE) {
-		if (!isset($_REQUEST['debug'])) {
-			header('HTTP/1.1 200 OK');
-			header("Content-Type: text/xml");
-		} else {
-			print "debug";
+if(!class_exists("Blip_Slideshow_Rss_Reader")) {
+	class Blip_Slideshow_Rss_Reader {
+		
+		function Blip_Slideshow_Rss_Reader() {
+			$url = rawurldecode($_REQUEST['url']);
+			if(function_exists("get_option")) {
+				// if we can talk to wordpress
+				$content = $this->get_rss_content_from_cache($url);
+			} else {
+				// can't talk to wordpress; get content directly
+				$content = $this->get_rss_content($url);
+			}
+			$this->print_content($content);
 		}
-		print $content;
-	}
-	die;
-}
+		
+		function get_rss_content($url) {
+			// sometimes the protocol is given as feed://, but this media type is not recognize by curl or php
+			$url = preg_replace("/^feed\:\/\//", "http://", $url);
+			// make the HTTP request
+			if(function_exists('curl_init')) {
+				$crl = curl_init();
+				$timeout = 5;
+				curl_setopt ($crl, CURLOPT_URL, $url);
+				curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
+				$content = curl_exec($crl);
+				curl_close($crl);
+			} else {
+				$content = file_get_contents($url);
+			}
+			if($content != FALSE) {
+				$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
+			}
+			return $content;
+		}
+		
+		function get_rss_content_from_cache($url) {
+			// retrieve saved options
+			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
+			$result = Blip_Slideshow::build_cache_paths($options, $url);
+			$cache_dir = $result["cache_dir"];
+			$localfile = $result["cache_file"];
+	
+			// if cache is enabled and this file is cacheable
+			if (false && $options['cache_enabled'] && file_exists($localfile)){
+				// caching is enabled for this file
+				if(filesize($localfile) != 0 && (time()-filemtime($localfile)) < $options['cache_time']) {
+					// cache is populated and not expired. read from the cache.
+					$content = file_get_contents($localfile);
+				} else {
+					// cache is expired or not populated. populate the cache
+					$content = $this->get_rss_content($url);
+					if($content != FALSE) {
+						$fp=fopen($localfile, "w");
+						fwrite($fp, $content); //write contents of feed to cache file
+						fclose($fp);
+					}
+				}
+			} else {
+				// caching is not enabled for this file
+				$content = $this->get_rss_content($url);
+			}
+			return $content;
+		}
+		
+		function print_content($content) {
+			if($content != FALSE) {
+				if (!isset($_REQUEST['debug'])) {
+					header('HTTP/1.1 200 OK');
+					header("Content-Type: text/xml");
+					print $content;
+				} else {
+					print "<html><head></head><body><pre>" . preg_replace("/</", "&lt;", $content) . "</pre></body></html>";
+				}
+			}
+		}
 
-function get_rss_content($url) {
-	// make the HTTP request
-	if(function_exists('curl_init')) {
-		$crl = curl_init();
-		$timeout = 5;
-		curl_setopt ($crl, CURLOPT_URL, $url);
-		curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$content = curl_exec($crl);
-		curl_close($crl);
 	}
-	if($content == FALSE) {
-		$content = file_get_contents($url);
-	}
-	if($content != FALSE) {
-		$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
-	}
-	return $content;
 }
 
 if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
@@ -98,29 +125,39 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			register_uninstall_hook( __FILE__, array( $this, 'destroy_options') );
 			add_shortcode( 'slideshow', array( $this, 'blip_create_slideshow') );
 			add_action( 'wp_footer', array( $this, 'add_footer_scripts') );
+			add_action("admin_init", array($this, "register_options"));
 			add_action( 'admin_menu', array( $this, 'add_admin_menu_item') );
 			$this->add_header_scripts();
+		}
+	
+		// register the setting
+		function register_options() {
+			register_setting(BLIP_SLIDESHOW_DOMAIN, BLIP_SLIDESHOW_DOMAIN);
 		}
 	
 		// default options
 		function create_options() {
 			$options = array();
 			$options['cache_enabled'] = false;
-			$options['cache_folder'] = "cache";
+			$options['cache_dir'] = "cache";
 			$options['cache_time'] = 3600;
 			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
 		}
 	
 		function destroy_options() {
-			// beta versions of Blip used to use a different option name (up to v1.0).
-			// Delete the beta options from MySql with: select * from wp_options where option_name = "blip";
-			// .. assuming the name "blip" does not collide with another extension you may installed!!
 			delete_option(BLIP_SLIDESHOW_DOMAIN);
+			// beta versions of Blip used a different option name (up to v0.4.2).
+			// Delete the beta options with this line
+			// .. assuming the name "blip" does not collide with another extension you may have installed!!
+			delete_option("blip");
 		}
 	
 		function blip_create_slideshow($atts, $content = null) {
 			$this->counter++;
 			$this->add_script = true;
+			
+			// retrieve saved options
+			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
 
 			// extract rss from shortcode attributes
 			$sample_feed = plugins_url('/sample_feed.php', __FILE__);
@@ -145,12 +182,18 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'thumbnails' => 'false',
 				'titles' => 'false',
 				'width' => 'false',
-				'debug' => 'false'
+				'debug' => 'false',
+				'cache' => ''
 			), $atts));
 	
-			// encode rss url for passing via HTTP back to blip.php
-			$rss = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
-	
+			// santize the rss url
+			$callback_url = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
+			
+			// enable caching for this file?
+			if($cache != "false" && $options['cache_enabled']) {
+				$this->prep_cache($options, $rss);
+			}
+			
 			// handle lightbox link options
 			if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 				$link = "slimbox";
@@ -181,10 +224,11 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 	
 			// build remainder of script options
 			$output .= "captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
-			$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($rss) . ', ' . json_encode($link) . ', options); });
+			$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($callback_url) . ', ' . json_encode($link) . ', options); });
 			//]] >
 			</script><div id="' . $id . '" class="slideshow">';
 			
+			// the contents of the shortcode
 			if(!empty( $content )) {
 				$output .= '<span class="slideshow-content">' . $content . '</span>';
 			}
@@ -192,6 +236,51 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			$output .= '<!-- ' . BLIP_SLIDESHOW_NAME . ' -->';
 		
 			return $output;
+		}
+	
+		/**
+		 * Caching is enabled. Retrieve the preferred cache directory name. Create the cache directory and cache file.
+		 * Input is the $options retrieved from the database and the raw_url_encoded RSS URL
+		 */ 
+		function prep_cache($options, $rss) {
+			// build the cache dir
+			$result = $this->build_cache_paths($options, $rss);
+			$cache_dir = $result["cache_dir"];
+			$localfile = $result["cache_file"];
+			
+			// if the cache dir doesn't exist
+			if (!file_exists($cache_dir)) {
+				// create the cache dir
+				mkdir($cache_dir);
+				chmod($cache_dir, 0777); 
+			}
+			
+			// if the cache file doesn't exist
+			if (!file_exists($localfile)){
+				// create the cache file
+				touch($localfile);
+				chmod($localfile, 0666); 
+			}
+		}
+		
+		function build_cache_paths($options, $rss) {
+			// get the cache path from options
+			$stored_cache_dir = $options['cache_dir'];
+			
+			// check to see if the cache dir option is an absolute path or not - will probably fail on Windows
+			if( $stored_cache_dir[0] == '/' ) {
+				// cache dir option IS the cache dir
+				$cache_dir = $stored_cache_dir;
+			} else {
+				// cache dir is the path of this PHP file concatenated with the cache dir option
+				$cache_dir = preg_replace("/blip.php/", "", __FILE__) . $stored_cache_dir;
+			}
+
+			// the localfile is the cache dir concatenated with the RawUrlEncoded RSS URL
+			$localfile .= $cache_dir . "/" . hash("md5", $rss);
+			
+			$result = array("cache_dir" => $cache_dir, "cache_file" => $localfile);
+			return $result;
 		}
 	
 		function add_header_scripts() {
@@ -238,23 +327,23 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		function display_admin_page() {
 			?>
 			<div class="wrap">
-			<form method="post" id="next_page_form" action="">
-			<h2><?php echo BLIP_SLIDESHOW_NAME ?> Options</h2>
-			<br/>
-			<div style="border:1px solid #ddd;width:60%;padding:1em;">
-			<label for="use_cache">
-				<input name="use_cache" type="checkbox" id="use_cache" value="1" checke="checked" disabled="true" style="width:50px;"/>
-				Enable caching of media RSS files
-			</label><br />
-			<label for="cache_time">
-				<input name="cache_time" type="text" id="cache_time" value="3600" disabled="true" style="width:50px"/>
-				Length of time (in seconds) to cache media RSS files
-			</label><br />
+			<form method="post" id="next_page_form" action="options.php"><?php settings_fields(BLIP_SLIDESHOW_DOMAIN); $options = get_option(BLIP_SLIDESHOW_DOMAIN); ?>
+			<input type="hidden" name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[cache_dir]" value="<?php echo $options['cache_dir']; ?>" style="width:50px"/>
+			<h2> Options</h2>
+			<table class="form-table">
+				<tr valign="top">
+				<th scope="row">Cache</th>
+				<td>
+					<fieldset><legend class="screen-reader-text"><span>Cache</span></legend>
+					<label title="Enabled or disable caching"><?php if($options['cache_enabled']){ $sy = 'checked="checked"'; } ?><input name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[cache_enabled]" type="checkbox" id="use_cache" value="1" <?php echo $sy ?>/> <span>Enable caching of media RSS files</span></label><br />
+					<label title="Cache time"><input name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[cache_time]" type="text" id="cache_time" value="<?php echo $options['cache_time']; ?>" class="small-text" /> <span class="example"> Length of time (in seconds) to cache media RSS files</span></label><br />
+					</fieldset>
+				</td>
+				</tr>
+			</table>
 			<p class="submit">
-			<input type="submit" name="submit" class="button-primary" value="Update Options" disabled="true"/>
+				<input type="submit" name="submit" class="button-primary" value="Update Options"/>
 			</p>
-			<em>Option panel coming soon..</em>
-			</div>
 			</form>
 			</div>
 			<?php 
@@ -262,6 +351,15 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 	
 	}
 
+}
+
+if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
+	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
+	if (file_exists($blog_header_path)) {
+		require_once($blog_header_path);
+	}
+  $blip_rss_reader = new Blip_Slideshow_Rss_Reader();
+  die;
 }
 
 if (class_exists("Blip_Slideshow")) {

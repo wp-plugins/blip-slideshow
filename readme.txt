@@ -38,6 +38,7 @@ Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?foru
 = What are the main features? =
 
 * Reads SmugMug and Flickr Media RSS Feeds
+* WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
@@ -183,6 +184,7 @@ Some information I found invaluable for this project:
 * http://mootools-users.660466.n2.nabble.com/Moo-XML-parsing-1-3-and-today-td5187586.html
 * https://gist.github.com/775347
 * http://www.regular-expressions.info/javascript.html
+* http://php.net/manual/en/function.rawurlencode.php
 * https://mootools.lighthouseapp.com/projects/2706/tickets/182-request-html-only-parses-xml
 * http://ryanflorence.com/mootools-class/
 * http://stackoverflow.com/questions/1178511/accessing-a-mootools-class-method-from-outside-the-class
@@ -200,5 +202,7 @@ Some information I found invaluable for this project:
 * http://codex.wordpress.org/Managing_Plugins
 * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
 * http://scribu.net/wordpress/optimal-script-loading.html
+* http://www.javascriptkit.com/dhtmltutors/ajaxticker/ajaxticker2.shtml
 * http://tech.michaelerb.net/wordpress-tutorials/how-to-determine-absolute-path-with-a-tiny-php-script/
 * http://wordpress.org/support/topic/how-to-use-wordpress-functions-outside-of-the-blog?replies=7
+* http://codex.wordpress.org/Integrating_WordPress_with_Your_Website
