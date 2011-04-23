@@ -2,7 +2,7 @@
 Contributors: jasonhendriks
 Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox
-Requires at least: 2.8
+Requires at least: 2.7
 Tested up to: 3.1.1
 Stable tag: 0.4.2
 
@@ -154,12 +154,12 @@ Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If yo
 
 == External Plugin Compatibility ==
 
-* [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
-* [Simple Cbox](http://wordpress.org/extend/plugins/simple-cbox/): failed - does not use jQuery in compatibility mode
-* [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/): OK
-* [JQuery Colorbox Zoom](http://wordpress.org/extend/plugins/jcolorboxzoom/): failed - uses jQuery, but doesn't load it
-* [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/): failed - no visible error, just won't show slideshow pics
 * [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/): OK
+* [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/): failed - no visible error, just won't show slideshow pics
+* [JQuery Colorbox Zoom](http://wordpress.org/extend/plugins/jcolorboxzoom/): failed - uses jQuery, but doesn't load it
+* [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/): OK
+* [Simple Cbox](http://wordpress.org/extend/plugins/simple-cbox/): failed - does not use jQuery in compatibility mode
+* [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
 * [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
 * [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - coded for MooTools 1.2, not MooTools 1.3
 * [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the mootools API, which is a no-no
@@ -200,3 +200,5 @@ Some information I found invaluable for this project:
 * http://codex.wordpress.org/Managing_Plugins
 * http://groups.google.com/group/mootools-slideshow/browse_thread/thread/cdeededf62e6b458/f4df7e2cabb12f59?lnk=gst&q=lightbox#f4df7e2cabb12f59
 * http://scribu.net/wordpress/optimal-script-loading.html
+* http://tech.michaelerb.net/wordpress-tutorials/how-to-determine-absolute-path-with-a-tiny-php-script/
+* http://wordpress.org/support/topic/how-to-use-wordpress-functions-outside-of-the-blog?replies=7

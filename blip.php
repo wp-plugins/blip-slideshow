@@ -9,7 +9,7 @@
     Author URI: http://jasonhendriks.com/
     License: GPL version 3 or any later version
 
-		** Requires WordPress 3.0 **
+		** Requires WordPress 2.7 **
  
     Copyright (C) 2011  Jason Hendriks
 
@@ -35,10 +35,40 @@ if (!defined('BLIP_SLIDESHOW_DOMAIN')) {
     define('BLIP_SLIDESHOW_DOMAIN', 'Blip_Slideshow');
 }
 
+/*
+if (file_exists('./wp-blog-header.php')) {
+	echo 'exists';
+}
+require_once('./wp-blog-header.php');
+*/
+
 // retrieve media rss via http
 if (isset($_REQUEST['url'])) {
 	$url = html_entity_decode(rawurldecode($_REQUEST['url']));
 	$url = preg_replace("/^feed\:\/\//", "http://", $url);
+	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
+	if (file_exists($blog_header_path)) {
+		// attempt to get from cache
+		require_once($blog_header_path);
+		$cache_dir = plugins_url('/cache', __FILE__);
+		$content = get_rss_content($url);
+	} else {
+		// no cache; get directly
+		$content = get_rss_content($url);
+	}
+	if($content != FALSE) {
+		if (!isset($_REQUEST['debug'])) {
+			header('HTTP/1.1 200 OK');
+			header("Content-Type: text/xml");
+		} else {
+			print "debug";
+		}
+		print $content;
+	}
+	die;
+}
+
+function get_rss_content($url) {
 	// make the HTTP request
 	if(function_exists('curl_init')) {
 		$crl = curl_init();
@@ -53,12 +83,9 @@ if (isset($_REQUEST['url'])) {
 		$content = file_get_contents($url);
 	}
 	if($content != FALSE) {
-		header('HTTP/1.1 200 OK');
-		header("Content-Type: text/xml");
 		$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
-		print $content;
 	}
-	die;
+	return $content;
 }
 
 if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
@@ -78,11 +105,16 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		// default options
 		function create_options() {
 			$options = array();
-			$options['cache_enabled'] = true;
+			$options['cache_enabled'] = false;
+			$options['cache_folder'] = "cache";
+			$options['cache_time'] = 3600;
 			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
 		}
 	
 		function destroy_options() {
+			// beta versions of Blip used to use a different option name (up to v1.0).
+			// Delete the beta options from MySql with: select * from wp_options where option_name = "blip";
+			// .. assuming the name "blip" does not collide with another extension you may installed!!
 			delete_option(BLIP_SLIDESHOW_DOMAIN);
 		}
 	
