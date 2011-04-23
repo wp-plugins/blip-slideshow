@@ -79,7 +79,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			$localfile = $result["cache_file"];
 	
 			// if cache is enabled and this file is cacheable
-			if (false && $options['cache_enabled'] && file_exists($localfile)){
+			if ($options['cache_enabled'] && file_exists($localfile)){
 				// caching is enabled for this file
 				if(filesize($localfile) != 0 && (time()-filemtime($localfile)) < $options['cache_time']) {
 					// cache is populated and not expired. read from the cache.
@@ -354,7 +354,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 }
 
 if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
-	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
+	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-hesader.php", getcwd());
 	if (file_exists($blog_header_path)) {
 		require_once($blog_header_path);
 	}
