@@ -36,25 +36,43 @@ if (!defined('BLIP_SLIDESHOW_DOMAIN')) {
 }
 
 if(!class_exists("Blip_Slideshow_Rss_Reader")) {
+	
+	/**
+	 * Blip_Slideshow_Rss_Reader is a proxy to get the content of the Media RSS files.
+	 * It supports caching, if it has been enabled in the settings.
+	 */
 	class Blip_Slideshow_Rss_Reader {
 		
+		/**
+		 * Get the content of the Media RSS URL either directly, or if caching is available, from the cache.
+		 */
 		function Blip_Slideshow_Rss_Reader() {
 			$url = html_entity_decode(urldecode($_REQUEST['url']));
+			// check if we can talk to wordpress
 			if(function_exists("get_option")) {
-				// if we can talk to wordpress
+				// attempt to get the content from the cache
 				$content = $this->get_rss_content_from_cache($url);
 			} else {
 				// can't talk to wordpress; get content directly
 				$content = $this->get_rss_content($url);
 			}
-			$this->print_content($content);
+			$this->print_document($content);
 		}
 
+		/**
+		 * Fetch the content of the Media RSS URL via HTTP.
+		 * Will first try file_get_contents, and if that is disabled, will try curl
+		 */
 		function get_rss_content($url) {
 			// sometimes the protocol is given as feed://, but this media type is not recognize by curl or php
 			$url = preg_replace("/^feed\:\/\//", "http://", $url);
-			// make the HTTP request
-			if(function_exists('curl_init')) {
+			
+			// make the http request via PHP
+			$content = file_get_contents($url);
+
+			// if that didn't work, try via curl
+			if($content == FALSE && function_exists('curl_init')) {
+				// make the http request via curl
 				$crl = curl_init();
 				$timeout = 5;
 				curl_setopt ($crl, CURLOPT_URL, $url);
@@ -62,18 +80,27 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 				curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
 				$content = curl_exec($crl);
 				curl_close($crl);
-			} else {
-				$content = file_get_contents($url);
 			}
+			
+			// check if we got content
 			if($content != FALSE) {
+				// massage the content for Slick to handle in Javascript
 				$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
 			}
+			
+			// return the content
 			return $content;
 		}
 		
+		/**
+		 * Will attempt to retrieve the contents of the media RSS URL from the cache.
+		 * If the Media RSS is expired or empty, will retrieve the fresh contents via HTTP and then overwrite the cache.
+		 */
 		function get_rss_content_from_cache($url) {
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
+			
+			// determine the read/write paths
 			$result = Blip_Slideshow::build_cache_paths($options, $url);
 			$cache_dir = $result["cache_dir"];
 			$localfile = $result["cache_file"];
@@ -99,8 +126,11 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			}
 			return $content;
 		}
-		
-		function print_content($content) {
+
+		/**
+		 * Build the document by outputing XML headers and the content.
+		 */		
+		function print_document($content) {
 			if($content != FALSE) {
 				if (!isset($_REQUEST['debug'])) {
 					header('HTTP/1.1 200 OK');
@@ -128,14 +158,14 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			add_action("admin_init", array($this, "register_options"));
 			add_action( 'admin_menu', array( $this, 'add_admin_menu_item') );
 			$this->add_header_scripts();
+			// beta versions of Blip used a different option name (up to v0.4.2).
+			// TODO: This line will be removed for v1.0.1
+			delete_option("blip"); // remove the old settings
 		}
 	
-		// register the setting
-		function register_options() {
-			register_setting(BLIP_SLIDESHOW_DOMAIN, BLIP_SLIDESHOW_DOMAIN);
-		}
-	
-		// default options
+		/**
+		 * When Blip is activated, set up the default values in the database
+		 */
 		function create_options() {
 			$options = array();
 			$options['cache_enabled'] = false;
@@ -143,13 +173,12 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			$options['cache_time'] = 3600;
 			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
 		}
-	
+
+		/**
+		 * When Blip is deleted, remove the options from the database
+		 */
 		function destroy_options() {
 			delete_option(BLIP_SLIDESHOW_DOMAIN);
-			// beta versions of Blip used a different option name (up to v0.4.2).
-			// Delete the beta options with this line
-			// .. assuming the name "blip" does not collide with another extension you may have installed!!
-			delete_option("blip");
 		}
 	
 		function blip_create_slideshow($atts, $content = null) {
@@ -246,7 +275,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		 * Input is the $options retrieved from the database and the raw_url_encoded RSS URL
 		 */ 
 		function prep_cache($options, $rss) {
-			// build the cache dir
+			// determine the read/write paths
 			$result = $this->build_cache_paths($options, $rss);
 			$cache_dir = $result["cache_dir"];
 			$localfile = $result["cache_file"];
@@ -310,7 +339,16 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 		}
 	
-		// Add a new submenu under Options:
+		/**
+		 * Register the Settings page
+		 */
+		function register_options() {
+			register_setting(BLIP_SLIDESHOW_DOMAIN, BLIP_SLIDESHOW_DOMAIN);
+		}
+	
+		/**
+		 * Register links to the Settings page in the list of Plugins and in the Settings menu
+		 */
 		function add_admin_menu_item() {
       if (current_user_can('manage_options')) {
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
@@ -318,21 +356,24 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 		}
 		
-		// display the settings link on the plugin page
-		// http://striderweb.com/nerdaphernalia/2008/06/wp-use-action-links/
+		/**
+		 * Build the hyperlink for the list of Plugins
+		 */
 		function plugin_settings_link($links) {
       $settings_link = '<a href="options-general.php?page=' . BLIP_SLIDESHOW_DOMAIN . '">' . __('Settings', BLIP_SLIDESHOW_DOMAIN) . '</a>';
       $links[] = $settings_link;
       return $links;
     }
 	
-		// displays the options page content
+		/**
+		 * Output the HTML for the Settings page
+		 */
 		function display_admin_page() {
 			?>
 			<div class="wrap">
 			<form method="post" id="next_page_form" action="options.php"><?php settings_fields(BLIP_SLIDESHOW_DOMAIN); $options = get_option(BLIP_SLIDESHOW_DOMAIN); ?>
 			<input type="hidden" name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[cache_dir]" value="<?php echo $options['cache_dir']; ?>" style="width:50px"/>
-			<h2> Options</h2>
+			<h2><?php echo BLIP_SLIDESHOW_NAME ?> Options</h2>
 			<table class="form-table">
 				<tr valign="top">
 				<th scope="row">Cache</th>
@@ -356,15 +397,21 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 
 }
 
+// check if the request is to read a Media RSS URL
 if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
+	
+	// attempt to talk to Wordpress
 	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
 	if (file_exists($blog_header_path)) {
 		require_once($blog_header_path);
 	}
+	// initiate the Media RSS reading
   $blip_rss_reader = new Blip_Slideshow_Rss_Reader();
+  // commit suicide
   die;
 }
 
+// start the meat and potatoes
 if (class_exists("Blip_Slideshow")) {
     $blip = new Blip_Slideshow();
 }

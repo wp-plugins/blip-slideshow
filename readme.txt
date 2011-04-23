@@ -206,3 +206,4 @@ Some information I found invaluable for this project:
 * http://tech.michaelerb.net/wordpress-tutorials/how-to-determine-absolute-path-with-a-tiny-php-script/
 * http://wordpress.org/support/topic/how-to-use-wordpress-functions-outside-of-the-blog?replies=7
 * http://codex.wordpress.org/Integrating_WordPress_with_Your_Website
+* http://striderweb.com/nerdaphernalia/2008/06/wp-use-action-links/
