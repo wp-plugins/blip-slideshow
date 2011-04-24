@@ -21,10 +21,10 @@ Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?foru
 1. Download Blip
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under "Blip Slideshow"
+1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
 1. Place the [slideshow] shortcode in your posts and/or pages
 
-**Detailed examples for use can be found at [The Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
+**Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
 
 *As a simple slideshow:*
 
@@ -176,7 +176,8 @@ Although multiple slideshows per page are possible, only one of those slideshows
 
 == To Do ==
 
-* Fix: Allow multiple slideshows with Slimboxes per page (find trigger for slideshow resume)
+* Enhance: Allow multiple slideshows with Slimboxes per page (find trigger for slideshow resume)
+* Enhance: Input validation
 
 == Resources ==
 
