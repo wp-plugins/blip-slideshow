@@ -169,9 +169,9 @@ Although multiple slideshows per page are possible, only one of those slideshows
 * [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
 * [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
 * [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - coded for MooTools 1.2, not MooTools 1.3
-* [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the mootools API, which is a no-no
+* [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the call to the mootools API, which is a no-no
 * [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): OK
-* [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - "Can't find variable: jQuery"
+* [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - uses jQuery, but doesn't load it
 
 == To Do ==
 
