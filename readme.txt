@@ -172,7 +172,6 @@ Although multiple slideshows per page are possible, only one of those slideshows
 * [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the mootools API, which is a no-no
 * [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): OK
 * [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - "Can't find variable: jQuery"
-* [Lightbox 2.0 for WordPress](http://zeo.unic.net.my/lightbox2-for-wordpress/): - failed - Blip is currently incompatible with Scriptaculous
 
 == To Do ==
 
