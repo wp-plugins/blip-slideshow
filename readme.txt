@@ -14,7 +14,7 @@ A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and d
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
-Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?forum_id=10)* so I can grab a screenshot :-)
+Are you using Blip? Let me know so I can grab a screenshot :-)
 
 == Installation ==
 
