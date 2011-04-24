@@ -177,6 +177,7 @@ Although multiple slideshows per page are possible, only one of those slideshows
 
 * Enhance: Allow multiple slideshows with Slimboxes per page (find trigger for slideshow resume)
 * Enhance: Input validation
+* Enhance: Refactor cache code out of Blip code
 
 == Resources ==
 
