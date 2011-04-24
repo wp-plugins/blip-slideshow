@@ -1,10 +1,10 @@
 === Blip Slideshow ===
 Contributors: jasonhendriks
 Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
-Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox
+Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.1
-Stable tag: 0.4.2
+Stable tag: 1.0.0
 
 A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
 
@@ -21,6 +21,7 @@ Are you using Blip? *[Let me know](http://wordpress.org/tags/blip-slideshow?foru
 1. Download Blip
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
+1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under "Blip Slideshow"
 1. Place the [slideshow] shortcode in your posts and/or pages
 
 **Detailed examples for use can be found at [The Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
@@ -69,7 +70,7 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 == Changelog ==
 
 = 1.0.0 =
-* Release date: TBD
+* Release date: 2011-04-23
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Official stable release
 * Supports caching of RSS feeds (must be enabled in the Settings)
@@ -134,6 +135,9 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 == Upgrade Notice ==
 
+= 1.0.0 =
+Thanks for beta testing! The first official stable version offers caching and a CSS style in your theme directory.
+
 = 0.4.1 =
 Thanks for beta testing! Now with Colorbox support and a variety of fixes and enhancements.
 
@@ -149,11 +153,11 @@ Thanks for beta testing! Various enhancements are ready.
 = 0.1 =
 The first version. Yay!
 
-= Known Issues =
+== Known Issues ==
 
 Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 
-Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If you require multiple slideshows per page with a Lightbox, use Colorbox instead.
+Although multiple slideshows per page are possible, only one of those slideshows can have a Lightbox.
 
 == External Plugin Compatibility ==
 
@@ -172,9 +176,7 @@ Multiple slideshows hooked to a Slimbox can break when the Slimbox closes. If yo
 
 == To Do ==
 
-* Enhance: [Add caching](http://www.javascriptkit.com/dhtmltutors/ajaxticker/ajaxticker2.shtml)
-* Fix: When multiple slideshows per page are attached to Slimbox, they crash when the Slimbox closes
-* Enhance: [Click a Lightbox image to close](http://stackoverflow.com/questions/5527419/how-to-modify-slimbox-to-close-by-clicking-on-expanded-image)
+* Fix: Allow multiple slideshows with Slimboxes per page (find trigger for slideshow resume)
 
 == Resources ==
 
