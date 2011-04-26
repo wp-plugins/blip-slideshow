@@ -1,30 +1,30 @@
 <?php
 /*
 
-    Plugin Name: Blip Slideshow
-    Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
-    Description: A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
-    Version: 1.0.0
-    Author: Jason Hendriks
-    Author URI: http://jasonhendriks.com/
-    License: GPL version 3 or any later version
-
+		Plugin Name: Blip Slideshow
+		Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
+		Description: A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
+		Version: 1.0.0
+		Author: Jason Hendriks
+		Author URI: http://jasonhendriks.com/
+		License: GPL version 3 or any later version
+		
 		** Requires WordPress 2.7 **
- 
-    Copyright (C) 2011  Jason Hendriks
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+		
+		Copyright (C) 2011  Jason Hendriks
+		
+		This program is free software: you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
+		the Free Software Foundation, either version 3 of the License, or
+		(at your option) any later version.
+		
+		This program is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+		
+		You should have received a copy of the GNU General Public License
+		along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
 
@@ -47,7 +47,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 * Get the content of the Media RSS URL either directly, or if caching is available, from the cache.
 		 */
 		function Blip_Slideshow_Rss_Reader() {
-			$url = html_entity_decode(urldecode($_REQUEST['url']));
+			$url = html_entity_decode(urldecode($_REQUEST['url']));
+
 			// check if we can talk to wordpress
 			if(function_exists("get_option")) {
 				// attempt to get the content from the cache
@@ -56,7 +57,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 				// can't talk to wordpress; get content directly
 				$content = $this->get_rss_content($url);
 			}
-			$this->print_document($content);
+			$this->print_document($content, $url);
 		}
 
 		/**
@@ -66,23 +67,36 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		function get_rss_content($url) {
 			// sometimes the protocol is given as feed://, but this media type is not recognize by curl or php
 			$url = preg_replace("/^feed\:\/\//", "http://", $url);
-			
-			// make the http request via PHP
-			$content = file_get_contents($url);
 
-			// if that didn't work, try via curl
-			if($content == FALSE && function_exists('curl_init')) {
+			// if curl exists, use it to make the http request
+			if(function_exists('curl_init')) {
 				// make the http request via curl
-				$crl = curl_init();
-				$timeout = 5;
-				curl_setopt ($crl, CURLOPT_URL, $url);
-				curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
+				$curl_options = array( 
+					CURLOPT_RETURNTRANSFER => true,     // return web page 
+					CURLOPT_HEADER         => false,    // don't return headers 
+					CURLOPT_FOLLOWLOCATION => true,     // follow redirects 
+					CURLOPT_ENCODING       => "",       // handle all encodings 
+					CURLOPT_USERAGENT      => "Blip Slideshow/1.0.1", // who am i 
+					CURLOPT_AUTOREFERER    => true,     // set referer on redirect 
+					CURLOPT_CONNECTTIMEOUT => 30,       // timeout on connect 
+					CURLOPT_TIMEOUT        => 30,       // timeout on response 
+					CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects 
+				); 
+
+				$crl = curl_init($url);
+				curl_setopt_array ($crl, $curl_options);
 				$content = curl_exec($crl);
+				$err     = curl_errno($crl); 
+				$errmsg  = curl_error($crl); 
+				$header  = curl_getinfo($crl); 
 				curl_close($crl);
+			} else {
+				// curl is not available, so make the http request via PHP
+				// this function will not work with MobileMe
+				$content = file_get_contents($url);
 			}
-			
-			// check if we got content
+
+			// check if content was received
 			if($content != FALSE) {
 				// massage the content for Slick to handle in Javascript
 				$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
@@ -99,6 +113,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		function get_rss_content_from_cache($url) {
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
+			$max_age = 0;
 			
 			// determine the read/write paths
 			$result = Blip_Slideshow::build_cache_paths($options, $url);
@@ -108,7 +123,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			// if cache is enabled and this file is cacheable
 			if ($options['cache_enabled'] && file_exists($localfile)){
 				// caching is enabled for this file
-				if(filesize($localfile) != 0 && (time()-filemtime($localfile)) < $options['cache_time']) {
+				$max_age = max(0, $options['cache_time'] - (time()-filemtime($localfile)));
+				if(filesize($localfile) != 0 && $max_age > 0) {
 					// cache is populated and not expired. read from the cache.
 					$content = file_get_contents($localfile);
 				} else {
@@ -118,26 +134,32 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 						$fp=fopen($localfile, "w");
 						fwrite($fp, $content); //write contents of feed to cache file
 						fclose($fp);
+						$max_age = $options['cache_time'];
 					}
 				}
 			} else {
 				// caching is not enabled for this file
 				$content = $this->get_rss_content($url);
 			}
-			return $content;
+			$result = array("content" => $content, "max-age" => $max_age);
+			return $result;
 		}
 
 		/**
 		 * Build the document by outputing XML headers and the content.
 		 */		
-		function print_document($content) {
+		function print_document($content, $url) {
 			if($content != FALSE) {
 				if (!isset($_REQUEST['debug'])) {
 					header('HTTP/1.1 200 OK');
 					header("Content-Type: text/xml");
-					print $content;
+					header("Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate");
+					print $content['content'];
 				} else {
-					print "<html><head></head><body><pre>" . preg_replace("/</", "&lt;", $content) . "</pre></body></html>";
+					print('HTTP/1.1 200 OK<br/>');
+					print("Content-Type: text/xml<br/>");
+					print("Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate<br/>");
+					print "<html><head></head><body>" . $url . " (" . strlen($url) . ")<br/>" . $_REQUEST['url'] . " (" . strlen($_REQUEST['url']) . ")<br/><pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
 				}
 			}
 		}
