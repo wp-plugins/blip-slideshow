@@ -10,7 +10,7 @@ A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and
 
 == Description ==
 
-**Whoops: v1.0.1 is broken out of the box. If you downloaded it, please delete and re-download v1.0.0.**
+**Whoops! v1.0.1 is broken out of the box. If you downloaded it, please delete and re-download v1.0.0.**
 
 A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
