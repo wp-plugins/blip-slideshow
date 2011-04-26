@@ -6,7 +6,7 @@ Requires at least: 2.7
 Tested up to: 3.1.1
 Stable tag: 1.0.0
 
-A WordPress slideshow plugin fed from a SmugMug or Flickr RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
 == Description ==
 
@@ -38,9 +38,10 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 = What are the main features? =
 
-* Reads SmugMug and Flickr Media RSS Feeds
+* Reads SmugMug, Flickr and MobileMe Media RSS Feeds
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
-* Caching of Media RSS Feeds for extra performance (must be enabled in Settings)
+* Supports caching of Media RSS Feeds for extra performance (must be enabled in Settings)
+* If possible, loads photos sized no bigger than the viewport (good for mobile browsing)
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
@@ -61,6 +62,10 @@ SmugMug has a [Help](http://www.smugmug.com/help/rss-atom-feeds "How to subscrib
 
 Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS and Atom Feeds") page. Also worth checking out is DeGrave.com's [Flickr RSS Feed Generator](http://www.degraeve.com/flickr-rss/).
 
+= Where can I find my MobileMe RSS feed URL? =
+
+Click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
+
 == Screenshots ==
 
 1. Blip running at [Ambient Photography](http://www.ambientphotography.ca/)
@@ -68,6 +73,12 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 1. Blip running at [Ambient Photography - Wedding Gallery](http://www.ambientphotography.ca/gallery/wedding-gallery/)
 
 == Changelog ==
+
+= 1.0.1 =
+* Release date: 2011-04-26
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Added Cache-Control header to the cached response for caching on the client as well as the server. Brilliant.
+* Handles RSS feeds that send HTTP redirects
 
 = 1.0.0 =
 * Release date: 2011-04-23
@@ -129,7 +140,7 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 = 0.1 =
 * Release date: 2011-04-16
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Compatible with SmugMug RSS feeds 
+* Compatible with SmugMug RSS feeds
 * Development began: 2011-04-11
 * Bundled with Slideshow-1.3.1
 
@@ -159,7 +170,7 @@ Though MooTools is used in compatibility mode and will function with most Javasc
 
 Although multiple slideshows per page are possible, only one of those slideshows can have a Lightbox.
 
-== External Plugin Compatibility ==
+== Lightbox Plugin Compatibility Guide ==
 
 * [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/): OK
 * [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/): failed - no visible error, just won't show slideshow pics
@@ -178,6 +189,9 @@ Although multiple slideshows per page are possible, only one of those slideshows
 * Enhance: Allow multiple slideshows with Slimboxes per page (find trigger for slideshow resume)
 * Enhance: Input validation
 * Enhance: Refactor cache code out of Blip code
+* Enhance: Read MobileMe RSS feeds
+* Enhance: Read Picasa Web RSS feeds
+* Enhance: Read Photobucket RSS feeds
 
 == Resources ==
 
@@ -212,3 +226,5 @@ Some information I found invaluable for this project:
 * http://wordpress.org/support/topic/how-to-use-wordpress-functions-outside-of-the-blog?replies=7
 * http://codex.wordpress.org/Integrating_WordPress_with_Your_Website
 * http://striderweb.com/nerdaphernalia/2008/06/wp-use-action-links/
+* http://www.mac-forums.com/forums/images-graphic-design-digital-photography/31805-photocast.html
+* http://forums.devshed.com/php-development-5/curl-get-final-url-after-inital-url-redirects-544144.html
