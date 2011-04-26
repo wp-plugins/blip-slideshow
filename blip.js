@@ -35,9 +35,10 @@ var Blip = new Class({
 		if(parser) {
 			var slideshowData = SlideshowHelper.createSlideshowData(parser.slideshowImages);
 			var myShow = new Slideshow(this.element, slideshowData, this.options);
-				if(this.link.lightboxHelper) {
+			if(this.link.lightboxHelper) {
 				this.link.lightboxHelper.addEvents(this.element, parser.slideshowImages, myShow);
 			}
+			console.log(slideshowData);
 		}
 	}
 });
@@ -94,14 +95,20 @@ var Link = new Class({
 var MediaRssParser = new Class({
 });
 MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml){
-	var generator = Slick.find(newResponseXml, 'generator').firstChild.nodeValue;
+	var generator = Slick.find(newResponseXml, 'generator');
+	if(generator) {
+		generator = generator.firstChild.nodeValue;
+	}
 	if(generator == "http://www.smugmug.com/") {
 		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
-	} if(generator == "http://www.flickr.com/") {
+	} else if(generator == "http://www.flickr.com/") {
 		return new FlickrRssParser(newLink, newResponseText, newResponseXml);
+	} else if(generator == "MobileMe") {
+		return new MobileMeRssParser(newLink, newResponseText, newResponseXml);
+	} else if(generator == "DotMac 1.0") {
+		return new DotMacRssParser(newLink, newResponseText, newResponseXml);
 	} else {
-		// unsupported RSS type
-		return;
+		return new GenericRssParser(newLink, newResponseText, newResponseXml);
 	}
 }
 
@@ -162,21 +169,87 @@ var FlickrRssParser = new Class({
 	Extends: MediaRssParser,
 	initialize: function(link, newResponseText, newResponseXml){
 		var items = Slick.search(newResponseXml, 'item');
-		var counter = 0;
 		var slideshowImages = new Array(items.length);
 		this.slideshowImages = slideshowImages;
+		var counter = 0;
 		items.each(function(item){
 			var image = {};
+			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
-			image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the Flickr gallery
-			image.caption = Slick.find(item, 'media_title').firstChild.nodeValue;
-			// image.largeUrl = Slick.find(item, 'media_content').getProperty('url'); // the sized image
-			image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the sized image
+			image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the sized image
+			// image.largeUrl = Slick.find(item, 'media_content').getProperty('url'); // the large image
+			image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the large image
 			// image.thumbUrl = Slick.find(item, 'media_thumbnail').getProperty('url'); // the thumbnail
 			image.thumbUrl = Slick.find(item, 'media_thumbnail').attributes[0].value; // the thumbnail
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;
 		}, this);
+	}
+});
+
+var MobileMeRssParser = new Class({
+	Extends: MediaRssParser,
+	initialize: function(link, newResponseText, newResponseXml){
+		var items = Slick.search(newResponseXml, 'entry');
+		var slideshowImages = new Array(items.length);
+		this.slideshowImages = slideshowImages;
+		var counter = 0;
+		items.each(function(item){
+			var image = {};
+			image.caption = Slick.find(item, 'dotmac_content').firstChild.nodeValue;
+			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Mobile Me gallery
+			image.slideUrl = image.hrefUrl + Slick.find(item, 'dotmac_webImagePath').firstChild.nodeValue; // the sized image
+			image.largeUrl = image.hrefUrl + Slick.find(item, 'dotmac_largeImagePath').firstChild.nodeValue; // the large image
+			link.setImageLink(image);
+			slideshowImages[counter++] = image;
+		}, this);
+	}
+});
+
+var DotMacRssParser = new Class({
+	Extends: MediaRssParser,
+	initialize: function(link, newResponseText, newResponseXml){
+		var items = Slick.search(newResponseXml, 'item');
+		var slideshowImages = new Array(items.length);
+		this.slideshowImages = slideshowImages;
+		var counter = 0;
+		items.each(function(item){
+			var image = {};
+			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
+			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Mobile Me gallery
+			// check for an enclosure
+			var enclosure = Slick.find(item, 'enclosure');
+			if(enclosure != null) {
+				image.slideUrl = enclosure.attributes[0].value;
+				image.largeUrl = image.slideUrl.replace(/web.jpg/,'large.jpg'); // the large image
+			} else {
+				var description = image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue;
+				console.log(description);
+			}
+			// there is also a hidden medium.jpg
+			link.setImageLink(image);
+			slideshowImages[counter++] = image;
+		}, this);
+	}
+});
+
+var GenericRssParser = new Class({
+	Extends: MediaRssParser,
+	initialize: function(link, newResponseText, newResponseXml){
+		var items = Slick.search(newResponseXml, 'item');
+		var slideshowImages = new Array(items.length);
+		this.slideshowImages = slideshowImages;
+		var counter = 0;
+		items.each(function(item){
+			var image = {};
+			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
+			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
+			image.slideUrl = image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the large image
+			image.thumbUrl = Slick.find(item, 'media_thumbnail').attributes[0].value; // the thumbnail
+			link.setImageLink(image);
+			slideshowImages[counter++] = image;
+		}, this);
+		console.log(slideshowImages);
 	}
 });
 

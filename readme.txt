@@ -78,11 +78,12 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 
 = 1.0.2 =
 * Added Date header to the Media RSS feed
-* Handles RSS feeds that send HTTP redirects
+* Added HTTPS support
 
 = 1.0.1 =
 * Release date: 2011-04-26
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* I DID NOT TEST 1.0.1 FOR THE CASE OF CACHING BEING DISABLED, AND IS THEREFORE BROKEN OUT-OF-THE BOX :-(
 * Added Cache-Control header to the Media RSS feed for caching on the client as well as the server.
 * Handles RSS feeds that send HTTP redirects
 
