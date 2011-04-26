@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.1
-Stable tag: 1.0.1
+Stable tag: 1.0.0
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
@@ -74,10 +74,14 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 
 == Changelog ==
 
+= 1.0.2 =
+* Added Date header to the Media RSS feed
+* Handles RSS feeds that send HTTP redirects
+
 = 1.0.1 =
 * Release date: 2011-04-26
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Added Cache-Control header to the cached response for caching on the client as well as the server. Brilliant.
+* Added Cache-Control header to the Media RSS feed for caching on the client as well as the server.
 * Handles RSS feeds that send HTTP redirects
 
 = 1.0.0 =
