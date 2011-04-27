@@ -157,7 +157,10 @@ Dependencies:
 			this.a = this.image = img;
 			if (Browser.ie && Browser.version >= 7)
 				this.a.style.msInterpolationMode = 'bicubic';
-			// this.a.set('styles', {'display': 'none'});
+			if(this.options.fast != 3) {
+				this.a.set('styles', {'display': 'none'});
+				this.options.fast = 2;
+			}
 			this.b = this.a.clone();
 			[this.a, this.b].each(function(img){
 				anchor.clone().cloneEvents(anchor).grab(img).inject(images);
