@@ -244,11 +244,11 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			// extract rss from shortcode attributes
 			$sample_feed = plugins_url('/sample_feed.php', __FILE__);
 			extract(shortcode_atts(array(
-				'captions' => 'false',
+				'captions' => 'true',
 				'center' => 'true',
-				'controller' => 'false',
+				'controller' => 'true',
 				'delay' => '2000',
-				'duration' => '750',
+				'duration' => '1000',
 				'fast' => 'false',
 				'height' => 'false',
 				'id' => 'show-' . $this->counter,
@@ -261,8 +261,10 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'resize' => 'fill',
 				'rss' => $sample_feed,
 				'slide' => 0,
-				'thumbnails' => 'false',
+				'thumbnails' => 'true',
 				'titles' => 'false',
+				'transition' => 'sine:in:out',
+				'type' => 'dissolve',
 				'width' => 'false'
 			), $atts));
 	
