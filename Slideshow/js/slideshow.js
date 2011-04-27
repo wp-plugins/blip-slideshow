@@ -159,6 +159,7 @@ Dependencies:
 				this.a.style.msInterpolationMode = 'bicubic';
 			if(this.options.fast != 3) {
 				this.a.set('styles', {'display': 'none'});
+			} else {
 				this.options.fast = 2;
 			}
 			this.b = this.a.clone();
