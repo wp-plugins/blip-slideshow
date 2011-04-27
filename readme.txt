@@ -1,18 +1,16 @@
 === Blip Slideshow ===
 Contributors: jasonhendriks
 Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
-Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
+Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
 == Description ==
 
-**Whoops! v1.0.1 is broken out of the box. If you downloaded it, please delete and re-download v1.0.0.**
-
-A WordPress slideshow plugin fed from a **SmugMug** or **Flickr** RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a **SmugMug**, **Flickr** or **MobileMe** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
@@ -40,7 +38,8 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 = What are the main features? =
 
-* Reads SmugMug, Flickr and MobileMe Media RSS Feeds
+* Verified to work with SmugMug, Flickr and MobileMe Media RSS Feeds
+* Theoretically compatible with any Media RSS Feed
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
 * Supports caching of Media RSS Feeds for extra performance (must be enabled in Settings)
 * If possible, loads photos sized no bigger than the viewport (good for mobile browsing)
@@ -53,8 +52,8 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 
 = What is Media RSS? =
 
-Media RSS (MRSS) is an RSS extension used for syndicating multimedia files (audio, video, image) in RSS feeds. Like your WordPress
-RSS news feed, media RSS lists pictures instead of articles from websites like *Flickr* and *SmugMug*.
+[Media RSS (MRSS)](http://www.rssboard.org/media-rss) is an RSS extension used for syndicating multimedia files (audio, video, image) in RSS feeds. Like your WordPress
+RSS news feed, media RSS lists pictures instead of articles from photo-sharing websites.
 
 = Where can I find my SmugMug RSS feed URL? =
 
@@ -77,8 +76,10 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.1.0 =
-* Compatible with MobileMe RSS feeds 
-* Compatible with "generic" RSS feeds 
+* Release date: 2011-04-27
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Compatible with MobileMe RSS feeds
+* (Hopefully) compatible with any RSS feed
 * Fixed bug closing two or more Colorbox Lightboxes on a page with multiple slideshows
 * More robust caching of Media RSS files, both client and server side
 * Added fast=3 option to eliminate a "blink" at the start of the slideshow (undocumented for now)
@@ -87,7 +88,7 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 = 1.0.1 =
 * Release date: 2011-04-26
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Whoops, broken out-of-the-box due to insufficient unit testing :-(
+* Whoops, broken out-of-the-box due to insufficient unit testing :-( My bad.
 * Handle RSS feeds that send HTTP redirects
 
 = 1.0.0 =

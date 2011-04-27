@@ -4,7 +4,7 @@
 		Plugin Name: Blip Slideshow
 		Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
 		Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
-		Version: 1.0.2
+		Version: 1.1.0
 		Author: Jason Hendriks
 		Author URI: http://jasonhendriks.com/
 		License: GPL version 3 or any later version
