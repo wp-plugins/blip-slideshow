@@ -3,7 +3,7 @@ Contributors: jasonhendriks
 Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
-Tested up to: 3.1.1
+Tested up to: 3.1.2
 Stable tag: 1.0.0
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
@@ -76,9 +76,13 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 
 == Changelog ==
 
-= 1.0.2 =
-* HTTPS support
+= 1.1.0 =
+* Compatible with MobileMe RSS feeds 
+* Compatible with "generic" RSS feeds 
+* Fixed bug closing two or more Colorbox Lightboxes on a page with multiple slideshows
 * More robust caching of Media RSS files, both client and server side
+* Added fast=3 option to eliminate a "blink" at the start of the slideshow (undocumented for now)
+* HTTPS support
 
 = 1.0.1 =
 * Release date: 2011-04-26
@@ -174,7 +178,7 @@ The first version. Yay!
 
 Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 
-Although multiple slideshows per page are possible, only one of those slideshows can have a Lightbox.
+Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
 
 == Lightbox Plugin Compatibility Guide ==
 
@@ -192,10 +196,8 @@ Although multiple slideshows per page are possible, only one of those slideshows
 
 == To Do ==
 
-* Enhance: Allow multiple slideshows with Slimboxes per page (find trigger for slideshow resume)
 * Enhance: Input validation
 * Enhance: Refactor cache code out of Blip code
-* Enhance: Read MobileMe RSS feeds
 * Enhance: Read Picasa Web RSS feeds
 * Enhance: Read Photobucket RSS feeds
 

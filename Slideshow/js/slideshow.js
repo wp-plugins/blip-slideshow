@@ -79,7 +79,7 @@ Dependencies:
 				this.options.href = anchor.get('href') || '';
 			if (this.options.hu.length && !this.options.hu.test(/\/$/)) 
 				this.options.hu += '/';
-			if (this.options.fast === true)
+			if (this.options.fast == true)
 				this.options.fast = 2;
 
 			// styles

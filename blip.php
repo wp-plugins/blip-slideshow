@@ -263,8 +263,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'slide' => 0,
 				'thumbnails' => 'false',
 				'titles' => 'false',
-				'width' => 'false',
-				'cache' => 'true'
+				'width' => 'false'
 			), $atts));
 	
 			// wordpress has encoded the HTML entities
@@ -274,7 +273,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			$callback_url = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
 			
 			// enable caching for this file?
-			if($cache != "false" && $options['cache_enabled']) {
+			if($options['cache_enabled']) {
 				$this->prep_cache($options, $rss);
 			}
 			

@@ -38,7 +38,6 @@ var Blip = new Class({
 			if(this.link.lightboxHelper) {
 				this.link.lightboxHelper.addEvents(this.element, parser.slideshowImages, myShow);
 			}
-			console.log(slideshowData);
 		}
 	}
 });
@@ -103,8 +102,6 @@ MediaRssParser.createParser = function(newLink, newResponseText, newResponseXml)
 		return new SmugMugRssParser(newLink, newResponseText, newResponseXml);
 	} else if(generator == "http://www.flickr.com/") {
 		return new FlickrRssParser(newLink, newResponseText, newResponseXml);
-	} else if(generator == "MobileMe") {
-		return new MobileMeRssParser(newLink, newResponseText, newResponseXml);
 	} else if(generator == "DotMac 1.0") {
 		return new DotMacRssParser(newLink, newResponseText, newResponseXml);
 	} else {
@@ -187,25 +184,6 @@ var FlickrRssParser = new Class({
 	}
 });
 
-var MobileMeRssParser = new Class({
-	Extends: MediaRssParser,
-	initialize: function(link, newResponseText, newResponseXml){
-		var items = Slick.search(newResponseXml, 'entry');
-		var slideshowImages = new Array(items.length);
-		this.slideshowImages = slideshowImages;
-		var counter = 0;
-		items.each(function(item){
-			var image = {};
-			image.caption = Slick.find(item, 'dotmac_content').firstChild.nodeValue;
-			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Mobile Me gallery
-			image.slideUrl = image.hrefUrl + Slick.find(item, 'dotmac_webImagePath').firstChild.nodeValue; // the sized image
-			image.largeUrl = image.hrefUrl + Slick.find(item, 'dotmac_largeImagePath').firstChild.nodeValue; // the large image
-			link.setImageLink(image);
-			slideshowImages[counter++] = image;
-		}, this);
-	}
-});
-
 var DotMacRssParser = new Class({
 	Extends: MediaRssParser,
 	initialize: function(link, newResponseText, newResponseXml){
@@ -220,11 +198,12 @@ var DotMacRssParser = new Class({
 			// check for an enclosure
 			var enclosure = Slick.find(item, 'enclosure');
 			if(enclosure != null) {
-				image.slideUrl = enclosure.attributes[0].value;
+				image.slideUrl = enclosure.attributes[0].value; // the sized image
 				image.largeUrl = image.slideUrl.replace(/web.jpg/,'large.jpg'); // the large image
 			} else {
-				var description = image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue;
-				console.log(description);
+				image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). alt=[\s\S]+/g,'$1'); // the sized image
+				image.slideUrl = image.slideUrl.replace(/.jpg[\s\S]+/,'/web.jpg'); // the large image
+				image.largeUrl = image.slideUrl.replace(/web.jpg/,'large.jpg'); // the large image
 			}
 			// there is also a hidden medium.jpg
 			link.setImageLink(image);
@@ -249,7 +228,6 @@ var GenericRssParser = new Class({
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;
 		}, this);
-		console.log(slideshowImages);
 	}
 });
 
@@ -314,14 +292,9 @@ var ColorboxHelper = new Class({
 	addEvents: function(newElement, newImages, newSlideshow) {
 		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
 			a.style.cursor = 'pointer';
-			jQuery('document').colorbox({
-				onClosed: function() {
-					newSlideshow.pause(0);
-				}
-			});
 		}).addEvent('click', function() {
 			var slide = newImages[newSlideshow.slide];
-			jQuery.colorbox({title:slide.caption, href:slide.largeUrl, width:"100%", height:"100%", scalePhotos:true});
+			jQuery.colorbox({title:slide.caption, href:slide.largeUrl, width:"100%", height:"100%", scalePhotos:true, onClosed: function() {newSlideshow.pause(0);}});
 			newSlideshow.pause(1);
 		});
 	}

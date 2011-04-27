@@ -46,7 +46,7 @@ if (file_exists($blog_header_path)) {
 		<media:group>
 			<media:content url="<?php echo plugins_url('Slideshow/images/2.jpg', __FILE__) ?>" fileSize="91128" type="image/jpeg" medium="image" width="446" height="640"/>
 			<media:thumbnail url="<?php echo plugins_url('Slideshow/images/2t.jpg', __FILE__) ?>" fileSize="16769" type="image/jpeg" medium="image" width="50" height="40"/>
-		<media:group>
+		</media:group>
 	</item>
 	<item>
 		<title>Landscape</title>
@@ -66,6 +66,7 @@ if (file_exists($blog_header_path)) {
 			<media:content url="<?php echo plugins_url('Slideshow/images/4.jpg', __FILE__) ?>" fileSize="120587" type="image/jpeg" medium="image" width="800" height="600">
 				<media:thumbnail url="<?php echo plugins_url('Slideshow/images/4t.jpg', __FILE__) ?>" fileSize="17448" type="image/jpeg" medium="image" width="50" height="40"/>
 			</media:content>
+		</media:group>
 	</item>
 </channel>
 </rss>
