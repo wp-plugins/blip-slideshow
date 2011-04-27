@@ -18,7 +18,7 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 == Installation ==
 
-1. Download Blip
+1. Download Blip Slideshow
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
@@ -156,6 +156,9 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 * Bundled with Slideshow-1.3.1
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Now with better caching, MobileMe RSS Feeds and WordPress installs running HTTPS.
 
 = 1.0.0 =
 Thanks for beta testing! The first official stable version offers caching and a CSS style in your theme directory.
