@@ -18,7 +18,7 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 == Installation ==
 
-1. Download Blip
+1. Download Blip Slideshow
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
