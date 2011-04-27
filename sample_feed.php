@@ -29,7 +29,7 @@ if (file_exists($blog_header_path)) {
 	<title>Blip Slideshow Samples Feed</title>
 	<description>This is the sample feed that comes bundled with Blip Slideshow</description>
 	<link>http://www.jasonhendriks.com/programmer/blip-slideshow/</link>
-	<lastBuildDate><?php echo date('r') ?></lastBuildDate>
+	<pubDate><?php echo date('r') ?></pubDate>
 	<item>
 		<title>Island Mountain</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Island Mountain&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/1.jpg', __FILE__) ?>" title="Island Mountain"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/1.jpg', __FILE__) ?>" width="720" height="540" alt="Island Mountain" title="Island Mountain" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
@@ -43,24 +43,29 @@ if (file_exists($blog_header_path)) {
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Amazement&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/2.jpg', __FILE__) ?>" title="Amazement"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/2.jpg', __FILE__) ?>" width="446" height="640" alt="Amazement" title="Amazement" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/2.jpg', __FILE__) ?></link>
 		<guid>2</guid>
-		<media:content url="<?php echo plugins_url('Slideshow/images/2.jpg', __FILE__) ?>" fileSize="91128" type="image/jpeg" medium="image" width="446" height="640"/>
-		<media:thumbnail url="<?php echo plugins_url('Slideshow/images/2t.jpg', __FILE__) ?>" fileSize="16769" type="image/jpeg" medium="image" width="50" height="40"/>
+		<media:group>
+			<media:content url="<?php echo plugins_url('Slideshow/images/2.jpg', __FILE__) ?>" fileSize="91128" type="image/jpeg" medium="image" width="446" height="640"/>
+			<media:thumbnail url="<?php echo plugins_url('Slideshow/images/2t.jpg', __FILE__) ?>" fileSize="16769" type="image/jpeg" medium="image" width="50" height="40"/>
+		<media:group>
 	</item>
 	<item>
 		<title>Landscape</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Landscape&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/3.jpg', __FILE__) ?>" title="Landscape"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/3.jpg', __FILE__) ?>" width="777" height="582" alt="Landscape" title="Landscape" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/3.jpg', __FILE__) ?></link>
 		<guid>3</guid>
-		<media:content url="<?php echo plugins_url('Slideshow/images/3.jpg', __FILE__) ?>" fileSize="118575" type="image/jpeg" medium="image" width="777" height="582"/>
-		<media:thumbnail url="<?php echo plugins_url('Slideshow/images/3t.jpg', __FILE__) ?>" fileSize="16807" type="image/jpeg" medium="image" width="50" height="40"/>
+		<media:content url="<?php echo plugins_url('Slideshow/images/3.jpg', __FILE__) ?>" fileSize="118575" type="image/jpeg" medium="image" width="777" height="582">
+			<media:thumbnail url="<?php echo plugins_url('Slideshow/images/3t.jpg', __FILE__) ?>" fileSize="16807" type="image/jpeg" medium="image" width="50" height="40"/>
+		</media:content>
 	</item>
 	<item>
 		<title>Tasty Spoon</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Tasty Spoon&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/4.jpg', __FILE__) ?>" title="Tasty Spoon"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/4.jpg', __FILE__) ?>" width="800" height="600" alt="Tasty Spoon" title="Tasty Spoon" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/4.jpg', __FILE__) ?></link>
 		<guid>4</guid>
-		<media:content url="<?php echo plugins_url('Slideshow/images/4.jpg', __FILE__) ?>" fileSize="120587" type="image/jpeg" medium="image" width="800" height="600"/>
-		<media:thumbnail url="<?php echo plugins_url('Slideshow/images/4t.jpg', __FILE__) ?>" fileSize="17448" type="image/jpeg" medium="image" width="50" height="40"/>
+		<media:group>
+			<media:content url="<?php echo plugins_url('Slideshow/images/4.jpg', __FILE__) ?>" fileSize="120587" type="image/jpeg" medium="image" width="800" height="600">
+				<media:thumbnail url="<?php echo plugins_url('Slideshow/images/4t.jpg', __FILE__) ?>" fileSize="17448" type="image/jpeg" medium="image" width="50" height="40"/>
+			</media:content>
 	</item>
 </channel>
 </rss>

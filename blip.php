@@ -4,7 +4,7 @@
 		Plugin Name: Blip Slideshow
 		Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
 		Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
-		Version: 1.0
+		Version: 1.0.2
 		Author: Jason Hendriks
 		Author URI: http://jasonhendriks.com/
 		License: GPL version 3 or any later version
@@ -49,7 +49,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		function Blip_Slideshow_Rss_Reader() {
 			$url = html_entity_decode(urldecode($_REQUEST['url']));
 			// check if we can talk to wordpress
-			if(false && function_exists("get_option")) {
+			if(function_exists("get_option")) {
 				// attempt to get the content from the cache
 				$result = $this->get_rss_content_from_cache($url);
 			} else {
@@ -130,8 +130,6 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 					$content = file_get_contents($localfile);
 					// prepare the result
 					$result = array("content" => $content, "max-age" => $max_age, "date" => $date);
-					// return the result
-					return $result;
 				} else {
 					// read from http
 					$result = $this->get_rss_content_from_http($url);
@@ -141,10 +139,13 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 						$fp=fopen($localfile, "w");
 						fwrite($fp, $result['content']); //write contents of feed to cache file
 						fclose($fp);
+						$result['max-age'] = $options['cache_time'];
+						$result['date'] = time();
 					}
-					// return the result
-					return $result;
 				}
+				// return the result
+				$result['cache'] = $localfile;
+				return $result;
 			} else {
 				// read from http and return the result
 				return $this->get_rss_content_from_http($url);
@@ -155,23 +156,41 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 * Build the document by outputing XML headers and the content.
 		 */		
 		function print_document($content, $url) {
-			$http_status = $_SERVER["SERVER_PROTOCOL"] . " 200 OK";
-			$content_type = "Content-Type: text/xml";
-			$date = "Date: " . date(DATE_RFC1123, $content['date']);  // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.18
-			$cache_control = "Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate";
 			if($content != FALSE) {
+				$http_status = $_SERVER["SERVER_PROTOCOL"] . " 200 OK";
+				$content_type = "Content-Type: text/xml";
+				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29
+				$date = "Last-Modified: " . date(DATE_RFC1123, $content['date']);
+				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
+				$cache_control = "Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate";
+				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45
+				$via = "Via: " . "1.0.0 Blip Slideshow";
+				if($content['cache'] != FALSE) {
+					$via .= " cachefile=" . preg_replace("/.*[\\/]/","",$content['cache']);
+				} else {
+					$via .= " no-cache";
+				}
+				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14
+				$content_location = "Content-Location: " . $_REQUEST['url'];
+				
+				// push headers
+				header($http_status);
+				header($date);
+				header($cache_control);
+				header($content_location);
+				header($via);
+
 				if (!isset($_REQUEST['debug'])) {
-					header($http_status);
 					header($content_type);
-					header($date);
-					header($cache_control);
 					print $content['content'];
 				} else {
 					print($http_status . "<br/>");
 					print($content_type . "<br/>");
 					print($date . "<br/>");
 					print($cache_control . "<br/>");
-					print "<html><head></head><body>" . $url . " (" . strlen($url) . ")<br/>" . $_REQUEST['url'] . " (" . strlen($_REQUEST['url']) . ")<br/><pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
+					print($content_location . "<br/>");
+					print($via . "<br/>");
+					print "<html><head></head><body><pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
 				}
 			}
 		}
