@@ -33,6 +33,10 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 == Frequently Asked Questions ==
 
+= How does it work? =
+
+Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
+
 = What are the main features? =
 
 * Verified to work with SmugMug, Flickr and MobileMe Media RSS Feeds
@@ -42,10 +46,6 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 * If possible, loads photos sized no bigger than the viewport (good for mobile browsing)
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
-
-= How does it work? =
-
-Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
 
 = What is Media RSS? =
 
