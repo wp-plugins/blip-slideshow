@@ -75,6 +75,16 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 
 == Changelog ==
 
+= 1.2.0 =
+* Not strictly backwards compatible with previous versions, as the following defaults have changed to match the out-of-the-box behavior of MooTools Slideshow2: controller=true, delay=2000, duration=1000, thumbnails=true
+* New documentation: see [Internal Examples](http://www.jasonhendriks.com/programmer/blip-slideshow/blip-slideshow-examples/) and [External Examples](http://www.jasonhendriks.com/programmer/blip-slideshow/blip-slideshow-external-examples/) and [Styling](http://www.jasonhendriks.com/programmer/blip-slideshow/styling-blip-slideshow/)
+* New Slideshow types: flash, fold, kenburns and push - see the new type option
+* New option color - controls the colour of the flash show
+* New option pan - controls the pan for the kenburns show
+* New option zoom - controls the zoom for the kenburns show
+* New option transition - controls the transition for the push show
+* The out-of-the box MooTools Slideshow2 slideshow.css file is back
+
 = 1.1.0 =
 * Release date: 2011-04-27
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
