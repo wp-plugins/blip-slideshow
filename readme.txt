@@ -31,10 +31,6 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 >[slideshow rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
 
-*As a slideshow with thumbs and captions:*
-
->[slideshow captions=true thumbnails=true rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
-
 == Frequently Asked Questions ==
 
 = What are the main features? =
