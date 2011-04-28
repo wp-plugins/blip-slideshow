@@ -3535,7 +3535,9 @@ Element.implement({
 		} else if (value == String(Number(value))){
 			value = Math.round(value);
 		}
-		this.style[property] = value;
+		if(this.style[property]) {
+			this.style[property] = value;
+		}
 		return this;
 	},
 
