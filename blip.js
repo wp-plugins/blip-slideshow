@@ -55,8 +55,6 @@ var Blip = new Class({
 
 var Link = new Class({
 	initialize: function(link, width, height) {
-		console.log(width);
-		console.log(height);
 		this.link = link;
 		this.width = width;
 		this.height = height;
