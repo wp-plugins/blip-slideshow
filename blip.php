@@ -262,8 +262,8 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'loader' => 'true',
 				'loop' => 'true',
 				'overlap' => 'true',
-				'paused' => 'false',
 				'pan' => '100, 100',
+				'paused' => 'false',
 				'random' => 'false',
 				'resize' => 'fill',
 				'rss' => $sample_feed,
@@ -331,7 +331,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 			
 			if($this->kenburns_slideshow) {
-				$output .= "pan: " . "['" . preg_replace("/,/","','",$pan) . "']" . ", zoom: " . "['" . preg_replace("/,/","','",$zoom) . "'], ";
+				$output .= "pan: " . "[" . $pan . "]" . ", zoom: " . "[" . $zoom . "], ";
 			}
 	
 			// build remainder of script options
