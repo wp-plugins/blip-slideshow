@@ -308,6 +308,11 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				$link = "full";
 			}
 	
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![if !IE]>";
+			}
+	
 			// build Javascript output
 			$output .= '<script type="text/javascript">
 			//<![CDATA[
@@ -346,6 +351,10 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 			$output .= '</div>';
 		
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![endif]>";
+			}
 			return $output;
 		}
 	
