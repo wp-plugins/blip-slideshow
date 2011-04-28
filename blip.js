@@ -313,7 +313,8 @@ var ColorboxHelper = new Class({
 	isColorbox: function() {
 		return true;
 	},
-	addEvents: function(newElement, newImages, newSlideshow) {
+	addEvents: function(newElement, newImages, newSlideshow) {
+
 		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
 			a.style.cursor = 'pointer';
 		}).addEvent('click', function() {

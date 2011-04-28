@@ -47,7 +47,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 * Get the content of the Media RSS URL either directly, or if caching is available, from the cache.
 		 */
 		function Blip_Slideshow_Rss_Reader() {
-			$url = html_entity_decode(urldecode($_REQUEST['url']));
+			$url = html_entity_decode(urldecode($_REQUEST['url']));
+
 			// check if we can talk to wordpress
 			if(function_exists("get_option")) {
 				// attempt to get the content from the cache
@@ -457,20 +458,21 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		 * Register links to the Settings page in the list of Plugins and in the Settings menu
 		 */
 		function add_admin_menu_item() {
-      if (current_user_can('manage_options')) {
-        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
+			if (current_user_can('manage_options')) {
+
+      	add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
 				add_options_page(BLIP_SLIDESHOW_NAME, BLIP_SLIDESHOW_NAME, 'manage_options', BLIP_SLIDESHOW_DOMAIN, array( $this, 'display_admin_page') );
 			}
 		}
-		
+
 		/**
 		 * Build the hyperlink for the list of Plugins
 		 */
 		function plugin_settings_link($links) {
-      $settings_link = '<a href="options-general.php?page=' . BLIP_SLIDESHOW_DOMAIN . '">' . __('Settings', BLIP_SLIDESHOW_DOMAIN) . '</a>';
-      $links[] = $settings_link;
-      return $links;
-    }
+			$settings_link = '<a href="options-general.php?page=' . BLIP_SLIDESHOW_DOMAIN . '">' . __('Settings', BLIP_SLIDESHOW_DOMAIN) . '</a>';
+			$links[] = $settings_link;
+			return $links;
+		}
 	
 		/**
 		 * Output the HTML for the Settings page
@@ -500,9 +502,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			</div>
 			<?php 
 		}
-	
 	}
-
 }
 
 // check if the request is to read a Media RSS URL
