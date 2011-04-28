@@ -202,6 +202,11 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 	class Blip_Slideshow {
 		var $counter = 0;
 		var $add_script = false;
+		
+		var $flash_slideshow = false;
+		var $fold_slideshow = false;
+		var $kenburns_slideshow = false;
+		var $push_slideshow = false;
 			
 		function Blip_Slideshow() {
 			register_activation_hook( __FILE__, array( $this, 'create_options') );
@@ -246,6 +251,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			extract(shortcode_atts(array(
 				'captions' => 'true',
 				'center' => 'true',
+				'color' => "#FFF",
 				'controller' => 'true',
 				'delay' => '2000',
 				'duration' => '1000',
@@ -257,6 +263,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'loop' => 'true',
 				'overlap' => 'true',
 				'paused' => 'false',
+				'pan' => '100, 100',
 				'random' => 'false',
 				'resize' => 'fill',
 				'rss' => $sample_feed,
@@ -264,22 +271,34 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				'thumbnails' => 'true',
 				'titles' => 'false',
 				'transition' => 'sine:in:out',
-				'type' => 'dissolve',
-				'width' => 'false'
+				'type' => '',
+				'width' => 'false',
+				'zoom' => '50, 50'
 			), $atts));
+
+			// determine which alternative Slideshow, if any, are to be used
+			if($type == "flash") {
+				$this->flash_slideshow = true;
+			} else if ($type == "fold") {
+				$this->fold_slideshow = true;
+			} else if($type =="kenburns") {
+				$this->kenburns_slideshow = true;
+			} else if($type == "push") {
+				$this->push_slideshow = true;
+			}
 	
 			// wordpress has encoded the HTML entities
-			$rss = html_entity_decode($rss);
-	
-			// santize the rss url
-			$callback_url = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($rss);
-			
+			$decoded_rss = html_entity_decode($rss);
+
 			// enable caching for this file?
 			if($options['cache_enabled']) {
 				$this->prep_cache($options, $rss);
 			}
 			
-			// handle lightbox link options
+			// massage the rss url
+			$callback_url = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($decoded_rss);
+			
+			// massage link option
 			if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
 				$link = "slimbox";
 			} else if($link == 'lightbox' && (class_exists('wp_lightboxplus') || class_exists('GameplorersWPColorBox') || class_exists('jQueryLightboxForNativeGalleries'))) {
@@ -305,10 +324,19 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			} else {
 				$output .= "resize: '$resize', ";
 			}
+			
+			if($this->flash_slideshow) {
+				// massage the colour option
+				$output .= "color: " . "['" . preg_replace("/,/","','",$color) . "']" . ", ";
+			}
+			
+			if($this->kenburns_slideshow) {
+				$output .= "pan: " . "['" . preg_replace("/,/","','",$pan) . "']" . ", zoom: " . "['" . preg_replace("/,/","','",$zoom) . "'], ";
+			}
 	
 			// build remainder of script options
-			$output .= "captions: " . $captions . ", center: " . $center .", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", thumbnails: " . $thumbnails . ', width: ' . $width . "};";
-			$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($callback_url) . ', ' . json_encode($link) . ', options); });
+			$output .= "captions: " . $captions . ", center: " . $center . ", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", transition: '" . $transition . "', thumbnails: " . $thumbnails . ", width: " . $width . "};";
+			$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($callback_url) . ', ' . json_encode($link) . ', ' . json_encode($type) . ', options); });
 			//]] >
 			</script><div id="' . $id . '" class="slideshow">';
 			
@@ -384,11 +412,26 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				}
 
 				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));
-				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__));
-				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), null, false, false);
-	
 				wp_print_scripts( 'mootools-more' );
+				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__));
 				wp_print_scripts( 'slideshow2' );
+				if($this->flash_slideshow) {
+					wp_register_script( 'slideshow2-flash', plugins_url('/Slideshow/js/slideshow.flash.js', __FILE__));
+					wp_print_scripts( 'slideshow2-flash' );
+				}
+				if($this->fold_slideshow) {
+					wp_register_script( 'slideshow2-fold', plugins_url('/Slideshow/js/slideshow.fold.js', __FILE__));
+					wp_print_scripts( 'slideshow2-fold' );
+				}
+				if($this->kenburns_slideshow) {
+					wp_register_script( 'slideshow2-kenburns', plugins_url('/Slideshow/js/slideshow.kenburns.js', __FILE__));
+					wp_print_scripts( 'slideshow2-kenburns' );
+				}
+				if($this->push_slideshow) {
+					wp_register_script( 'slideshow2-push', plugins_url('/Slideshow/js/slideshow.push.js', __FILE__));
+					wp_print_scripts( 'slideshow2-push' );
+				}
+				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), null, false, false);
 				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
 			}
 		}

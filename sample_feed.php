@@ -31,7 +31,7 @@ if (file_exists($blog_header_path)) {
 	<link>http://www.jasonhendriks.com/programmer/blip-slideshow/</link>
 	<pubDate><?php echo date('r') ?></pubDate>
 	<item>
-		<title>Island Mountain</title>
+		<title>1</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Island Mountain&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/1.jpg', __FILE__) ?>" title="Island Mountain"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/1.jpg', __FILE__) ?>" width="720" height="540" alt="Island Mountain" title="Island Mountain" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/1.jpg', __FILE__) ?></link>
 		<guid>1</guid>
@@ -39,7 +39,7 @@ if (file_exists($blog_header_path)) {
 		<media:thumbnail url="<?php echo plugins_url('Slideshow/images/1t.jpg', __FILE__) ?>" fileSize="16831" type="image/jpeg" medium="image" width="50" height="40"/>
 	</item>
 	<item>
-		<title>Amazement</title>
+		<title>2</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Amazement&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/2.jpg', __FILE__) ?>" title="Amazement"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/2.jpg', __FILE__) ?>" width="446" height="640" alt="Amazement" title="Amazement" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/2.jpg', __FILE__) ?></link>
 		<guid>2</guid>
@@ -49,7 +49,7 @@ if (file_exists($blog_header_path)) {
 		</media:group>
 	</item>
 	<item>
-		<title>Landscape</title>
+		<title>3</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Landscape&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/3.jpg', __FILE__) ?>" title="Landscape"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/3.jpg', __FILE__) ?>" width="777" height="582" alt="Landscape" title="Landscape" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/3.jpg', __FILE__) ?></link>
 		<guid>3</guid>
@@ -58,7 +58,7 @@ if (file_exists($blog_header_path)) {
 		</media:content>
 	</item>
 	<item>
-		<title>Tasty Spoon</title>
+		<title>4</title>
 		<description>&lt;p&gt;&lt;a href="http://www.jasonhendriks.com/programmer/HollysSlideshow/"&gt;Holly's Slideshow&lt;/a&gt;&lt;br /&gt;Tasty Spoon&lt;/p&gt;&lt;p&gt;&lt;a href="<?php echo plugins_url('Slideshow/images/4.jpg', __FILE__) ?>" title="Tasty Spoon"&gt;&lt;img src="<?php echo plugins_url('/Slideshow/images/4.jpg', __FILE__) ?>" width="800" height="600" alt="Tasty Spoon" title="Tasty Spoon" style="border: 1px solid #000000;" /&gt;&lt;/a&gt;&lt;/p&gt;</description>
 		<link><?php echo plugins_url('/Slideshow/images/4.jpg', __FILE__) ?></link>
 		<guid>4</guid>

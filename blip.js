@@ -20,9 +20,10 @@
  
 var Blip = new Class({
   Implements: [Options],
-  initialize: function(element, rss, link, options){
+  initialize: function(element, rss, link, type, options){
 		this.element = element;
 		this.link = new Link(link);
+		this.type = type;
 		this.setOptions(options);
 		new Request({
 			url: rss,
@@ -34,7 +35,18 @@ var Blip = new Class({
 		var parser = MediaRssParser.createParser(this.link, newResponseText, newResponseXml);
 		if(parser) {
 			var slideshowData = SlideshowHelper.createSlideshowData(parser.slideshowImages);
-			var myShow = new Slideshow(this.element, slideshowData, this.options);
+			if(this.type == "flash") {
+				var myShow = new Slideshow.Flash(this.element, slideshowData, this.options);
+			} else if(this.type == "fold") {
+				var myShow = new Slideshow.Fold(this.element, slideshowData, this.options);
+			} else if(this.type == "kenburns") {
+				var myShow = new Slideshow.KenBurns(this.element, slideshowData, this.options);
+			} else if(this.type == "push") {
+				var myShow = new Slideshow.Push(this.element, slideshowData, this.options);
+			} else {
+				var myShow = new Slideshow(this.element, slideshowData, this.options);
+			}
+				
 			if(this.link.lightboxHelper) {
 				this.link.lightboxHelper.addEvents(this.element, parser.slideshowImages, myShow);
 			}
