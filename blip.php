@@ -47,7 +47,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 * Get the content of the Media RSS URL either directly, or if caching is available, from the cache.
 		 */
 		function Blip_Slideshow_Rss_Reader() {
-			$url = html_entity_decode(urldecode($_REQUEST['url']));
+			$url = html_entity_decode(urldecode($_REQUEST['url']));
+
 			// check if we can talk to wordpress
 			if(function_exists("get_option")) {
 				// attempt to get the content from the cache
@@ -308,6 +309,11 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				$link = "full";
 			}
 	
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![if !IE]>";
+			}
+	
 			// build Javascript output
 			$output .= '<script type="text/javascript">
 			//<![CDATA[
@@ -346,6 +352,10 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 			$output .= '</div>';
 		
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![endif]>";
+			}
 			return $output;
 		}
 	
@@ -447,7 +457,8 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		 * Register links to the Settings page in the list of Plugins and in the Settings menu
 		 */
 		function add_admin_menu_item() {
-      if (current_user_can('manage_options')) {
+      if (current_user_can('manage_options')) {
+
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
 				add_options_page(BLIP_SLIDESHOW_NAME, BLIP_SLIDESHOW_NAME, 'manage_options', BLIP_SLIDESHOW_DOMAIN, array( $this, 'display_admin_page') );
 			}
