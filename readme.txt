@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
@@ -14,6 +14,7 @@ A WordPress slideshow plugin fed from a **SmugMug**, **Flickr** or **MobileMe** 
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
+
 Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know</a> so I can grab a screenshot :-)
 
 == Installation ==
@@ -76,7 +77,9 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.0 =
-* Not strictly backwards compatible with previous versions, as the following defaults have changed to match the out-of-the-box behavior of MooTools Slideshow2: controller=true, delay=2000, duration=1000, thumbnails=true
+* Release date: 2011-04-28
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Not strictly backwards compatible with previous versions, as the following defaults have changed to match the out-of-the-box behavior of MooTools Slideshow2: captions=true, controller=true, delay=2000, duration=1000, thumbnails=true
 * New documentation: see [Internal Examples](http://www.jasonhendriks.com/programmer/blip-slideshow/blip-slideshow-examples/) and [External Examples](http://www.jasonhendriks.com/programmer/blip-slideshow/blip-slideshow-external-examples/) and [Styling](http://www.jasonhendriks.com/programmer/blip-slideshow/styling-blip-slideshow/)
 * New Slideshow types: flash, fold, kenburns and push - see the new type option
 * New option color - controls the colour of the flash show
@@ -166,6 +169,9 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 * Bundled with Slideshow-1.3.1
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Defaults have changed! Check the changelog. New slideshow types: Flash, Fold, Ken Burns and Push
 
 = 1.1.0 =
 Now with better caching, MobileMe RSS Feeds and WordPress installs running HTTPS.
