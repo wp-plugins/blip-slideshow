@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
@@ -27,7 +27,7 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 **Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
 
-*As a simple slideshow:*
+*A simple slideshow example:*
 
 >[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
 
@@ -71,6 +71,11 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 1. Blip running at [Ambient Photography - Wedding Gallery](http://www.ambientphotography.ca/gallery/wedding-gallery/)
 
 == Changelog ==
+
+= 1.2.1 =
+* Release date: 2011-04-28
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Flickr images will load in high-resolution if a big enough width or height are passed to Blip
 
 = 1.2.0 =
 * Release date: 2011-04-28

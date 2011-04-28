@@ -184,13 +184,14 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 					header($content_type);
 					print $content['content'];
 				} else {
+					print("<html><head></head><body>");
 					print($http_status . "<br/>");
 					print($content_type . "<br/>");
 					print($date . "<br/>");
 					print($cache_control . "<br/>");
 					print($content_location . "<br/>");
 					print($via . "<br/>");
-					print "<html><head></head><body><pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
+					print "<pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
 				}
 			}
 		}

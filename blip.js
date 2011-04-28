@@ -22,7 +22,7 @@ var Blip = new Class({
   Implements: [Options],
   initialize: function(element, rss, link, type, options){
 		this.element = element;
-		this.link = new Link(link);
+		this.link = new Link(link, options.width, options.height);
 		this.type = type;
 		this.setOptions(options);
 		new Request({
@@ -46,7 +46,6 @@ var Blip = new Class({
 			} else {
 				var myShow = new Slideshow(this.element, slideshowData, this.options);
 			}
-				
 			if(this.link.lightboxHelper) {
 				this.link.lightboxHelper.addEvents(this.element, parser.slideshowImages, myShow);
 			}
@@ -55,8 +54,12 @@ var Blip = new Class({
 });
 
 var Link = new Class({
-	initialize: function(link) {
+	initialize: function(link, width, height) {
+		console.log(width);
+		console.log(height);
 		this.link = link;
+		this.width = width;
+		this.height = height;
 		this.lightboxHelper = LightboxHelper.createLightboxHelper(link);
 		if(link == "full" || link == "true") {
 			this.linkNum = 1;
@@ -87,6 +90,9 @@ var Link = new Class({
 		} else {
 			return true;
 		}
+	},
+	isImageBigEnough: function(imageWidth, imageHeight) {
+		return imageWidth >= this.width && imageHeight >= this.height;
 	},
 	setImageLink: function(image) {
 		if(this.linkNum == 1) {
@@ -185,10 +191,14 @@ var FlickrRssParser = new Class({
 			var image = {};
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
-			image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the sized image
-			// image.largeUrl = Slick.find(item, 'media_content').getProperty('url'); // the large image
+			var description = Slick.find(item, 'description').firstChild.nodeValue;
+			image.slideUrl = description.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the sized image
+			var slideWidth = parseInt(description.replace(/[\s\S]+width=\"(\d+)\"[\s\S]+/gm, '$1')); // the sized image width
+			var slideHeight = parseInt(description.replace(/[\s\S]+height=\"(\d+)\"[\s\S]+/gm, '$1')); // the sized image height
 			image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the large image
-			// image.thumbUrl = Slick.find(item, 'media_thumbnail').getProperty('url'); // the thumbnail
+			if(!link.isImageBigEnough(slideWidth, slideHeight)) {
+				image.slideUrl = image.largeUrl;
+			}
 			image.thumbUrl = Slick.find(item, 'media_thumbnail').attributes[0].value; // the thumbnail
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;
