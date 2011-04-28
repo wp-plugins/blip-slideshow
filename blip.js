@@ -90,7 +90,11 @@ var Link = new Class({
 		}
 	},
 	isImageBigEnough: function(imageWidth, imageHeight) {
-		return imageWidth >= this.width && imageHeight >= this.height;
+		if(!this.width || !this.height) {
+			return imageWidth >= this.width && imageHeight >= this.height;
+		} else {
+			return imageWidth >= this.width || imageHeight >= this.height;
+		}
 	},
 	setImageLink: function(image) {
 		if(this.linkNum == 1) {
@@ -309,7 +313,8 @@ var ColorboxHelper = new Class({
 	isColorbox: function() {
 		return true;
 	},
-	addEvents: function(newElement, newImages, newSlideshow) {
+	addEvents: function(newElement, newImages, newSlideshow) {
+
 		$$('div#'+newElement+' div.slideshow-images a').each(function(a) {
 			a.style.cursor = 'pointer';
 		}).addEvent('click', function() {
