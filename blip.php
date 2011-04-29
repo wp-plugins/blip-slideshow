@@ -116,7 +116,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
 			
 			// determine the read/write paths
-			$result = Blip_Slideshow::build_cache_paths($options, $url);
+			$result = Blip_Slideshow_Cache::build_cache_paths($options, $url);
 			$cache_dir = $result["cache_dir"];
 			$localfile = $result["cache_file"];
 	
@@ -200,7 +200,11 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 	}
 }
 
-if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
+if(!class_exists("Blip_Slideshow")) {
+
+	/**
+	 * Blip_Slideshow handles the generation of the slideshow HTML script.
+	 */
 	class Blip_Slideshow {
 		var $counter = 0;
 		var $add_script = false;
@@ -211,40 +215,65 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		var $push_slideshow = false;
 			
 		function Blip_Slideshow() {
-			register_activation_hook( __FILE__, array( $this, 'create_options') );
-			register_uninstall_hook( __FILE__, array( $this, 'destroy_options') );
-			add_shortcode( 'slideshow', array( $this, 'blip_create_slideshow') );
+			add_shortcode( 'slideshow', array( $this, 'slideshow_shortcode') );
+			add_shortcode( 'blip-version', array( $this, 'version_shortcode') );
 			add_action( 'wp_footer', array( $this, 'add_footer_scripts') );
-			add_action("admin_init", array($this, "register_options"));
-			add_action( 'admin_menu', array( $this, 'add_admin_menu_item') );
 			$this->add_header_scripts();
-			// beta versions of Blip used a different option name (up to v0.4.2).
-			// TODO: This line will be removed for v1.0.2
-			delete_option("blip"); // remove the old settings
 		}
 	
 		/**
-		 * When Blip is activated, set up the default values in the database
+		 * Shortcode to return the current plugin version.
+		 * From http://code.garyjones.co.uk/get-wordpress-plugin-version/
+		 *
+		 * @return string Plugin version
 		 */
-		function create_options() {
-			$options = array();
-			$options['cache_enabled'] = false;
-			$options['cache_dir'] = "cache";
-			$options['cache_time'] = 3600;
-			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
+		function version_shortcode() {
+			if ( ! function_exists( 'get_plugins' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			}
+			$plugin_folder = get_plugins( '/' . plugin_basename( dirname( __FILE__ ) ) );
+			$plugin_file = basename( ( __FILE__ ) );
+			return $plugin_folder[$plugin_file]['Version'];
 		}
 
 		/**
-		 * When Blip is deleted, remove the options from the database
+		 * External function to build the slideshow.
+		 * The DIV HTML must be build externally.
 		 */
-		function destroy_options() {
-			delete_option(BLIP_SLIDESHOW_DOMAIN);
+		public function slideshow($atts) {
+			echo $this->create_slideshow($atts);
 		}
-	
-		function blip_create_slideshow($atts, $content = null) {
+
+		/**
+		 * Shortcode to build the slideshow.
+		 *
+		 * @return string The Slideshow script HTML, including the DIV HTML
+		 */
+		function slideshow_shortcode($atts, $content) {
+			$script = $this->create_slideshow($atts, $content);
+			extract(shortcode_atts(array(
+				'id' => 'show-' . $this->counter,
+			), $atts));
+			$script .= '<div id="' . $id . '" class="slideshow">';
+			
+			// the contents of the shortcode
+			if(!empty( $content )) {
+				$script .= '<span class="slideshow-content">' . $content . '</span>';
+			}
+
+			$script .= '</div>';
+			return $script;
+		}
+
+		/**
+		 * Builds the slideshow.
+		 *
+		 * @return string The Slideshow script HTML
+		 */
+		function create_slideshow($atts) {
 			$this->counter++;
 			$this->add_script = true;
-			
+
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
 
@@ -294,7 +323,7 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 
 			// enable caching for this file?
 			if($options['cache_enabled']) {
-				$this->prep_cache($options, $rss);
+				Blip_Slideshow_Cache::prep_cache($options, $rss);
 			}
 			
 			// massage the rss url
@@ -343,30 +372,100 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 	
 			// build remainder of script options
 			$output .= "captions: " . $captions . ", center: " . $center . ", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", transition: '" . $transition . "', thumbnails: " . $thumbnails . ", width: " . $width . "};";
-			$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($callback_url) . ', ' . json_encode($link) . ', ' . json_encode($type) . ', options); });
+			$output .= "new Blip(" . json_encode($id) . ", " . json_encode($callback_url) . ", " . json_encode($link) . ", " . json_encode($type) . ", options); });
 			//]] >
-			</script><div id="' . $id . '" class="slideshow">';
-			
-			// the contents of the shortcode
-			if(!empty( $content )) {
-				$output .= '<span class="slideshow-content">' . $content . '</span>';
-			}
-			$output .= '</div>';
-		
+			</script>";
+
 			// Slideshow.Fold is broken in IE8
 			if($type == "fold") {
 				$output .= "<![endif]>";
 			}
 			return $output;
 		}
+
+		/**
+		 * The MooTools script must be loaded in the header so that it is ready to be called by the slideshow inline scripts
+		 */
+		function add_header_scripts() {
+			if (!is_admin()) {
+				// register MooTools script
+				wp_register_script('mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__), false, null);
+				wp_enqueue_script('mootools');
+			}
+		}
 	
+		/**
+		 * The remaining scripts can be loaded in the footer, only if they are needed
+		 */
+		function add_footer_scripts() {
+			if ( $this->add_script ) {
+
+				// register Slideshow stylesheet
+				wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__), false, null);
+				wp_print_styles( 'slideshow2');
+
+				// register optional, user-customized Blip-Slideshow stylesheet
+				if(file_exists(get_theme_root() . '/' . get_template() . '/blip-slideshow.css')) {
+					wp_register_style( 'blip-slideshow', get_bloginfo("stylesheet_directory") . "/blip-slideshow.css", array('slideshow2'));
+					wp_print_styles( 'blip-slideshow' );
+				}
+
+				// register MooTools More script
+				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__), array('mootools'), null);
+				wp_print_scripts( 'mootools-more' );
+
+				// register Slideshow script
+				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__), array('mootools-more'), null);
+				wp_print_scripts( 'slideshow2' );
+
+				// register Slideshow Flash script
+				if($this->flash_slideshow) {
+					wp_register_script( 'slideshow2-flash', plugins_url('/Slideshow/js/slideshow.flash.js', __FILE__), array('slideshow2'), null);
+					wp_print_scripts( 'slideshow2-flash' );
+				}
+
+				// register Slideshow Fold script
+				if($this->fold_slideshow) {
+					wp_register_script( 'slideshow2-fold', plugins_url('/Slideshow/js/slideshow.fold.js', __FILE__), array('slideshow2'), null);
+					wp_print_scripts( 'slideshow2-fold' );
+				}
+
+				// register Slideshow Ken Burns script
+				if($this->kenburns_slideshow) {
+					wp_register_script( 'slideshow2-kenburns', plugins_url('/Slideshow/js/slideshow.kenburns.js', __FILE__), array('slideshow2'), null);
+					wp_print_scripts( 'slideshow2-kenburns' );
+				}
+
+				// register Slideshow Push script
+				if($this->push_slideshow) {
+					wp_register_script( 'slideshow2-push', plugins_url('/Slideshow/js/slideshow.push.js', __FILE__), array('slideshow2'), null);
+					wp_print_scripts( 'slideshow2-push' );
+				}
+
+				// register Blip script
+				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), array('slideshow2'), null);
+				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
+			}
+		}
+	
+
+	}
+
+}
+
+if(!class_exists("Blip_Slideshow_Cache")) {
+
+	/**
+	 * Blip_Slideshow_Cache provides two utilitie functions for reading and writing to the cached RSS file
+	 */
+	class Blip_Slideshow_Cache {
 		/**
 		 * Caching is enabled. Retrieve the preferred cache directory name. Create the cache directory and cache file.
 		 * Input is the $options retrieved from the database and the raw_url_encoded RSS URL
 		 */ 
 		function prep_cache($options, $rss) {
 			// determine the read/write paths
-			$result = $this->build_cache_paths($options, $rss);
+			$result = Blip_Slideshow_Cache::build_cache_paths($options, $rss);
 			$cache_dir = $result["cache_dir"];
 			$localfile = $result["cache_file"];
 			
@@ -404,47 +503,42 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			$result = array("cache_dir" => $cache_dir, "cache_file" => $localfile);
 			return $result;
 		}
-	
-		function add_header_scripts() {
-			if (!is_admin()) {
-				wp_register_script('mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__));
-				wp_enqueue_script('mootools');
-			}
+	}
+}
+
+if(!class_exists("Blip_Slideshow_Admin")) {
+
+	/**
+	 * Blip_Slideshow_Admin provides the installation, removal and settings functions
+	 */
+	class Blip_Slideshow_Admin {
+
+		function Blip_Slideshow_Admin() {
+			register_activation_hook( __FILE__, array( $this, 'create_options') );
+			register_uninstall_hook( __FILE__, array( $this, 'destroy_options') );
+			add_action("admin_init", array($this, "register_options"));
+			add_action( 'admin_menu', array( $this, 'add_admin_menu_item') );
+			// beta versions of Blip used a different option name (up to v0.4.2).
+			// TODO: This line will be removed in a future version
+			delete_option("blip"); // remove the old settings
 		}
-	
-		function add_footer_scripts() {
-			if ( $this->add_script ) {
-				wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__));
-				wp_print_styles( 'slideshow2');
 
-				if(file_exists(get_theme_root() . '/' . get_template() . '/blip-slideshow.css')) {
-					?><link rel='stylesheet' id='blip-slideshow-css' href='<?php bloginfo("stylesheet_directory") ?>/blip-slideshow.css?ver=3.1' type='text/css' media='all' />
-<?php
-				}
+		/**
+		 * When Blip is activated, set up the default values in the database
+		 */
+		function create_options() {
+			$options = array();
+			$options['cache_enabled'] = false;
+			$options['cache_dir'] = "cache";
+			$options['cache_time'] = 3600;
+			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
+		}
 
-				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__));
-				wp_print_scripts( 'mootools-more' );
-				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__));
-				wp_print_scripts( 'slideshow2' );
-				if($this->flash_slideshow) {
-					wp_register_script( 'slideshow2-flash', plugins_url('/Slideshow/js/slideshow.flash.js', __FILE__));
-					wp_print_scripts( 'slideshow2-flash' );
-				}
-				if($this->fold_slideshow) {
-					wp_register_script( 'slideshow2-fold', plugins_url('/Slideshow/js/slideshow.fold.js', __FILE__));
-					wp_print_scripts( 'slideshow2-fold' );
-				}
-				if($this->kenburns_slideshow) {
-					wp_register_script( 'slideshow2-kenburns', plugins_url('/Slideshow/js/slideshow.kenburns.js', __FILE__));
-					wp_print_scripts( 'slideshow2-kenburns' );
-				}
-				if($this->push_slideshow) {
-					wp_register_script( 'slideshow2-push', plugins_url('/Slideshow/js/slideshow.push.js', __FILE__));
-					wp_print_scripts( 'slideshow2-push' );
-				}
-				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), null, false, false);
-				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
-			}
+		/**
+		 * When Blip is deleted, remove the options from the database
+		 */
+		function destroy_options() {
+			delete_option(BLIP_SLIDESHOW_DOMAIN);
 		}
 	
 		/**
@@ -504,8 +598,11 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		}
 	
 	}
-
 }
+
+/**
+ * And this is where code execution starts
+ */
 
 // check if the request is to read a Media RSS URL
 if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
@@ -521,9 +618,14 @@ if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
   die;
 }
 
+// start the maintenance
+if (class_exists("Blip_Slideshow_Admin")) {
+    $blip_slideshow_admin = new Blip_Slideshow_Admin();
+}
+
 // start the meat and potatoes
 if (class_exists("Blip_Slideshow")) {
-    $blip = new Blip_Slideshow();
+    $blip_slideshow = new Blip_Slideshow();
 }
 
 ?>

@@ -23,7 +23,7 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
-1. Place the [slideshow] shortcode in your posts and/or pages
+1. Place the [slideshow] shortcode in your posts and/or pages. A theme template function call is also available.
 
 **Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
 
@@ -72,10 +72,15 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 
 == Changelog ==
 
+= 1.2.2 =
+* added shortcode [blip-version] for internal use
+* added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
+* enabled caching on all scripts and stylesheets (with the exception of the user-customizable blip-slideshow.css)
+
 = 1.2.1 =
 * Release date: 2011-04-28
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Flickr images will load in high-resolution if a big enough width or height are passed to Blip
+* Flickr images will load in high-resolution if a big enough width or height option is passed to Blip
 
 = 1.2.0 =
 * Release date: 2011-04-28
@@ -257,3 +262,5 @@ Some information I found invaluable for this project:
 * http://striderweb.com/nerdaphernalia/2008/06/wp-use-action-links/
 * http://www.mac-forums.com/forums/images-graphic-design-digital-photography/31805-photocast.html
 * http://forums.devshed.com/php-development-5/curl-get-final-url-after-inital-url-redirects-544144.html
+* http://code.garyjones.co.uk/get-wordpress-plugin-version/
+* http://wordpress.stackexchange.com/questions/7782/wp-script-versioning-breaks-cross-site-caching
