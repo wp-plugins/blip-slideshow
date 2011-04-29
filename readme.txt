@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
@@ -71,6 +71,10 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 1. Blip running at [Ambient Photography - Wedding Gallery](http://www.ambientphotography.ca/gallery/wedding-gallery/)
 
 == Changelog ==
+
+= 1.2.2 =
+* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
+* Fixed an IE8 bug in mootools-1.3.1-core.js
 
 = 1.2.1 =
 * Release date: 2011-04-28
@@ -199,7 +203,6 @@ The first version. Yay!
 
 * Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 * Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
-* [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
 
 == Lightbox Plugin Compatibility Guide ==
 

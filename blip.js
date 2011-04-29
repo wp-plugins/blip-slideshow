@@ -194,9 +194,9 @@ var FlickrRssParser = new Class({
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the Flickr gallery
 			var description = Slick.find(item, 'description').firstChild.nodeValue;
-			image.slideUrl = description.replace(/[\s\S]+img src\=.([\s\S]+). width[\s\S]+/g,'$1'); // the sized image
-			var slideWidth = parseInt(description.replace(/[\s\S]+width=\"(\d+)\"[\s\S]+/gm, '$1')); // the sized image width
-			var slideHeight = parseInt(description.replace(/[\s\S]+height=\"(\d+)\"[\s\S]+/gm, '$1')); // the sized image height
+			image.slideUrl = description.replace(/[\s\S]+img src\=['"]([\s\S]+)['"] width[\s\S]+/g,'$1'); // the sized image
+			var slideWidth = parseInt(description.replace(/[\s\S]+width=['"](\d+)['"][\s\S]+/gm, '$1')); // the sized image width
+			var slideHeight = parseInt(description.replace(/[\s\S]+height=['"](\d+)['"][\s\S]+/gm, '$1')); // the sized image height
 			image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the large image
 			if(!link.isImageBigEnough(slideWidth, slideHeight)) {
 				image.slideUrl = image.largeUrl;
