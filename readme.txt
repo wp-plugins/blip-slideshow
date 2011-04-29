@@ -73,6 +73,7 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
+* Release date: 2011-04-28
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Fixed an IE8 bug in mootools-1.3.1-core.js
 
