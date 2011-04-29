@@ -73,9 +73,8 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
-* this version is all about removing question marks from URLs (which defeats browser cache)
-* use a REST-style URL when retrieving the media RSS file to facilitate caching on the client side
-* enabled caching on all scripts and stylesheets (with the exception of the user-customizable blip-slideshow.css)
+* REST-style URL when retrieving the media RSS file
+* return HTTP 304 to client when client sends "if-modified-since" or "if-none-match" headers - speedy!!!
 * added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
 * added shortcode [blip-version] for internal use
 
@@ -225,6 +224,7 @@ The first version. Yay!
 == To Do ==
 
 * Enhance: Input validation
+* Track down database delete bug?
 * Enhance: Read Picasa Web RSS feeds
 * Enhance: Read Photobucket RSS feeds
 

@@ -125,20 +125,31 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			if ($options['cache_enabled'] && file_exists($localfile)){
 				// determine the amount of time (in seconds) this file can still be considered "fresh"
 				$cache_time = $options['cache_time'];
-				$mod_date = filemtime($localfile);
-				$expires = $cache_time + $mod_date;
+				$last_modified = filemtime($localfile);
+				$expires = $cache_time + $last_modified;
 				$max_age = max(0, $expires - time());
+				$etag = preg_replace("/.*[\\/]/", "", $localfile);
+
+				// fill in what we know so far
+				$result = array("max-age" => $max_age, "date" => $last_modified, "expires" => $expires, "cache" => $etag);
+
+				// Check if the client is validating cache
+				if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $last_modified <= strtotime(preg_replace('/;.*$/', '', $_SERVER["HTTP_IF_MODIFIED_SINCE"]))) {
+					$result['304'] = true;
+				// Check if the client is validating cache
+				} else if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $etag == str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH']))) {
+					$result['304'] = true;
 				// determine if the file on disk is populated and fresh
-				if(filesize($localfile) != 0 && $max_age > 0) {
+				} else if(filesize($localfile) != 0 && $max_age > 0) {
 					// read from the cache.
 					$content = file_get_contents($localfile);
-					// prepare the result
-					$result = array("content" => $content, "max-age" => $max_age, "date" => $mod_date, "expires" => $expires);
+					// populate the result with the cached content
+					$result['content'] = $content;
 				} else {
 					// read from http
 					$result = $this->get_rss_content_from_http($url);
 					// determine if we got a valid response
-					if($result['content'] != FALSE) {
+					if($result['content']) {
 						// populate the cache
 						$fp=fopen($localfile, "w");
 						fwrite($fp, $result['content']); //write contents of feed to cache file
@@ -147,10 +158,10 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 						$result['max-age'] = $cache_time;
 						$result['date'] = $now;
 						$result['expires'] = $now + $cache_time;
+						$result['cache'] = $etag;
 					}
 				}
 				// return the result
-				$result['cache'] = $localfile;
 				return $result;
 			} else {
 				// read from http and return the result
@@ -164,24 +175,29 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		function print_document($content, $url) {
 			if($content != FALSE) {
 
-				if($content['cache'] != FALSE) {
-					$via .= " cachefile=" . preg_replace("/.*[\\/]/","",$content['cache']);
-					$pragma = 'public';
-				} else {
-					$via .= " no-cache";
-					$pragma = 'no-cache';
-				}
-
+				// http://www.php.net/manual/en/function.header.php#77028
+				
 				// push headers
-				header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
-				header('Via: ' . Blip_Slideshow::get_version() . ' ' . BLIP_SLIDESHOW_NAME . $via);
+				header('Via: ' . Blip_Slideshow::get_version() . ' ' . BLIP_SLIDESHOW_NAME);
 				header("Content-Location: " . $_SERVER['REQUEST_URI']);
-				header("Last-Modified: " . date(DATE_RFC1123, $content['date']));
+				if($content['304'] != FALSE) {
+					header("Last-Modified: " . date(DATE_RFC1123, $content['date']), true, 304);
+				} else {
+					header("Last-Modified: " . date(DATE_RFC1123, $content['date']), true, 200);
+				}
 				header("Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate");
 				header("Expires: " .date(DATE_RFC1123, ($content['expires'])));
 				header("Pragma: " . $pragma);
+				if($content['cache']) {
+					header("ETag: " . preg_replace("/.*[\\/]/","",$content['cache']));
+					header("Pragma: public");
+				} else {
+					header("Pragma: no-cache");
+				}
 
-				if (!isset($_REQUEST['debug'])) {
+				if($content['304']) {
+					// no-nop
+				} else if (!isset($_REQUEST['debug'])) {
 				  header("Content-Type: text/xml");
 					header("Content-Length: " . strlen($content['content']));
 					print $content['content'];
@@ -399,7 +415,7 @@ if(!class_exists("Blip_Slideshow")) {
 		function add_header_scripts() {
 			if (!is_admin()) {
 				// register MooTools script
-				wp_register_script('mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__), false, null);
+				wp_register_script('mootools', plugins_url('/Slideshow/js/mootools-1.3.1-core.js', __FILE__));
 				wp_enqueue_script('mootools');
 			}
 		}
@@ -411,7 +427,7 @@ if(!class_exists("Blip_Slideshow")) {
 			if ( $this->add_script ) {
 
 				// register Slideshow stylesheet
-				wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__), false, null);
+				wp_register_style( 'slideshow2', plugins_url('/Slideshow/css/slideshow.css', __FILE__));
 				wp_print_styles( 'slideshow2');
 
 				// register optional, user-customized Blip-Slideshow stylesheet
@@ -421,39 +437,39 @@ if(!class_exists("Blip_Slideshow")) {
 				}
 
 				// register MooTools More script
-				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__), array('mootools'), null);
+				wp_register_script( 'mootools-more', plugins_url('/Slideshow/js/mootools-1.3.1.1-more.js', __FILE__), array('mootools'));
 				wp_print_scripts( 'mootools-more' );
 
 				// register Slideshow script
-				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__), array('mootools-more'), null);
+				wp_register_script( 'slideshow2', plugins_url('/Slideshow/js/slideshow.js', __FILE__), array('mootools-more'));
 				wp_print_scripts( 'slideshow2' );
 
 				// register Slideshow Flash script
 				if($this->flash_slideshow) {
-					wp_register_script( 'slideshow2-flash', plugins_url('/Slideshow/js/slideshow.flash.js', __FILE__), array('slideshow2'), null);
+					wp_register_script( 'slideshow2-flash', plugins_url('/Slideshow/js/slideshow.flash.js', __FILE__), array('slideshow2'));
 					wp_print_scripts( 'slideshow2-flash' );
 				}
 
 				// register Slideshow Fold script
 				if($this->fold_slideshow) {
-					wp_register_script( 'slideshow2-fold', plugins_url('/Slideshow/js/slideshow.fold.js', __FILE__), array('slideshow2'), null);
+					wp_register_script( 'slideshow2-fold', plugins_url('/Slideshow/js/slideshow.fold.js', __FILE__), array('slideshow2'));
 					wp_print_scripts( 'slideshow2-fold' );
 				}
 
 				// register Slideshow Ken Burns script
 				if($this->kenburns_slideshow) {
-					wp_register_script( 'slideshow2-kenburns', plugins_url('/Slideshow/js/slideshow.kenburns.js', __FILE__), array('slideshow2'), null);
+					wp_register_script( 'slideshow2-kenburns', plugins_url('/Slideshow/js/slideshow.kenburns.js', __FILE__), array('slideshow2'));
 					wp_print_scripts( 'slideshow2-kenburns' );
 				}
 
 				// register Slideshow Push script
 				if($this->push_slideshow) {
-					wp_register_script( 'slideshow2-push', plugins_url('/Slideshow/js/slideshow.push.js', __FILE__), array('slideshow2'), null);
+					wp_register_script( 'slideshow2-push', plugins_url('/Slideshow/js/slideshow.push.js', __FILE__), array('slideshow2'));
 					wp_print_scripts( 'slideshow2-push' );
 				}
 
 				// register Blip script
-				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), array('slideshow2'), null);
+				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url('/blip.js', __FILE__), array('slideshow2'));
 				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
 			}
 		}
