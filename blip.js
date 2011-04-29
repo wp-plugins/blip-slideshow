@@ -229,6 +229,7 @@ var DotMacRssParser = new Class({
 				image.slideUrl = image.slideUrl.replace(/.jpg[\s\S]+/,'/web.jpg'); // the large image
 				image.largeUrl = image.slideUrl.replace(/web.jpg/,'large.jpg'); // the large image
 			}
+			image.thumbUrl = ' ';
 			// there is also a hidden medium.jpg
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;

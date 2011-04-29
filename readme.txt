@@ -73,9 +73,11 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
-* added shortcode [blip-version] for internal use
-* added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
+* this version is all about removing question marks from URLs (which defeats browser cache)
+* use a REST-style URL when retrieving the media RSS file to facilitate caching on the client side
 * enabled caching on all scripts and stylesheets (with the exception of the user-customizable blip-slideshow.css)
+* added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
+* added shortcode [blip-version] for internal use
 
 = 1.2.1 =
 * Release date: 2011-04-28
@@ -223,7 +225,6 @@ The first version. Yay!
 == To Do ==
 
 * Enhance: Input validation
-* Enhance: Refactor cache code out of Blip code
 * Enhance: Read Picasa Web RSS feeds
 * Enhance: Read Photobucket RSS feeds
 
@@ -264,3 +265,4 @@ Some information I found invaluable for this project:
 * http://forums.devshed.com/php-development-5/curl-get-final-url-after-inital-url-redirects-544144.html
 * http://code.garyjones.co.uk/get-wordpress-plugin-version/
 * http://wordpress.stackexchange.com/questions/7782/wp-script-versioning-breaks-cross-site-caching
+* http://fgiasson.com/blog/index.php/2006/07/19/hack_for_the_encoding_of_url_into_url_pr/

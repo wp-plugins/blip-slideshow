@@ -47,7 +47,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 * Get the content of the Media RSS URL either directly, or if caching is available, from the cache.
 		 */
 		function Blip_Slideshow_Rss_Reader() {
-			$url = html_entity_decode(urldecode($_REQUEST['url']));
+			$url = html_entity_decode(rawurldecode(rawurldecode(substr($_SERVER['PATH_INFO'], 5))));
 
 			// check if we can talk to wordpress
 			if(function_exists("get_option")) {
@@ -103,7 +103,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			}
 			
 			// prepare the result
-			$result = array("content" => $content, "max-age" => 0, "date" => time());
+			$now = time();
+			$result = array("content" => $content, "max-age" => 0, "date" => $now, "expires" => $now);
 			return $result;
 		}
 		
@@ -123,14 +124,16 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			// if cache is enabled and this file is cacheable
 			if ($options['cache_enabled'] && file_exists($localfile)){
 				// determine the amount of time (in seconds) this file can still be considered "fresh"
-				$date = filemtime($localfile);
-				$max_age = max(0, $options['cache_time'] - (time()-$date));
+				$cache_time = $options['cache_time'];
+				$mod_date = filemtime($localfile);
+				$expires = $cache_time + $mod_date;
+				$max_age = max(0, $expires - time());
 				// determine if the file on disk is populated and fresh
 				if(filesize($localfile) != 0 && $max_age > 0) {
 					// read from the cache.
 					$content = file_get_contents($localfile);
 					// prepare the result
-					$result = array("content" => $content, "max-age" => $max_age, "date" => $date);
+					$result = array("content" => $content, "max-age" => $max_age, "date" => $mod_date, "expires" => $expires);
 				} else {
 					// read from http
 					$result = $this->get_rss_content_from_http($url);
@@ -140,8 +143,10 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 						$fp=fopen($localfile, "w");
 						fwrite($fp, $result['content']); //write contents of feed to cache file
 						fclose($fp);
-						$result['max-age'] = $options['cache_time'];
-						$result['date'] = time();
+						$now = time();
+						$result['max-age'] = $cache_time;
+						$result['date'] = $now;
+						$result['expires'] = $now + $cache_time;
 					}
 				}
 				// return the result
@@ -158,40 +163,35 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 */		
 		function print_document($content, $url) {
 			if($content != FALSE) {
-				$http_status = $_SERVER["SERVER_PROTOCOL"] . " 200 OK";
-				$content_type = "Content-Type: text/xml";
-				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29
-				$date = "Last-Modified: " . date(DATE_RFC1123, $content['date']);
-				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
-				$cache_control = "Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate";
-				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45
-				$via = "Via: " . "1.0.0 Blip Slideshow";
+
 				if($content['cache'] != FALSE) {
 					$via .= " cachefile=" . preg_replace("/.*[\\/]/","",$content['cache']);
+					$pragma = 'public';
 				} else {
 					$via .= " no-cache";
+					$pragma = 'no-cache';
 				}
-				// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14
-				$content_location = "Content-Location: " . $_REQUEST['url'];
-				
+
 				// push headers
-				header($http_status);
-				header($date);
-				header($cache_control);
-				header($content_location);
-				header($via);
+				header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
+				header('Via: ' . Blip_Slideshow::get_version() . ' ' . BLIP_SLIDESHOW_NAME . $via);
+				header("Content-Location: " . $_SERVER['REQUEST_URI']);
+				header("Last-Modified: " . date(DATE_RFC1123, $content['date']));
+				header("Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate");
+				header("Expires: " .date(DATE_RFC1123, ($content['expires'])));
+				header("Pragma: " . $pragma);
 
 				if (!isset($_REQUEST['debug'])) {
-					header($content_type);
+				  header("Content-Type: text/xml");
+					header("Content-Length: " . strlen($content['content']));
 					print $content['content'];
 				} else {
 					print("<html><head></head><body>");
-					print($http_status . "<br/>");
-					print($content_type . "<br/>");
-					print($date . "<br/>");
-					print($cache_control . "<br/>");
-					print($content_location . "<br/>");
-					print($via . "<br/>");
+					foreach(headers_list() as $header) {
+						print $header . "<br/>";
+					}
+					print("Content-Type: text/xml<br/>");
+					print("Content-Length: " . strlen($content['content']));
 					print "<pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
 				}
 			}
@@ -228,6 +228,16 @@ if(!class_exists("Blip_Slideshow")) {
 		 * @return string Plugin version
 		 */
 		function version_shortcode() {
+			return $this->get_version();
+		}
+
+		/**
+		 * Shortcode to return the current plugin version.
+		 * From http://code.garyjones.co.uk/get-wordpress-plugin-version/
+		 *
+		 * @return string Plugin version
+		 */
+		function get_version() {
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			}
@@ -323,11 +333,11 @@ if(!class_exists("Blip_Slideshow")) {
 
 			// enable caching for this file?
 			if($options['cache_enabled']) {
-				Blip_Slideshow_Cache::prep_cache($options, $rss);
+				Blip_Slideshow_Cache::prep_cache($options, $decoded_rss);
 			}
 			
-			// massage the rss url
-			$callback_url = plugins_url('/blip.php?url=', __FILE__) . rawurlencode($decoded_rss);
+			// massage the rss url - apache mod_rewrite gets grumpy unless the URL is encoded twice
+			$callback_url = plugins_url('/blip.php/rss/', __FILE__) . rawurlencode(rawurlencode($decoded_rss));
 			
 			// massage link option
 			if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
@@ -538,6 +548,7 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 		 * When Blip is deleted, remove the options from the database
 		 */
 		function destroy_options() {
+			echo 'DELETING DATA!!';
 			delete_option(BLIP_SLIDESHOW_DOMAIN);
 		}
 	
@@ -605,8 +616,8 @@ if(!class_exists("Blip_Slideshow_Admin")) {
  */
 
 // check if the request is to read a Media RSS URL
-if(isset($_REQUEST['url']) && class_exists("Blip_Slideshow_Rss_Reader")) {
-	
+if(substr($_SERVER['PATH_INFO'], 0, 5) == "/rss/" && class_exists("Blip_Slideshow_Rss_Reader")) {
+
 	// attempt to talk to Wordpress
 	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
 	if (file_exists($blog_header_path)) {
