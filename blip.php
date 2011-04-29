@@ -4,7 +4,7 @@
 		Plugin Name: Blip Slideshow
 		Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
 		Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
-		Version: 1.2.0
+		Version: 1.2.1
 		Author: Jason Hendriks
 		Author URI: http://jasonhendriks.com/
 		License: GPL version 3 or any later version
@@ -309,7 +309,12 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 				// no supported lightbox plugins
 				$link = "full";
 			}
-
+	
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![if !IE]>";
+			}
+	
 			// build Javascript output
 			$output .= '<script type="text/javascript">
 			//<![CDATA[
@@ -348,6 +353,10 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			}
 			$output .= '</div>';
 		
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![endif]>";
+			}
 			return $output;
 		}
 	
@@ -449,21 +458,21 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 		 * Register links to the Settings page in the list of Plugins and in the Settings menu
 		 */
 		function add_admin_menu_item() {
-			if (current_user_can('manage_options')) {
+      if (current_user_can('manage_options')) {
 
-      	add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
+        add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(& $this, 'plugin_settings_link'));
 				add_options_page(BLIP_SLIDESHOW_NAME, BLIP_SLIDESHOW_NAME, 'manage_options', BLIP_SLIDESHOW_DOMAIN, array( $this, 'display_admin_page') );
 			}
 		}
-
+		
 		/**
 		 * Build the hyperlink for the list of Plugins
 		 */
 		function plugin_settings_link($links) {
-			$settings_link = '<a href="options-general.php?page=' . BLIP_SLIDESHOW_DOMAIN . '">' . __('Settings', BLIP_SLIDESHOW_DOMAIN) . '</a>';
-			$links[] = $settings_link;
-			return $links;
-		}
+      $settings_link = '<a href="options-general.php?page=' . BLIP_SLIDESHOW_DOMAIN . '">' . __('Settings', BLIP_SLIDESHOW_DOMAIN) . '</a>';
+      $links[] = $settings_link;
+      return $links;
+    }
 	
 		/**
 		 * Output the HTML for the Settings page
@@ -493,7 +502,9 @@ if(!class_exists(BLIP_SLIDESHOW_DOMAIN)) {
 			</div>
 			<?php 
 		}
+	
 	}
+
 }
 
 // check if the request is to read a Media RSS URL
