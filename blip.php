@@ -221,9 +221,11 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 				header("Via: " . Blip_Slideshow::get_version() . " " . BLIP_SLIDESHOW_NAME);
 				header("Content-Location: " . $_SERVER["REQUEST_URI"]);
 				if($content["304"]) {
-					header("Last-Modified: " . date(DATE_RFC1123, $content["date"]), true, 304);
+					header("HTTP/1.1 304 Not Modified");
+					header("Last-Modified: " . date(DATE_RFC1123, $content["date"]));
 				} else {
-					header("Last-Modified: " . date(DATE_RFC1123, $content["date"]), true, 200);
+					header("HTTP/1.1 200 OK");
+					header("Last-Modified: " . date(DATE_RFC1123, $content["date"]));
 				}
 				header("Expires: " .date(DATE_RFC1123, ($content["expires"])));
 				header("Pragma: " . $pragma);
@@ -231,7 +233,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 				if($content["cache"]) {
 					header("ETag: " . preg_replace("/.*[\\/]/","",$content["cache"]));
 					header("Pragma: public");
-					header("Cache-Control: no-cache, must-revalidate, max-age=" . $content["max-age"]);
+					header("Cache-Control: must-revalidate, max-age=" . $content["max-age"]);
 				} else {
 					header("Pragma: no-cache");
 					header("Cache-Control: no-cache, must-revalidate, max-age=0");
