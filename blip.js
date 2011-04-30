@@ -225,9 +225,9 @@ var GenericRssParser = new Class({
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue; // the title
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the link
 			image.thumbUrl = image.slideUrl = image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the large image
-			var thumbnail = Slick.find(item, 'media_thumbnail').attributes[0].value; // the thumbnail
-			if(thumbnail != '') {
-				image.thumbUrl = thumbnail;
+			var thumbnail = Slick.find(item, 'media_thumbnail'); // the thumbnail
+			if(thumbnail != undefined) {
+				image.thumbUrl = thumbnail.attributes[0].value;
 			}
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;
