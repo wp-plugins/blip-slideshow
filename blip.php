@@ -387,7 +387,7 @@ if(!class_exists('Blip_Slideshow')) {
 			$decoded_rss = html_entity_decode($rss);
 
 			// enable caching for this file?
-			if($options['cache_enabled']) {
+			if(Blip_Slideshow_Cache::is_cache_enabled($options)) {
 				Blip_Slideshow_Cache::prep_cache($options, $decoded_rss);
 			}
 			
@@ -598,7 +598,7 @@ if(!class_exists('Blip_Slideshow_Admin')) {
 		 */
 		function create_options() {
 			$options = array();
-			$options['cache_enabled'] = false;
+			$options['cache_enabled'] = true;
 			$options['cache_dir'] = 'cache';
 			$options['cache_time'] = 3600;
 			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
