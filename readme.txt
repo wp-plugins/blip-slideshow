@@ -29,7 +29,7 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 
 *A simple slideshow example:*
 
->[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
+>[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
 
 == Frequently Asked Questions ==
 
@@ -74,7 +74,8 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
-* Returns HTTP 304 (use cached file) when client sends appropriate "if-modified-since" or "if-none-match" header - super speedy!!!
+* Returns HTTP 304 (Not Modified) when client sends appropriate "if-modified-since" or "if-none-match" header - super speedy!!!
+* Options now work as promised: delay, duration, loop, paused, random, slide
 * Added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
 * Added shortcode [blip-version] for internal use
 * Using REST-style URL for retrieving the media RSS file
