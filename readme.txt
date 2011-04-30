@@ -73,10 +73,12 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
-* REST-style URL when retrieving the media RSS file
-* return HTTP 304 to client when client sends "if-modified-since" or "if-none-match" headers - speedy!!!
-* added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
-* added shortcode [blip-version] for internal use
+* Return HTTP 304 (use cached file) when client sends appropriate "if-modified-since" or "if-none-match" header - speedy!!!
+* Added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
+* Added shortcode [blip-version] for internal use
+* Using REST-style URL for retrieving the media RSS file
+* MobileMe slideshows no longer search for thumbnails that don't exist
+* Always pull large-size images from Flickr feeds
 
 = 1.2.1 =
 * Release date: 2011-04-28
