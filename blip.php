@@ -109,99 +109,135 @@ if(!class_exists('Blip_Slideshow_Rss_Reader')) {
 		}
 		
 		/**
-		 * Will attempt to retrieve the contents of the media RSS URL from the cache.
+		 * Attempt to retrieve the contents of the media RSS URL from the cache.
 		 * If the Media RSS is expired or empty, will retrieve the fresh contents via HTTP and then overwrite the cache.
 		 */
 		function get_rss_content_from_cache($url) {
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
-			
-			// determine the read/write paths
-			$result = Blip_Slideshow_Cache::build_cache_paths($options, $url);
-			$cache_dir = $result['cache_dir'];
-			$localfile = $result['cache_file'];
-	
-			// if cache is enabled and this file is cacheable
-			if ($options['cache_enabled'] && file_exists($localfile)){
-				// determine the amount of time (in seconds) this file can still be considered 'fresh'
-				$cache_time = $options['cache_time'];
-				$last_modified = filemtime($localfile);
-				$expires = $cache_time + $last_modified;
-				$max_age = max(0, $expires - time());
-				$etag = preg_replace('/.*[\\/]/', '', $localfile);
 
-				// fill in what we know so far
-				$result = array('max-age' => $max_age, 'date' => $last_modified, 'expires' => $expires, 'cache' => $etag);
+			// test if cache is enabled
+			if (Blip_Slideshow_Cache::is_cache_enabled($options)){
 
-				// Check if the client is validating cache
-				if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $last_modified <= strtotime(preg_replace('/;.*$/', '', $_SERVER['HTTP_IF_MODIFIED_SINCE']))) {
-					$result['304'] = true;
-				// Check if the client is validating cache
-				} else if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $etag == str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH']))) {
-					$result['304'] = true;
-				// determine if the file on disk is populated and fresh
-				} else if(filesize($localfile) != 0 && $max_age > 0) {
-					// read from the cache.
-					$content = file_get_contents($localfile);
-					// populate the result with the cached content
-					$result['content'] = $content;
+				// cache is enabled. determine the read/write paths
+				$cache_paths = Blip_Slideshow_Cache::build_cache_paths($options, $url);
+				$localfile = $cache_paths['cache_file'];
+
+				// test if there is a cache file available for I/O
+				if(file_exists($localfile)) {
+
+					// cache file is available. read/write the cache
+					return $this->read_write_cache($url, $options, $localfile);
 				} else {
-					// read from http
-					$result = $this->get_rss_content_from_http($url);
-					// determine if we got a valid response
-					if($result['content']) {
-						// populate the cache
-						$fp=fopen($localfile, 'w');
-						fwrite($fp, $result['content']); //write contents of feed to cache file
-						fclose($fp);
-						$now = time();
-						$result['max-age'] = $cache_time;
-						$result['date'] = $now;
-						$result['expires'] = $now + $cache_time;
-						$result['cache'] = $etag;
-					}
+
+					// cache file is available. read from http and return the result
+					return $this->get_rss_content_from_http($url);
 				}
-				// return the result
-				return $result;
+
 			} else {
-				// read from http and return the result
+				// cache is not enabled. read from http and return the result
 				return $this->get_rss_content_from_http($url);
 			}
+		}
+
+		/**
+		 * Read from the cache if it is valid.
+		 * Write to cache if it is not.
+		 * Return the fresh or cached content.
+		 */
+		function read_write_cache($url, $options, $localfile) {
+			// determine the amount of time (in seconds) this file can still be considered 'fresh'
+			$cache_time = $options['cache_time'];
+			$last_modified = filemtime($localfile);
+			$expires = $cache_time + $last_modified;
+			$max_age = max(0, $expires - time());
+			$etag = preg_replace('/.*[\\/]/', '', $localfile);
+
+			// fill out what we know so far
+			$result = array('max-age' => $max_age, 'date' => $last_modified, 'expires' => $expires, 'cache' => $etag);
+
+			// test if the cache is expired
+			if($max_age == 0) {
+
+				// populate the cache
+				$result = $this->poulate_cache($url, $result, $localfile, $cache_time);
+
+			// test if the client is validating cache
+			}	else if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $last_modified <= strtotime(preg_replace('/;.*$/', '', $_SERVER['HTTP_IF_MODIFIED_SINCE']))) {
+
+				// return HTTP 304 - not modified
+				$result['304'] = true;
+
+			// test if the client is validating cache
+			} else if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $etag == str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH']))) {
+
+				// return HTTP 304 - not modified
+				$result['304'] = true;
+
+			// test if the cache file is not size zero
+			} else if(filesize($localfile) != 0) {
+
+				// cache is populate and valid. read from the cache.
+				$result['content'] = file_get_contents($localfile);
+
+			// test if the cache file is size zero
+			} else {
+
+				// cache is newly created. populate the cache.
+				$result = $this->poulate_cache($url, $result, $localfile, $cache_time);
+			}
+			// return the result
+			return $result;
+		}
+
+		/**
+		 * populate the cache
+		 */
+		function poulate_cache($url, $result, $localfile, $cache_time) {
+			// read from http
+			$result = $this->get_rss_content_from_http($url);
+			// determine if we got a valid response
+			if($result['content']) {
+				// populate the cache
+				$fp=fopen($localfile, 'w');
+				fwrite($fp, $result['content']); //write contents of feed to cache file
+				fclose($fp);
+				$now = time();
+				$result['max-age'] = $cache_time;
+				$result['date'] = $now;
+				$result['expires'] = $now + $cache_time;
+			}
+			return $result;
 		}
 
 		/**
 		 * Build the document by outputing XML headers and the content.
 		 */		
 		function print_document($content, $url) {
-			if($content != FALSE) {
 
 				// http://www.php.net/manual/en/function.header.php#77028
 				
 				// push headers
 				header('Via: ' . Blip_Slideshow::get_version() . ' ' . BLIP_SLIDESHOW_NAME);
 				header('Content-Location: ' . $_SERVER['REQUEST_URI']);
-				if($content['304'] != FALSE) {
+				if($content['304']) {
 					header('Last-Modified: ' . date(DATE_RFC1123, $content['date']), true, 304);
 				} else {
 					header('Last-Modified: ' . date(DATE_RFC1123, $content['date']), true, 200);
 				}
-				header('Cache-Control: max-age=' . $content['max-age'] . ', must-revalidate');
 				header('Expires: ' .date(DATE_RFC1123, ($content['expires'])));
 				header('Pragma: ' . $pragma);
+
 				if($content['cache']) {
 					header('ETag: ' . preg_replace('/.*[\\/]/','',$content['cache']));
 					header('Pragma: public');
+					//header('Cache-Control: no-cache, must-revalidate, max-age=' . $content['max-age']);
 				} else {
 					header('Pragma: no-cache');
+					//header('Cache-Control: no-cache, must-revalidate, max-age=0');
 				}
 
-				if($content['304']) {
-					// no-nop
-				} else if (!isset($_REQUEST['debug'])) {
-				  header('Content-Type: text/xml');
-					header('Content-Length: ' . strlen($content['content']));
-					print $content['content'];
-				} else {
+				if (isset($_REQUEST['debug'])) {
 					print('<html><head></head><body>');
 					foreach(headers_list() as $header) {
 						print $header . '<br/>';
@@ -209,9 +245,12 @@ if(!class_exists('Blip_Slideshow_Rss_Reader')) {
 					print('Content-Type: text/xml<br/>');
 					print('Content-Length: ' . strlen($content['content']));
 					print '<pre>' . preg_replace('/</', '&lt;', $content['content']) . '</pre></body></html>';
+				} else if(!$content['304']){
+				  header('Content-Type: text/xml');
+					header('Content-Length: ' . strlen($content['content']));
+					print $content['content'];
 				}
 			}
-		}
 
 	}
 }
@@ -489,6 +528,11 @@ if(!class_exists('Blip_Slideshow_Cache')) {
 		 * Caching is enabled. Retrieve the preferred cache directory name. Create the cache directory and cache file.
 		 * Input is the $options retrieved from the database and the raw_url_encoded RSS URL
 		 */ 
+
+		function is_cache_enabled($options) {
+			return $options['cache_enabled'] && $options['cache_time'] != 0;
+		}
+
 		function prep_cache($options, $rss) {
 			// determine the read/write paths
 			$result = Blip_Slideshow_Cache::build_cache_paths($options, $rss);
@@ -509,7 +553,7 @@ if(!class_exists('Blip_Slideshow_Cache')) {
 				chmod($localfile, 0666); 
 			}
 		}
-		
+
 		function build_cache_paths($options, $rss) {
 			// get the cache path from options
 			$stored_cache_dir = $options['cache_dir'];
