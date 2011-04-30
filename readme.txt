@@ -42,7 +42,8 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 * Verified to work with SmugMug, Flickr and MobileMe Media RSS Feeds
 * Theoretically compatible with any Media RSS Feed
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
-* Supports caching of Media RSS Feeds for extra performance (must be enabled in Settings)
+* Supports server-side caching of Media RSS Feeds via a writable cache directory for extra performance (must be enabled in Settings)
+* Supports client-side caching of Media RSS Feeds via HTTP 304 for extra performance (must be enabled in Settings)
 * If possible, loads photos sized no bigger than the viewport (good for mobile browsing)
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
@@ -73,7 +74,7 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
-* Return HTTP 304 (use cached file) when client sends appropriate "if-modified-since" or "if-none-match" header - speedy!!!
+* Returns HTTP 304 (use cached file) when client sends appropriate "if-modified-since" or "if-none-match" header - super speedy!!!
 * Added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
 * Added shortcode [blip-version] for internal use
 * Using REST-style URL for retrieving the media RSS file
