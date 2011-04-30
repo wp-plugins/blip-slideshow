@@ -35,7 +35,7 @@ if (!defined('BLIP_SLIDESHOW_DOMAIN')) {
     define('BLIP_SLIDESHOW_DOMAIN', 'Blip_Slideshow');
 }
 
-if(!class_exists("Blip_Slideshow_Rss_Reader")) {
+if(!class_exists('Blip_Slideshow_Rss_Reader')) {
 	
 	/**
 	 * Blip_Slideshow_Rss_Reader is a proxy to get the content of the Media RSS files.
@@ -50,7 +50,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			$url = html_entity_decode(rawurldecode(rawurldecode(substr($_SERVER['PATH_INFO'], 5))));
 
 			// check if we can talk to wordpress
-			if(function_exists("get_option")) {
+			if(function_exists('get_option')) {
 				// attempt to get the content from the cache
 				$result = $this->get_rss_content_from_cache($url);
 			} else {
@@ -66,7 +66,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		 */
 		function get_rss_content_from_http($url) {
 			// sometimes the protocol is given as feed://, but this media type is not recognize by curl or php
-			$url = preg_replace("/^feed\:\/\//", "http://", $url);
+			$url = preg_replace('/^feed\:\/\//', 'http://', $url);
 
 			// if curl exists, use it to make the http request
 			if(function_exists('curl_init')) {
@@ -75,8 +75,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 					CURLOPT_RETURNTRANSFER => true,     // return web page 
 					CURLOPT_HEADER         => false,    // don't return headers 
 					CURLOPT_FOLLOWLOCATION => true,     // follow redirects 
-					CURLOPT_ENCODING       => "",       // handle all encodings 
-					CURLOPT_USERAGENT      => "Blip Slideshow/1.0", // who am i 
+					CURLOPT_ENCODING       => '',       // handle all encodings 
+					CURLOPT_USERAGENT      => 'Blip Slideshow/1.0', // who am i 
 					CURLOPT_AUTOREFERER    => true,     // set referer on redirect 
 					CURLOPT_CONNECTTIMEOUT => 30,       // timeout on connect 
 					CURLOPT_TIMEOUT        => 30,       // timeout on response 
@@ -99,12 +99,12 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			// check if content was received
 			if($content != FALSE) {
 				// massage the content for Slick to handle in Javascript
-				$content = preg_replace("/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/", "<$1$2_$3", $content);
+				$content = preg_replace('/<(\/)?([A-Za-z][A-Za-z0-9]+):([A-Za-z][A-Za-z0-9]+)/', '<$1$2_$3', $content);
 			}
 			
 			// prepare the result
 			$now = time();
-			$result = array("content" => $content, "max-age" => 0, "date" => $now, "expires" => $now);
+			$result = array('content' => $content, 'max-age' => 0, 'date' => $now, 'expires' => $now);
 			return $result;
 		}
 		
@@ -118,23 +118,23 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			
 			// determine the read/write paths
 			$result = Blip_Slideshow_Cache::build_cache_paths($options, $url);
-			$cache_dir = $result["cache_dir"];
-			$localfile = $result["cache_file"];
+			$cache_dir = $result['cache_dir'];
+			$localfile = $result['cache_file'];
 	
 			// if cache is enabled and this file is cacheable
 			if ($options['cache_enabled'] && file_exists($localfile)){
-				// determine the amount of time (in seconds) this file can still be considered "fresh"
+				// determine the amount of time (in seconds) this file can still be considered 'fresh'
 				$cache_time = $options['cache_time'];
 				$last_modified = filemtime($localfile);
 				$expires = $cache_time + $last_modified;
 				$max_age = max(0, $expires - time());
-				$etag = preg_replace("/.*[\\/]/", "", $localfile);
+				$etag = preg_replace('/.*[\\/]/', '', $localfile);
 
 				// fill in what we know so far
-				$result = array("max-age" => $max_age, "date" => $last_modified, "expires" => $expires, "cache" => $etag);
+				$result = array('max-age' => $max_age, 'date' => $last_modified, 'expires' => $expires, 'cache' => $etag);
 
 				// Check if the client is validating cache
-				if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $last_modified <= strtotime(preg_replace('/;.*$/', '', $_SERVER["HTTP_IF_MODIFIED_SINCE"]))) {
+				if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $last_modified <= strtotime(preg_replace('/;.*$/', '', $_SERVER['HTTP_IF_MODIFIED_SINCE']))) {
 					$result['304'] = true;
 				// Check if the client is validating cache
 				} else if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $etag == str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH']))) {
@@ -151,7 +151,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 					// determine if we got a valid response
 					if($result['content']) {
 						// populate the cache
-						$fp=fopen($localfile, "w");
+						$fp=fopen($localfile, 'w');
 						fwrite($fp, $result['content']); //write contents of feed to cache file
 						fclose($fp);
 						$now = time();
@@ -179,36 +179,36 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 				
 				// push headers
 				header('Via: ' . Blip_Slideshow::get_version() . ' ' . BLIP_SLIDESHOW_NAME);
-				header("Content-Location: " . $_SERVER['REQUEST_URI']);
+				header('Content-Location: ' . $_SERVER['REQUEST_URI']);
 				if($content['304'] != FALSE) {
-					header("Last-Modified: " . date(DATE_RFC1123, $content['date']), true, 304);
+					header('Last-Modified: ' . date(DATE_RFC1123, $content['date']), true, 304);
 				} else {
-					header("Last-Modified: " . date(DATE_RFC1123, $content['date']), true, 200);
+					header('Last-Modified: ' . date(DATE_RFC1123, $content['date']), true, 200);
 				}
-				header("Cache-Control: max-age=" . $content['max-age'] . ", must-revalidate");
-				header("Expires: " .date(DATE_RFC1123, ($content['expires'])));
-				header("Pragma: " . $pragma);
+				header('Cache-Control: max-age=' . $content['max-age'] . ', must-revalidate');
+				header('Expires: ' .date(DATE_RFC1123, ($content['expires'])));
+				header('Pragma: ' . $pragma);
 				if($content['cache']) {
-					header("ETag: " . preg_replace("/.*[\\/]/","",$content['cache']));
-					header("Pragma: public");
+					header('ETag: ' . preg_replace('/.*[\\/]/','',$content['cache']));
+					header('Pragma: public');
 				} else {
-					header("Pragma: no-cache");
+					header('Pragma: no-cache');
 				}
 
 				if($content['304']) {
 					// no-nop
 				} else if (!isset($_REQUEST['debug'])) {
-				  header("Content-Type: text/xml");
-					header("Content-Length: " . strlen($content['content']));
+				  header('Content-Type: text/xml');
+					header('Content-Length: ' . strlen($content['content']));
 					print $content['content'];
 				} else {
-					print("<html><head></head><body>");
+					print('<html><head></head><body>');
 					foreach(headers_list() as $header) {
-						print $header . "<br/>";
+						print $header . '<br/>';
 					}
-					print("Content-Type: text/xml<br/>");
-					print("Content-Length: " . strlen($content['content']));
-					print "<pre>" . preg_replace("/</", "&lt;", $content['content']) . "</pre></body></html>";
+					print('Content-Type: text/xml<br/>');
+					print('Content-Length: ' . strlen($content['content']));
+					print '<pre>' . preg_replace('/</', '&lt;', $content['content']) . '</pre></body></html>';
 				}
 			}
 		}
@@ -216,7 +216,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 	}
 }
 
-if(!class_exists("Blip_Slideshow")) {
+if(!class_exists('Blip_Slideshow')) {
 
 	/**
 	 * Blip_Slideshow handles the generation of the slideshow HTML script.
@@ -308,7 +308,7 @@ if(!class_exists("Blip_Slideshow")) {
 			extract(shortcode_atts(array(
 				'captions' => 'true',
 				'center' => 'true',
-				'color' => "#FFF",
+				'color' => '#FFF',
 				'controller' => 'true',
 				'delay' => '2000',
 				'duration' => '1000',
@@ -334,13 +334,13 @@ if(!class_exists("Blip_Slideshow")) {
 			), $atts));
 
 			// determine which alternative Slideshow, if any, are to be used
-			if($type == "flash") {
+			if($type == 'flash') {
 				$this->flash_slideshow = true;
-			} else if ($type == "fold") {
+			} else if ($type == 'fold') {
 				$this->fold_slideshow = true;
-			} else if($type =="kenburns") {
+			} else if($type =='kenburns') {
 				$this->kenburns_slideshow = true;
-			} else if($type == "push") {
+			} else if($type == 'push') {
 				$this->push_slideshow = true;
 			}
 	
@@ -357,17 +357,17 @@ if(!class_exists("Blip_Slideshow")) {
 			
 			// massage link option
 			if($link == 'lightbox' && (function_exists('slimbox') || function_exists('wp_slimbox_activate'))) {
-				$link = "slimbox";
+				$link = 'slimbox';
 			} else if($link == 'lightbox' && (class_exists('wp_lightboxplus') || class_exists('GameplorersWPColorBox') || class_exists('jQueryLightboxForNativeGalleries'))) {
-				$link = "colorbox";
-			} else if($link == "lightbox") {
+				$link = 'colorbox';
+			} else if($link == 'lightbox') {
 				// no supported lightbox plugins
-				$link = "full";
+				$link = 'full';
 			}
 	
 			// Slideshow.Fold is broken in IE8
-			if($type == "fold") {
-				$output .= "<![if !IE]>";
+			if($type == 'fold') {
+				$output .= '<![if !IE]>';
 			}
 	
 			// build Javascript output
@@ -376,13 +376,13 @@ if(!class_exists("Blip_Slideshow")) {
 			';
 		
 			// build remainder of script options
-			$output .= "window.addEvent('domready', function(){" . "var options = {";
+			$output .= "window.addEvent('domready', function(){" . 'var options = {';
 	
 			// build resize option (handle string and boolean)
-			if($resize == "true") {
-				$output .= "resize: true, ";
-			} else if($resize == "false" || $resize == "none") {
-				$output .= "resize: false, ";
+			if($resize == 'true') {
+				$output .= 'resize: true, ';
+			} else if($resize == 'false' || $resize == 'none') {
+				$output .= 'resize: false, ';
 			} else {
 				$output .= "resize: '$resize', ";
 			}
@@ -393,18 +393,18 @@ if(!class_exists("Blip_Slideshow")) {
 			}
 			
 			if($this->kenburns_slideshow) {
-				$output .= "pan: " . "[" . $pan . "]" . ", zoom: " . "[" . $zoom . "], ";
+				$output .= 'pan: ' . '[' . $pan . ']' . ', zoom: ' . '[' . $zoom . '], ';
 			}
 	
 			// build remainder of script options
 			$output .= "captions: " . $captions . ", center: " . $center . ", controller: " . $controller . ", fast: " . $fast . ", height: " . $height . ", loader: " . $loader . ", overlap: " . $overlap . ", transition: '" . $transition . "', thumbnails: " . $thumbnails . ", width: " . $width . "};";
-			$output .= "new Blip(" . json_encode($id) . ", " . json_encode($callback_url) . ", " . json_encode($link) . ", " . json_encode($type) . ", options); });
+			$output .= 'new Blip(' . json_encode($id) . ', ' . json_encode($callback_url) . ', ' . json_encode($link) . ', ' . json_encode($type) . ', options); });
 			//]] >
-			</script>";
+			</script>';
 
 			// Slideshow.Fold is broken in IE8
-			if($type == "fold") {
-				$output .= "<![endif]>";
+			if($type == 'fold') {
+				$output .= '<![endif]>';
 			}
 			return $output;
 		}
@@ -432,7 +432,7 @@ if(!class_exists("Blip_Slideshow")) {
 
 				// register optional, user-customized Blip-Slideshow stylesheet
 				if(file_exists(get_theme_root() . '/' . get_template() . '/blip-slideshow.css')) {
-					wp_register_style( 'blip-slideshow', get_bloginfo("stylesheet_directory") . "/blip-slideshow.css", array('slideshow2'));
+					wp_register_style( 'blip-slideshow', get_bloginfo('stylesheet_directory') . '/blip-slideshow.css', array('slideshow2'));
 					wp_print_styles( 'blip-slideshow' );
 				}
 
@@ -479,7 +479,7 @@ if(!class_exists("Blip_Slideshow")) {
 
 }
 
-if(!class_exists("Blip_Slideshow_Cache")) {
+if(!class_exists('Blip_Slideshow_Cache')) {
 
 	/**
 	 * Blip_Slideshow_Cache provides two utilitie functions for reading and writing to the cached RSS file
@@ -492,8 +492,8 @@ if(!class_exists("Blip_Slideshow_Cache")) {
 		function prep_cache($options, $rss) {
 			// determine the read/write paths
 			$result = Blip_Slideshow_Cache::build_cache_paths($options, $rss);
-			$cache_dir = $result["cache_dir"];
-			$localfile = $result["cache_file"];
+			$cache_dir = $result['cache_dir'];
+			$localfile = $result['cache_file'];
 			
 			// if the cache dir doesn't exist
 			if (!file_exists($cache_dir)) {
@@ -520,19 +520,19 @@ if(!class_exists("Blip_Slideshow_Cache")) {
 				$cache_dir = $stored_cache_dir;
 			} else {
 				// cache dir is the path of this PHP file concatenated with the cache dir option
-				$cache_dir = preg_replace("/blip.php/", "", __FILE__) . $stored_cache_dir;
+				$cache_dir = preg_replace('/blip.php/', '', __FILE__) . $stored_cache_dir;
 			}
 
 			// the localfile is the cache dir concatenated with the RawUrlEncoded RSS URL
-			$localfile .= $cache_dir . "/" . hash("md5", $rss);
+			$localfile .= $cache_dir . '/' . hash('md5', $rss);
 			
-			$result = array("cache_dir" => $cache_dir, "cache_file" => $localfile);
+			$result = array('cache_dir' => $cache_dir, 'cache_file' => $localfile);
 			return $result;
 		}
 	}
 }
 
-if(!class_exists("Blip_Slideshow_Admin")) {
+if(!class_exists('Blip_Slideshow_Admin')) {
 
 	/**
 	 * Blip_Slideshow_Admin provides the installation, removal and settings functions
@@ -542,11 +542,11 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 		function Blip_Slideshow_Admin() {
 			register_activation_hook( __FILE__, array( $this, 'create_options') );
 			register_uninstall_hook( __FILE__, array( $this, 'destroy_options') );
-			add_action("admin_init", array($this, "register_options"));
+			add_action('admin_init', array($this, 'register_options'));
 			add_action( 'admin_menu', array( $this, 'add_admin_menu_item') );
 			// beta versions of Blip used a different option name (up to v0.4.2).
 			// TODO: This line will be removed in a future version
-			delete_option("blip"); // remove the old settings
+			delete_option('blip'); // remove the old settings
 		}
 
 		/**
@@ -555,7 +555,7 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 		function create_options() {
 			$options = array();
 			$options['cache_enabled'] = false;
-			$options['cache_dir'] = "cache";
+			$options['cache_dir'] = 'cache';
 			$options['cache_time'] = 3600;
 			add_option(BLIP_SLIDESHOW_DOMAIN, $options, '', 'yes');
 		}
@@ -632,10 +632,10 @@ if(!class_exists("Blip_Slideshow_Admin")) {
  */
 
 // check if the request is to read a Media RSS URL
-if(substr($_SERVER['PATH_INFO'], 0, 5) == "/rss/" && class_exists("Blip_Slideshow_Rss_Reader")) {
+if(substr($_SERVER['PATH_INFO'], 0, 5) == '/rss/' && class_exists('Blip_Slideshow_Rss_Reader')) {
 
 	// attempt to talk to Wordpress
-	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
+	$blog_header_path = preg_replace('/wp-content\/.*/', 'wp-blog-header.php', getcwd());
 	if (file_exists($blog_header_path)) {
 		require_once($blog_header_path);
 	}
@@ -646,12 +646,12 @@ if(substr($_SERVER['PATH_INFO'], 0, 5) == "/rss/" && class_exists("Blip_Slidesho
 }
 
 // start the maintenance
-if (class_exists("Blip_Slideshow_Admin")) {
+if (class_exists('Blip_Slideshow_Admin')) {
     $blip_slideshow_admin = new Blip_Slideshow_Admin();
 }
 
 // start the meat and potatoes
-if (class_exists("Blip_Slideshow")) {
+if (class_exists('Blip_Slideshow')) {
     $blip_slideshow = new Blip_Slideshow();
 }
 
