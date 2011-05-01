@@ -304,10 +304,10 @@ if(!class_exists("Blip_Slideshow")) {
 
 		/**
 		 * External function to build the slideshow.
-		 * The DIV HTML must be build externally.
+		 * The DIV HTML must be coded externally.
 		 */
 		public function slideshow($atts) {
-			echo $this->create_slideshow($atts);
+			print $this->create_slideshow($atts);
 		}
 
 		/**
@@ -626,7 +626,6 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 		 * When Blip is deleted, remove the options from the database
 		 */
 		function destroy_options() {
-			echo "DELETING DATA!!";
 			delete_option(BLIP_SLIDESHOW_DOMAIN);
 		}
 	
