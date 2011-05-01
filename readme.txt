@@ -23,13 +23,13 @@ Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know<
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
-1. Place the [slideshow] shortcode in your posts and/or pages
+1. Place the [slideshow] shortcode in your posts and/or pages. A theme template function call is also available.
 
 **Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
 
 *A simple slideshow example:*
 
->[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Small]
+>[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
 
 == Frequently Asked Questions ==
 
@@ -42,7 +42,8 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 * Verified to work with SmugMug, Flickr and MobileMe Media RSS Feeds
 * Theoretically compatible with any Media RSS Feed
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
-* Supports caching of Media RSS Feeds for extra performance (must be enabled in Settings)
+* Supports server-side caching of Media RSS Feeds via a writable cache directory for extra performance (must be enabled in Settings)
+* Supports client-side caching of Media RSS Feeds via HTTP 304 for extra performance (must be enabled in Settings)
 * If possible, loads photos sized no bigger than the viewport (good for mobile browsing)
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
@@ -73,14 +74,20 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
-* Release date: 2011-04-28
-* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Fixed an IE8 bug in mootools-1.3.1-core.js
+* Release date: 2011-04-30
+* Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 3/WinXP, IE 8/WinXP
+* Returns HTTP 304 (Not Modified) when client sends appropriate "if-modified-since" or "if-none-match" header - super speedy!!!
+* These options now work as documented: delay, duration, loop, paused, random, slide
+* Added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
+* Added shortcode [blip-version] for internal use
+* Using REST-style URL for retrieving the media RSS file
+* MobileMe slideshows no longer search for thumbnails that don't exist
+* Always pull large-size images from Flickr feeds
 
 = 1.2.1 =
 * Release date: 2011-04-28
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Flickr images will load in high-resolution if a big enough width or height are passed to Blip
+* Flickr images will load in high-resolution if a big enough width or height option is passed to Blip
 
 = 1.2.0 =
 * Release date: 2011-04-28
@@ -204,6 +211,7 @@ The first version. Yay!
 
 * Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 * Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
+* [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
 
 == Lightbox Plugin Compatibility Guide ==
 
@@ -221,8 +229,7 @@ The first version. Yay!
 
 == To Do ==
 
-* Enhance: Input validation
-* Enhance: Refactor cache code out of Blip code
+* Track down database delete bug?
 * Enhance: Read Picasa Web RSS feeds
 * Enhance: Read Photobucket RSS feeds
 
@@ -261,3 +268,7 @@ Some information I found invaluable for this project:
 * http://striderweb.com/nerdaphernalia/2008/06/wp-use-action-links/
 * http://www.mac-forums.com/forums/images-graphic-design-digital-photography/31805-photocast.html
 * http://forums.devshed.com/php-development-5/curl-get-final-url-after-inital-url-redirects-544144.html
+* http://code.garyjones.co.uk/get-wordpress-plugin-version/
+* http://wordpress.stackexchange.com/questions/7782/wp-script-versioning-breaks-cross-site-caching
+* http://fgiasson.com/blog/index.php/2006/07/19/hack_for_the_encoding_of_url_into_url_pr/
+* http://code.google.com/speed/page-speed/docs/caching.html
