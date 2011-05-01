@@ -133,8 +133,6 @@ var SmugMugRssParser = new Class({
 	Extends: MediaRssParser,
 	initialize: function(link, newResponseText, newResponseXml){
 		var responseXml = newResponseXml;
-		//var responseText = newResponseText.replace(/<(\/)?([A-Z]+):([a-z]+)/gi,'<$1$2_$3');
-		//responseXml = new DOMParser().parseFromString(responseText, 'text/xml');
 		var items = Slick.search(responseXml, 'item');
 		var counter = 0;
 		var slideshowImages = new Array(items.length);
@@ -142,10 +140,8 @@ var SmugMugRssParser = new Class({
 		items.each(function(item){
 			var image = {};
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
-			//image.largeUrl = Slick.find(item, 'guid').firstChild.nodeValue; // the Original image
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
-			// image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getProperty('url'); // the sized image
-			image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').attributes[0].value;
+			image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getAttribute('url'); // the sized image
 			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'), link);
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;
@@ -156,20 +152,9 @@ var SmugMugRssParser = new Class({
 		var previousBiggestHeight = 0;
 		var previousBiggestWidth = 0;
 		newMediaGroup.each(function(oneImage){
-			var width = 0;
-			var height = 0;
-			var url = '';
-			for(var i=0; i<oneImage.attributes.length; i++) {
-				if (oneImage.attributes[i].name == "height") {
-					height = parseInt(oneImage.attributes[i].value);
-				}
-				else if (oneImage.attributes[i].name == "width") {
-					width = parseInt(oneImage.attributes[i].value);
-				}
-				else if (oneImage.attributes[i].name == "url") {
-					url = oneImage.attributes[i].value;
-				}
-			}
+			var width = parseInt(oneImage.getAttribute('width'));
+			var height = parseInt(oneImage.getAttribute('height'));
+			var url = oneImage.getAttribute('url');
 			if(height == 100 || width == 100) {
 				newImage.thumbUrl = url;
 			}
@@ -197,7 +182,7 @@ var DotMacRssParser = new Class({
 			// check for an enclosure
 			var enclosure = Slick.find(item, 'enclosure');
 			if(enclosure != null) {
-				image.slideUrl = enclosure.attributes[0].value; // the sized image
+				image.slideUrl = enclosure.getAttribute('url'); // the sized image
 				image.largeUrl = image.slideUrl.replace(/web.jpg/,'large.jpg'); // the large image
 			} else {
 				image.slideUrl = Slick.find(item, 'description').firstChild.nodeValue.replace(/[\s\S]+img src\=.([\s\S]+). alt=[\s\S]+/g,'$1'); // the sized image
@@ -212,7 +197,7 @@ var DotMacRssParser = new Class({
 	}
 });
 
-/* For Flickr and generic feeds */
+/* For generic feeds like Flickr, Picasa Web and Photobucket */
 var GenericRssParser = new Class({
 	Extends: MediaRssParser,
 	initialize: function(link, newResponseText, newResponseXml){
@@ -224,10 +209,10 @@ var GenericRssParser = new Class({
 			var image = {};
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue; // the title
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the link
-			image.thumbUrl = image.slideUrl = image.largeUrl = Slick.find(item, 'media_content').attributes[0].value; // the large image
+			image.thumbUrl = image.slideUrl = image.largeUrl = Slick.find(item, 'media_content').getAttribute('url'); // the large image
 			var thumbnail = Slick.find(item, 'media_thumbnail'); // the thumbnail
 			if(thumbnail != undefined) {
-				image.thumbUrl = thumbnail.attributes[0].value;
+				image.thumbUrl = thumbnail.getAttribute('url');
 			}
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;

@@ -1,16 +1,16 @@
 === Blip Slideshow ===
 Contributors: jasonhendriks
 Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
-Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
+Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, picasa, photobucket, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
 Stable tag: 1.2.2
 
-A WordPress slideshow plugin fed from a SmugMug, Flickr, MobileMe or Picasa RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a SmugMug, Flickr, MobileMe, Picasa or Photobucket RSS feed and displayed using pure Javascript.
 
 == Description ==
 
-A WordPress slideshow plugin fed from a **SmugMug**, **Flickr**, **MobileMe** or **Picasa** RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a **SmugMug**, **Flickr**, **MobileMe**, **Picasa** or **Photobucket** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
@@ -39,12 +39,11 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 
 = What are the main features? =
 
-* Verified to work with SmugMug, Flickr, MobileMe and Picasa Media RSS Feeds
+* Verified to work with SmugMug, Flickr, MobileMe, Picasa Web and Photobucket Media RSS Feeds
 * Theoretically compatible with any Media RSS Feed
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
 * Supports server-side caching of Media RSS Feeds via a writable cache directory for extra performance (must be enabled in Settings)
 * Supports client-side caching of Media RSS Feeds via HTTP 304 for extra performance (must be enabled in Settings)
-* If possible, loads photos sized no bigger than the viewport (good for mobile browsing)
 * Supports multiple slideshows in a single post/page
 * Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
@@ -65,9 +64,13 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 Click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
 
-= Where can I fing my Google Picasa Web RSS feed URL? =
+= Where can I find my Google Picasa Web RSS feed URL? =
 
 See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) and [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) help pages.
+
+= Where can I find my Photobucket RSS feed URL?
+
+See Photobucket's [RSS Feeds](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm) page.
 
 == Screenshots ==
 
@@ -79,7 +82,8 @@ See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl
 
 = 1.2.3 =
 * Proper version numbers on linked stylesheets and Javascript files
-* Verified to work with Google Picasa Web Media RSS feeds
+* Compatible with Google Picasa Web RSS feeds
+* Compatible with Photobucket RSS feeds
 
 = 1.2.2 =
 * Release date: 2011-04-30
@@ -191,11 +195,14 @@ See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl
 
 == Upgrade Notice ==
 
+= 1.2.3 =
+Now with support for Picasa Web and Photobucket feeds, and client-side cache.
+
 = 1.2.0 =
-Defaults have changed! Check the changelog. New slideshow types: Flash, Fold, Ken Burns and Push
+Option defaults have changed, please check the changelog. New slideshow types: Flash, Fold, Ken Burns and Push
 
 = 1.1.0 =
-Now with better caching, MobileMe RSS Feeds and WordPress installs running HTTPS.
+Now with Support for MobileMe RSS Feeds and WordPress installs running HTTPS.
 
 = 1.0.0 =
 Thanks for beta testing! The first official stable version offers caching and a CSS style in your theme directory.
@@ -234,10 +241,6 @@ The first version. Yay!
 * [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the mootools API, which is a no-no
 * [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): OK
 * [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - uses jQuery, but doesn't load it
-
-== To Do ==
-
-* Enhance: Read Photobucket RSS feeds
 
 == Resources ==
 
