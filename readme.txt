@@ -113,6 +113,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 * Fixed bug closing two or more Colorbox Lightboxes on a page with multiple slideshows
 * More robust caching of Media RSS files, both client and server side
 * Added fast=3 option to eliminate a "blink" at the start of the slideshow (undocumented for now)
+* Handle RSS feeds that send HTTP redirects
 * HTTPS support
 
 = 1.0.0 =
