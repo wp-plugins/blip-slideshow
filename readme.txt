@@ -50,27 +50,15 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 [Media RSS (MRSS)](http://www.rssboard.org/media-rss) is an RSS extension used for syndicating multimedia files (audio, video, image) in RSS feeds. Like your WordPress
 RSS news feed, media RSS lists pictures instead of articles from photo-sharing websites.
 
-= Where can I find my SmugMug RSS feed URL? =
+= Where can I find my RSS feed URL? =
 
-SmugMug has a [Help](http://www.smugmug.com/help/rss-atom-feeds "How to subscribe to RSS feeds") page and some [examples](http://wiki.smugmug.net/display/SmugMug/Feeds+Examples).
+* SmugMug has a [Help](http://www.smugmug.com/help/rss-atom-feeds "How to subscribe to RSS feeds") page and some [examples](http://wiki.smugmug.net/display/SmugMug/Feeds+Examples).
+* Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS and Atom Feeds") page. Also worth checking out is DeGrave.com's [Flickr RSS Feed Generator](http://www.degraeve.com/flickr-rss/).
+* Google has a [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) page and a [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) page.
+* Photobucket has a [Help](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm "Photobucket RSS Feeds") page.
+* For MobileMe, click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
 
-= Where can I find my Flickr RSS feed URL? =
-
-Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS and Atom Feeds") page. Also worth checking out is DeGrave.com's [Flickr RSS Feed Generator](http://www.degraeve.com/flickr-rss/).
-
-= Where can I find my MobileMe RSS feed URL? =
-
-Click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
-
-= Where can I find my Google Picasa Web RSS feed URL? =
-
-See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) and [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) help pages.
-
-= Where can I find my Photobucket RSS feed URL? =
-
-See Photobucket's [RSS Feeds](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm) page.
-
-= Contact the author =
+= Can I Contact the author? =
 
 Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact Jason Hendriks") at my webpage.
 
