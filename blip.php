@@ -606,9 +606,6 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 			register_uninstall_hook( __FILE__, array( $this, "destroy_options") );
 			add_action("admin_init", array($this, "register_options"));
 			add_action( "admin_menu", array( $this, "add_admin_menu_item") );
-			// beta versions of Blip used a different option name (up to v0.4.2).
-			// TODO: This line will be removed in a future version
-			delete_option("blip"); // remove the old settings
 		}
 
 		/**
