@@ -72,7 +72,7 @@ See Photobucket's [RSS Feeds](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_
 
 = Contact the author =
 
-Send me a [http://www.jasonhendriks.com/contact/](question or comment) at my webpage.
+Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact Jason Hendriks") at my webpage.
 
 == Screenshots ==
 
