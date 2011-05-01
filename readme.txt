@@ -81,6 +81,8 @@ See Photobucket's [RSS Feeds](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_
 == Changelog ==
 
 = 1.2.3 =
+* Release date: 2011-05-01
+* Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 3/WinXP, IE 8/WinXP
 * Proper version numbers on linked stylesheets and Javascript files
 * Compatible with Google Picasa Web RSS feeds
 * Compatible with Photobucket RSS feeds
