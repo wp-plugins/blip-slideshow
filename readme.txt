@@ -6,11 +6,11 @@ Requires at least: 2.7
 Tested up to: 3.1.2
 Stable tag: 1.2.2
 
-A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a SmugMug, Flickr, MobileMe or Picasa RSS feed and displayed using pure Javascript.
 
 == Description ==
 
-A WordPress slideshow plugin fed from a **SmugMug**, **Flickr** or **MobileMe** RSS feed and displayed using pure Javascript.
+A WordPress slideshow plugin fed from a **SmugMug**, **Flickr**, **MobileMe** or **Picasa** RSS feed and displayed using pure Javascript.
 Blip does not hardcode what it finds into your blog. Instead the most recent images are loaded in real-time by the user's web browser.
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
@@ -65,6 +65,10 @@ Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS a
 
 Click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
 
+= Where can I fing my Google Picasa Web RSS feed URL? =
+
+See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) and [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) help pages.
+
 == Screenshots ==
 
 1. Blip running at [Ambient Photography](http://www.ambientphotography.ca/)
@@ -72,6 +76,10 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 1. Blip running at [Ambient Photography - Wedding Gallery](http://www.ambientphotography.ca/gallery/wedding-gallery/)
 
 == Changelog ==
+
+= 1.2.3 =
+* Proper version numbers on linked stylesheets and Javascript files
+* Verified to work with Google Picasa Web Media RSS feeds
 
 = 1.2.2 =
 * Release date: 2011-04-30
@@ -229,8 +237,6 @@ The first version. Yay!
 
 == To Do ==
 
-* Track down database delete bug?
-* Enhance: Read Picasa Web RSS feeds
 * Enhance: Read Photobucket RSS feeds
 
 == Resources ==
