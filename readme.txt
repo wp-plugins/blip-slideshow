@@ -115,17 +115,11 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 * Added fast=3 option to eliminate a "blink" at the start of the slideshow (undocumented for now)
 * HTTPS support
 
-= 1.0.1 =
-* Release date: 2011-04-26
-* Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
-* Whoops, broken out-of-the-box due to insufficient unit testing :-( My bad.
-* Handle RSS feeds that send HTTP redirects
-
 = 1.0.0 =
 * Release date: 2011-04-23
 * Tested in Safari 5/OS X, Firefox 3/OS X, IE 8/WinXP
 * Official stable release
-* Supports caching of RSS feeds (must be enabled in the Settings)
+* Supports server-side caching of RSS feeds (must be enabled in the Settings)
 * Loads "blip-slideshow.css" from the root of your theme directory if it exists
 
 = 0.4.2 =
@@ -144,7 +138,6 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 * Compatible with Colorbox plugin [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/)
 * Integration with Colorbox! Use link=lightbox and add a compatible plugin
 * Removed CSS stlye background-color from slideshow-thumbnails-hidden, slideshow-thumbnails-inactive and slideshow-thumbnails-active. Overriding this inline was not working.
-* Fixed bug where only one Slimbox was working in posts with multiple slideshows
 * Fixed bug in parsing SmugMug thumbnails that aren't square
 * For link=full or link=lightbox, will download SmugMug images that are smaller than the viewport
 * Scripts and CSS are no longer loaded on pages that don't use Blip
