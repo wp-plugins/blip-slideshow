@@ -76,7 +76,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 					CURLOPT_HEADER         => false,    // don't return headers 
 					CURLOPT_FOLLOWLOCATION => true,     // follow redirects 
 					CURLOPT_ENCODING       => "",       // handle all encodings 
-					CURLOPT_USERAGENT      => BLIP_SLIDESHOW_NAME . "/1.0", // who am i 
+					CURLOPT_USERAGENT      => BLIP_SLIDESHOW_NAME . "/" . Blip_Slideshow::get_version(), // who am i 
 					CURLOPT_AUTOREFERER    => true,     // set referer on redirect 
 					CURLOPT_CONNECTTIMEOUT => 30,       // timeout on connect 
 					CURLOPT_TIMEOUT        => 30,       // timeout on response 
@@ -264,6 +264,7 @@ if(!class_exists("Blip_Slideshow")) {
 	class Blip_Slideshow {
 		var $counter = 0;
 		var $add_script = false;
+		var $version;
 		
 		var $flash_slideshow = false;
 		var $fold_slideshow = false;
@@ -275,6 +276,7 @@ if(!class_exists("Blip_Slideshow")) {
 			add_shortcode( "blip-version", array( $this, "version_shortcode") );
 			add_action( "wp_footer", array( $this, "add_footer_scripts") );
 			$this->add_header_scripts();
+			$this->version = $this->get_version();
 		}
 	
 		/**
@@ -284,7 +286,7 @@ if(!class_exists("Blip_Slideshow")) {
 		 * @return string Plugin version
 		 */
 		function version_shortcode() {
-			return $this->get_version();
+			return $this->version;
 		}
 
 		/**
@@ -472,7 +474,7 @@ if(!class_exists("Blip_Slideshow")) {
 		function add_header_scripts() {
 			if (!is_admin()) {
 				// register MooTools script
-				wp_register_script("mootools", plugins_url("/Slideshow/js/mootools-1.3.1-core.js", __FILE__), true, null);
+				wp_register_script("mootools", plugins_url("/Slideshow/js/mootools-1.3.1-core.js", __FILE__), false, "1.3.1");
 				wp_enqueue_script("mootools");
 			}
 		}
@@ -484,49 +486,49 @@ if(!class_exists("Blip_Slideshow")) {
 			if ( $this->add_script ) {
 
 				// register Slideshow stylesheet
-				wp_register_style( "slideshow2", plugins_url("/Slideshow/css/slideshow.css", __FILE__), true, null);
+				wp_register_style( "slideshow2", plugins_url("/Slideshow/css/slideshow.css", __FILE__), false, "1.3.1.110417");
 				wp_print_styles( "slideshow2");
 
 				// register optional, user-customized Blip-Slideshow stylesheet
 				if(file_exists(get_theme_root() . "/" . get_template() . "/blip-slideshow.css")) {
-					wp_register_style( "blip-slideshow", get_bloginfo("stylesheet_directory") . "/blip-slideshow.css", array("slideshow2"), true, null);
+					wp_register_style( "blip-slideshow", get_bloginfo("stylesheet_directory") . "/blip-slideshow.css", array("slideshow2"), null);
 					wp_print_styles( "blip-slideshow" );
 				}
 
 				// register MooTools More script
-				wp_register_script( "mootools-more", plugins_url("/Slideshow/js/mootools-1.3.1.1-more.js", __FILE__), array("mootools"), true, null);
+				wp_register_script( "mootools-more", plugins_url("/Slideshow/js/mootools-1.3.1.1-more.js", __FILE__), array("mootools"), "1.3.1.1");
 				wp_print_scripts( "mootools-more" );
 
 				// register Slideshow script
-				wp_register_script( "slideshow2", plugins_url("/Slideshow/js/slideshow.js", __FILE__), array("mootools-more"), true, null);
+				wp_register_script( "slideshow2", plugins_url("/Slideshow/js/slideshow.js", __FILE__), array("mootools-more"), "1.3.1.110417");
 				wp_print_scripts( "slideshow2" );
 
 				// register Slideshow Flash script
 				if($this->flash_slideshow) {
-					wp_register_script( "slideshow2-flash", plugins_url("/Slideshow/js/slideshow.flash.js", __FILE__), array("slideshow2"), true, null);
+					wp_register_script( "slideshow2-flash", plugins_url("/Slideshow/js/slideshow.flash.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-flash" );
 				}
 
 				// register Slideshow Fold script
 				if($this->fold_slideshow) {
-					wp_register_script( "slideshow2-fold", plugins_url("/Slideshow/js/slideshow.fold.js", __FILE__), array("slideshow2"), true, null);
+					wp_register_script( "slideshow2-fold", plugins_url("/Slideshow/js/slideshow.fold.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-fold" );
 				}
 
 				// register Slideshow Ken Burns script
 				if($this->kenburns_slideshow) {
-					wp_register_script( "slideshow2-kenburns", plugins_url("/Slideshow/js/slideshow.kenburns.js", __FILE__), array("slideshow2"), true, null);
+					wp_register_script( "slideshow2-kenburns", plugins_url("/Slideshow/js/slideshow.kenburns.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-kenburns" );
 				}
 
 				// register Slideshow Push script
 				if($this->push_slideshow) {
-					wp_register_script( "slideshow2-push", plugins_url("/Slideshow/js/slideshow.push.js", __FILE__), array("slideshow2"), true, null);
+					wp_register_script( "slideshow2-push", plugins_url("/Slideshow/js/slideshow.push.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-push" );
 				}
 
 				// register Blip script
-				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url("/blip.js", __FILE__), array("slideshow2"), true, null);
+				wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url("/blip.js", __FILE__), array("slideshow2"), $this->version);
 				wp_print_scripts( BLIP_SLIDESHOW_DOMAIN );
 			}
 		}
