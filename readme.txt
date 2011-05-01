@@ -39,7 +39,7 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 
 = What are the main features? =
 
-* Verified to work with SmugMug, Flickr and MobileMe Media RSS Feeds
+* Verified to work with SmugMug, Flickr, MobileMe and Picasa Media RSS Feeds
 * Theoretically compatible with any Media RSS Feed
 * WordPress templates load immediately; reading of Media RSS Feeds is performed in the background
 * Supports server-side caching of Media RSS Feeds via a writable cache directory for extra performance (must be enabled in Settings)
