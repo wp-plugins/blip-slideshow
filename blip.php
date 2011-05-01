@@ -694,16 +694,16 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 
 // check if the request is to read a Media RSS URL
 if(substr($_SERVER["PATH_INFO"], 0, 5) == "/rss/" && class_exists("Blip_Slideshow_Rss_Reader")) {
-
+	
 	// attempt to talk to Wordpress
 	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
 	if (file_exists($blog_header_path)) {
 		require_once($blog_header_path);
 	}
 	// initiate the Media RSS reading
-  $blip_rss_reader = new Blip_Slideshow_Rss_Reader();
-  // commit suicide
-  die;
+	$blip_rss_reader = new Blip_Slideshow_Rss_Reader();
+	// commit suicide
+	die;
 }
 
 // start the maintenance

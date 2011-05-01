@@ -77,7 +77,7 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 * Release date: 2011-04-30
 * Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 3/WinXP, IE 8/WinXP
 * Returns HTTP 304 (Not Modified) when client sends appropriate "if-modified-since" or "if-none-match" header - super speedy!!!
-* Options now work as promised: delay, duration, loop, paused, random, slide
+* These options now work as documented: delay, duration, loop, paused, random, slide
 * Added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
 * Added shortcode [blip-version] for internal use
 * Using REST-style URL for retrieving the media RSS file
@@ -229,7 +229,6 @@ The first version. Yay!
 
 == To Do ==
 
-* Enhance: Input validation
 * Track down database delete bug?
 * Enhance: Read Picasa Web RSS feeds
 * Enhance: Read Photobucket RSS feeds
