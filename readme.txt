@@ -68,7 +68,7 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 
 See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) and [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) help pages.
 
-= Where can I find my Photobucket RSS feed URL?
+= Where can I find my Photobucket RSS feed URL? =
 
 See Photobucket's [RSS Feeds](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm) page.
 
