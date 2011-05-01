@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
 
@@ -74,6 +74,8 @@ Click the "Subscribe" icon found at the top of your MobileMe gallery on the Mobi
 == Changelog ==
 
 = 1.2.2 =
+* Release date: 2011-04-30
+* Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 3/WinXP, IE 8/WinXP
 * Returns HTTP 304 (Not Modified) when client sends appropriate "if-modified-since" or "if-none-match" header - super speedy!!!
 * Options now work as promised: delay, duration, loop, paused, random, slide
 * Added function Blip_Slideshow::slideshow($atts) for creating a slideshow directly in a theme template
@@ -270,3 +272,4 @@ Some information I found invaluable for this project:
 * http://code.garyjones.co.uk/get-wordpress-plugin-version/
 * http://wordpress.stackexchange.com/questions/7782/wp-script-versioning-breaks-cross-site-caching
 * http://fgiasson.com/blog/index.php/2006/07/19/hack_for_the_encoding_of_url_into_url_pr/
+* http://code.google.com/speed/page-speed/docs/caching.html
