@@ -15,8 +15,6 @@ Blip does not hardcode what it finds into your blog. Instead the most recent ima
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
 
-Are you using Blip? <a href="http://www.jasonhendriks.com/contact/">Let me know</a> so I can grab a screenshot :-)
-
 == Installation ==
 
 1. Download Blip Slideshow
@@ -71,6 +69,10 @@ See Google's [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl
 = Where can I find my Photobucket RSS feed URL? =
 
 See Photobucket's [RSS Feeds](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm) page.
+
+= Contact the author =
+
+Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact Jason Hendriks") at my webpage.
 
 == Screenshots ==
 
