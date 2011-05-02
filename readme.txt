@@ -70,6 +70,11 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 
 == Changelog ==
 
+= 1.2.4 =
+* Release date: 2011-05-02
+* Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 3/WinXP, IE 8/WinXP
+* Bug: SmugMug slides appear blank in the case when SmugMug doesn't recommend a media:content to choose. Fix: Choose the largest slide available.
+
 = 1.2.3 =
 * Release date: 2011-05-01
 * Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 3/WinXP, IE 8/WinXP
