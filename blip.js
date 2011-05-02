@@ -137,16 +137,22 @@ var SmugMugRssParser = new Class({
 		var counter = 0;
 		var slideshowImages = new Array(items.length);
 		this.slideshowImages = slideshowImages;
-		items.each(function(item){
+		items.each(function(item, i){
 			var image = {};
+			this.processMediaGroup(image, Slick.search(item, 'media_content'), link);
 			image.hrefUrl = Slick.find(item, 'link').firstChild.nodeValue; // the SmugMug gallery
 			image.caption = Slick.find(item, 'title').firstChild.nodeValue;
-			image.slideUrl = Slick.find(item, 'media_group > media_content[isDefault]').getAttribute('url'); // the sized image
-			this.processMediaGroup(image, Slick.search(item, 'media_group > media_content[url]'), link);
+			var slideUrl = Slick.find(item, 'media_content[isDefault]').getAttribute('url');
+			// test if SmugMug set a default image
+			if(slideUrl) {
+				// the slide image becomes the (default) sized image
+				image.slideUrl = slideUrl; // the sized image
+			}
 			link.setImageLink(image);
 			slideshowImages[counter++] = image;
 		}, this);
 	},
+	/* parse the <media:group> for the best thumb, slide and large urls */
 	processMediaGroup: function(newImage, newMediaGroup, link) {
 		// determine the thumb image and the large image
 		var previousBiggestHeight = 0;
@@ -161,7 +167,7 @@ var SmugMugRssParser = new Class({
 			if((height > previousBiggestHeight || width > previousBiggestWidth) && !link.isImageTooBig(width, height)) {
 				previousBiggestHeight = height;
 				previousBiggestWidth = width;
-				newImage.largeUrl = url;
+				newImage.slideUrl = newImage.largeUrl = url;
 			}
 		}, this);
 	}
