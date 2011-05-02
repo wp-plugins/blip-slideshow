@@ -54,7 +54,7 @@ RSS news feed, media RSS lists pictures instead of articles from photo-sharing w
 
 * SmugMug has a [Help](http://www.smugmug.com/help/rss-atom-feeds "How to subscribe to RSS feeds") page and some [examples](http://wiki.smugmug.net/display/SmugMug/Feeds+Examples).
 * Flickr has a [Help](http://www.flickr.com/get_the_most.gne#rss "How to use RSS and Atom Feeds") page. Also worth checking out is DeGrave.com's [Flickr RSS Feed Generator](http://www.degraeve.com/flickr-rss/).
-* Google has a [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) page and a [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) page.
+* Picasa Web has a [Using RSS Feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=47351) page and a [Creating custom RSS feeds](http://picasa.google.com/support/bin/answer.py?hl=en&answer=99373) page.
 * Photobucket has a [Help](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm "Photobucket RSS Feeds") page.
 * For MobileMe, click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
 
