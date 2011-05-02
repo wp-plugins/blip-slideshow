@@ -240,7 +240,6 @@ The first version. Yay!
 == Resources ==
 
 Some information I found invaluable for this project:
-
 * http://groups.google.com/group/mootools-users/browse_thread/thread/4858bdee5b1d0f56/d6ad5aa2fcc99dba?fwc=1
 * http://mootools.net/docs/more/Request/Request.Queue
 * http://mootools.net/demos/?demo=Slick.Finder
