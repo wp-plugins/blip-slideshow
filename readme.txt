@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, picasa, photobucket, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr, MobileMe, Picasa or Photobucket RSS feed and displayed using pure Javascript.
 
@@ -25,7 +25,7 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 
 **Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
 
-*A simple slideshow example:*
+*A simple SmugMug slideshow example:*
 
 >[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
 
@@ -35,7 +35,7 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 
 Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron/slideshow/ 'Javascript MooTools Slideshow') by Aeron Glemann with some nifty client-side RSS-reading magic. If you like Blip, please show your support to him.
 
-= What are the main features? =
+= What are the features? =
 
 * Verified to work with SmugMug, Flickr, MobileMe, Picasa Web and Photobucket Media RSS Feeds
 * Theoretically compatible with any Media RSS Feed
@@ -58,7 +58,7 @@ RSS news feed, media RSS lists pictures instead of articles from photo-sharing w
 * Photobucket has a [Help](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm "Photobucket RSS Feeds") page.
 * For MobileMe, click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
 
-= Can I Contact the author? =
+= How can I contact the author? =
 
 Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact Jason Hendriks") at my webpage.
 
