@@ -43,7 +43,7 @@ Blip is a wrapper for [MooTools Slideshow 2!](http://www.electricprism.com/aeron
 * Supports server-side caching of Media RSS Feeds via a writable cache directory for extra performance (must be enabled in Settings)
 * Supports client-side caching of Media RSS Feeds via HTTP 304 for extra performance (must be enabled in Settings)
 * Supports multiple slideshows in a single post/page
-* Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
+* Supports Lightbox plugins such as [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/), [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/), [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/), [Slimbox](http://wordpress.org/extend/plugins/slimbox/), [WP-Slimbox2](http://wordpress.org/extend/plugins/wp-slimbox2/) and [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/)
 
 = What is Media RSS? =
 
@@ -74,6 +74,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 * Release date: 2011-05-02
 * Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 4/WinXP, IE 8/WinXP
 * Bug: SmugMug slides appear blank in the case when SmugMug doesn't recommend a media:content to choose. Fix: Choose the largest slide available.
+* Compatible with Colorbox plugin [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/)
 
 = 1.2.3 =
 * Release date: 2011-05-01
@@ -187,7 +188,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 == Upgrade Notice ==
 
 = 1.2.4 =
-Fixed a bug that made some SmugMug images not appear.
+Fixed a bug that made some SmugMug images not appear. Compatible with jQuery Colorbox.
 
 = 1.2.3 =
 Now with support for Picasa Web and Photobucket feeds, and client-side cache.
@@ -225,7 +226,7 @@ The first version. Yay!
 == Lightbox Plugin Compatibility Guide ==
 
 * [Lightbox Plus](http://wordpress.org/extend/plugins/lightbox-plus/): OK
-* [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/): failed - no visible error, just won't show slideshow pics
+* [jQuery Colorbox](http://wordpress.org/extend/plugins/jquery-colorbox/): OK
 * [JQuery Colorbox Zoom](http://wordpress.org/extend/plugins/jcolorboxzoom/): failed - uses jQuery, but doesn't load it
 * [Gameplorer's WPColorBox](http://wordpress.org/extend/plugins/gameplorers-wpcolorbox/): OK
 * [Simple Cbox](http://wordpress.org/extend/plugins/simple-cbox/): failed - does not use jQuery in compatibility mode

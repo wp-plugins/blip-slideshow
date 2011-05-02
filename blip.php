@@ -400,7 +400,7 @@ if(!class_exists("Blip_Slideshow")) {
 			// massage link option
 			if($link == "lightbox" && (function_exists("slimbox") || function_exists("wp_slimbox_activate"))) {
 				$link = "slimbox";
-			} else if($link == "lightbox" && (class_exists("wp_lightboxplus") || class_exists("GameplorersWPColorBox") || class_exists("jQueryLightboxForNativeGalleries"))) {
+			} else if($link == "lightbox" && (class_exists("wp_lightboxplus") || class_exists("GameplorersWPColorBox") || class_exists("jQueryLightboxForNativeGalleries") || function_exists("jQueryColorbox"))) {
 				$link = "colorbox";
 			} else if($link == "lightbox") {
 				// no supported lightbox plugins
