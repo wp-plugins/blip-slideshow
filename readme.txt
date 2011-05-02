@@ -186,6 +186,9 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 
 == Upgrade Notice ==
 
+= 1.2.4 =
+Fixed a bug that made some SmugMug images not appear.
+
 = 1.2.3 =
 Now with support for Picasa Web and Photobucket feeds, and client-side cache.
 
