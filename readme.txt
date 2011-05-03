@@ -219,7 +219,7 @@ The first version. Yay!
 
 == Known Issues ==
 
-* Though MooTools is used in compatibility mode and will function with most Javascript frameworks including jQuery, it will break if script.aculo.us is loaded on your page, for example by [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
+* MooTools is used in compatibility mode and will function with most Javascript frameworks and toolkits including jQuery. However, it is not compatible with the Javascript framework called Prototype, used indirectly by WordPress plugins [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
 * Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
 * [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
 
@@ -239,7 +239,6 @@ The first version. Yay!
 
 == Resources ==
 
-Some information I found invaluable for this project:
 * http://groups.google.com/group/mootools-users/browse_thread/thread/4858bdee5b1d0f56/d6ad5aa2fcc99dba?fwc=1
 * http://mootools.net/docs/more/Request/Request.Queue
 * http://mootools.net/demos/?demo=Slick.Finder
