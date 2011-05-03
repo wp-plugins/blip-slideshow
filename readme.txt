@@ -58,6 +58,12 @@ RSS news feed, media RSS lists pictures instead of articles from photo-sharing w
 * Photobucket has a [Help](http://pic.pbsrc.com/dev_help/RSS/Photobucket_RSS_Feeds.htm "Photobucket RSS Feeds") page.
 * For MobileMe, click the "Subscribe" icon found at the top of your MobileMe gallery on the MobileMe website. Note: This icon is on the *public* version of your gallery (gallery.me.com). Not the version you see when you are logged in (www.me.com).
 
+= Known Issues =
+
+* MooTools is used in compatibility mode and will function with most Javascript frameworks and toolkits including jQuery. However, it is not compatible with the Javascript framework called Prototype, used indirectly by WordPress plugins such as [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
+* Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
+* [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
+
 = How can I contact the author? =
 
 Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact Jason Hendriks") at my webpage.
@@ -216,12 +222,6 @@ Thanks for beta testing! Various enhancements are ready.
 
 = 0.1 =
 The first version. Yay!
-
-== Known Issues ==
-
-* MooTools is used in compatibility mode and will function with most Javascript frameworks and toolkits including jQuery. However, it is not compatible with the Javascript framework called Prototype, used indirectly by WordPress plugins [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
-* Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
-* [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
 
 == Lightbox Plugin Compatibility Guide ==
 
