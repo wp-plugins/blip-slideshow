@@ -219,7 +219,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 				
 				// push headers
 				header("Via: " . Blip_Slideshow::get_version() . " " . BLIP_SLIDESHOW_NAME);
-				header("Content-Location: " . $_SERVER["REQUEST_URI"]);
+				header("Content-Location: " . $url);
 				header("Last-Modified: " . date(DATE_RFC1123, $content["date"]));
 				if($content["304"]) {
 					header("HTTP/1.1 304 Not Modified");
