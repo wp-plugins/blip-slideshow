@@ -15,6 +15,10 @@ Blip does not hardcode what it finds into your blog. Instead the most recent ima
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
 
+> Please note that Blip is [*not* compatible with the Javascript framework Prototype](http://mootorial.com/wiki/mootorial/00a-mootoolsvsothers). Please check for "prototype.js" in your webpage, included by your theme or other plugin, before writing me for help.
+
+Requires WordPress 2.7 and PHP 5.
+
 == Installation ==
 
 1. Download Blip Slideshow
@@ -23,11 +27,11 @@ See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toront
 1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
 1. Place the [slideshow] shortcode in your posts and/or pages. A theme template function call is also available.
 
-**Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**
+**Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**.
 
 *A simple SmugMug slideshow example:*
 
->[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
+`[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]`
 
 == Frequently Asked Questions ==
 
@@ -60,7 +64,7 @@ RSS news feed, media RSS lists pictures instead of articles from photo-sharing w
 
 = Known Issues =
 
-* MooTools is used in compatibility mode and will function with most Javascript frameworks and toolkits including jQuery. However, it is not compatible with the Javascript framework called Prototype, used indirectly by WordPress plugins such as [Lightbox 2](http://wordpress.org/extend/plugins/lightbox-2/). Use [Colorbox](http://wordpress.org/extend/plugins/search.php?q=colorbox) or [Slimbox](http://wordpress.org/extend/plugins/search.php?q=slimbox) plugins instead.
+* Blip is [*not* compatible with the Javascript framework Prototype](http://mootorial.com/wiki/mootorial/00a-mootoolsvsothers). Please check for "prototype.js" in your webpage, included by your theme or other plugin, before writing me for help.
 * Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
 * [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
 
