@@ -281,11 +281,11 @@ if(!class_exists("Blip_Slideshow")) {
 			//<![CDATA[
 			';
 		
-			//
-			$output .= "if(document.observe){pErr();}";
-		
-			// build remainder of script options
-			$output .= "else if(window.addEvent){window.addEvent('domready', function(){" . "var options = {";
+			// if Prototype is loaded before the Blip script is written, it will fail
+			$output .= "if(document.observe){document.write(pErr());}";
+
+			// if MooTools is just plain missing, it will fail
+			$output .= "else if(window.addEvent){window.addEvent('domready',function(){" . "var options = {";
 	
 			// build resize option (handle string and boolean)
 			if($resize == "true") {
@@ -323,9 +323,10 @@ if(!class_exists("Blip_Slideshow")) {
 			$output .= "thumbnails:$thumbnails,";
 			$output .= "titles:$titles,";
 			$output .= "width:$width};";
-
-			$output .= "new Blip(" . json_encode($id) . ", " . json_encode($callback_url) . ", " . json_encode($link) . ", " . json_encode($type) . ", options); });}";
-			$output .= "else { gErr(); }
+			
+			// if Prototype is loaded after the Blip script is written but before Blip runs, it will fail
+			$output .= "if(Blip){new Blip(" . json_encode($id) . "," . json_encode($callback_url) . "," . json_encode($link) . "," . json_encode($type) . ",options)}else{document.getElementById('".$id."').innerHTML=gErr();};});}";
+			$output .= "else {document.write(gErr());}
 			//]] >
 			</script>";
 

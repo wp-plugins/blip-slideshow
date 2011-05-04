@@ -22,12 +22,12 @@
   * prototype.js was detected. Print a failure message
   */
 function pErr() {
-	document.write("<strong>Error:</strong> The Javascript framework <em>Prototype</em> is loaded on this page. Blip Slideshow can not run when <em>Prototype</em> is loaded.");
+	return "<strong>Error:</strong> The Javascript framework <em>Prototype</em> is loaded on this page. Blip Slideshow can not run when <em>Prototype</em> is loaded.";
 }
 
 /**
   * A generic MooTools failure message
   */
 function gErr() {
-	document.write("<strong>Error:</strong> MooTools failed to load. Blip Slideshow can not run.");
+	return "<strong>Error:</strong> MooTools failed to load. Blip Slideshow can not run.";
 }
