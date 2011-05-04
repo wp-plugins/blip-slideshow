@@ -31,7 +31,7 @@ Requires WordPress 2.7 and PHP 5.
 
 *A simple SmugMug slideshow example:*
 
-`[slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]`
+> [slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
 
 == Frequently Asked Questions ==
 
@@ -82,7 +82,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 
 = 1.2.5 =
 * Release date: 2011-05-04
-* Javascript framework Prototype is the nemesis of MooTools. Blip will attempt to detect if another extension has loaded Prototype or if Prototype has been hardcoded in a theme or post, or if MooTools has otherwise failed to load and display an error message accordingly.
+* Blip will attempt to detect if another extension has loaded Prototype or if Prototype has been hardcoded in a theme or post, or if MooTools has otherwise failed to load and display an error message accordingly.
 * In debug mode, the unencoded Media RSS URL is displayed instead of the encoded URL
 
 = 1.2.4 =
@@ -201,6 +201,9 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 * Bundled with Slideshow-1.3.1
 
 == Upgrade Notice ==
+
+= 1.2.5 =
+Will display an error if Prototype is detected.
 
 = 1.2.4 =
 Fixed a bug that made some SmugMug images not appear. Compatible with jQuery Colorbox.
