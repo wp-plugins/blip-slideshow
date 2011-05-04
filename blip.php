@@ -285,7 +285,7 @@ if(!class_exists("Blip_Slideshow")) {
 			$output .= "if(document.observe){document.write(pErr());}";
 
 			// if MooTools is just plain missing, it will fail
-			$output .= "else if(window.addEvent){window.addEvent('domready',function(){" . "var options = {";
+			$output .= "else if(window.addEvent){window.addEvent('domready',function(){var options = {";
 	
 			// build resize option (handle string and boolean)
 			if($resize == "true") {
