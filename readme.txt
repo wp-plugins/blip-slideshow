@@ -80,6 +80,11 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 
 == Changelog ==
 
+= 1.2.5 =
+* Release date: 2011-05-04
+* Javascript framework Prototype is the nemesis of MooTools. Blip will attempt to detect if another extension has loaded Prototype or if Prototype has been hardcoded in a theme or post, or if MooTools has otherwise failed to load and display an error message accordingly.
+* In debug mode, the unencoded Media RSS URL is displayed instead of the encoded URL
+
 = 1.2.4 =
 * Release date: 2011-05-02
 * Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 4/WinXP, IE 8/WinXP
