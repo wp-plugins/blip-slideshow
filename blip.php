@@ -38,6 +38,309 @@ if (!defined("PROTOTYPE_ERROR_MESSAGE")) {
 		define("PROTOTYPE_ERROR_MESSAGE", "A user-installed extension has loaded the Javascript framework <em>Prototype</em>. Blip Slideshow can not run when <em>Prototype</em> is loaded.");
 }
 
+if(!class_exists("Blip_Slideshow")) {
+
+	/**
+	 * Blip_Slideshow handles the generation of the slideshow HTML script.
+	 */
+	class Blip_Slideshow {
+		var $counter = 0;
+		var $slideshow_ready = false;
+		var $version;
+		
+		var $flash_slideshow = false;
+		var $fold_slideshow = false;
+		var $kenburns_slideshow = false;
+		var $push_slideshow = false;
+			
+		function Blip_Slideshow() {
+			add_shortcode( "slideshow", array( $this, "slideshow_shortcode") );
+			add_shortcode( "blip-version", array( $this, "version_shortcode") );
+			add_action( "wp_footer", array( $this, "add_footer_scripts") );
+			$this->add_header_scripts();
+			$this->version = $this->get_version();
+		}
+	
+		/**
+		 * Shortcode to return the current plugin version.
+		 * From http://code.garyjones.co.uk/get-wordpress-plugin-version/
+		 *
+		 * @return string Plugin version
+		 */
+		function version_shortcode() {
+			return $this->version;
+		}
+
+		/**
+		 * Shortcode to return the current plugin version.
+		 * From http://code.garyjones.co.uk/get-wordpress-plugin-version/
+		 *
+		 * @return string Plugin version
+		 */
+		function get_version() {
+			if ( ! function_exists( "get_plugins" ) ) {
+				require_once( ABSPATH . "wp-admin/includes/plugin.php" );
+			}
+			$plugin_folder = get_plugins( "/" . plugin_basename( dirname( __FILE__ ) ) );
+			$plugin_file = basename( ( __FILE__ ) );
+			return $plugin_folder[$plugin_file]["Version"];
+		}
+
+		/**
+		 * External function to build the slideshow.
+		 * The DIV HTML must be coded externally.
+		 */
+		public function slideshow($atts) {
+			print $this->create_slideshow($atts);
+		}
+
+		/**
+		 * Shortcode to build the slideshow.
+		 *
+		 * @return string The Slideshow script HTML, including the DIV HTML
+		 */
+		function slideshow_shortcode($atts, $content) {
+			$script = $this->create_slideshow($atts, $content);
+			extract(shortcode_atts(array(
+				"id" => "show-" . $this->counter,
+			), $atts));
+
+			// if the script output was successful
+			if ( $this->slideshow_ready ) {
+				$script .= '<div id="' . $id . '" class="slideshow">';
+			
+				// the contents of the shortcode
+				if(!empty( $content )) {
+					$script .= '<span class="slideshow-content">' . $content . "</span>";
+				}
+
+				$script .= "</div>";
+			}
+			return $script;
+		}
+
+		/**
+		 * The scripts that must be ready to run before page load
+		 */
+		function add_header_scripts() {
+
+			// register Blip script
+			wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url("/blip.js", __FILE__), false, $this->version);
+			wp_enqueue_script( BLIP_SLIDESHOW_DOMAIN );
+
+			// check that this is not an admin page and that prototype, the mootools nemesis, is not loaded
+			if (!is_admin() && !wp_script_is('prototype', 'queue')) {
+				// register MooTools script
+				wp_register_script("mootools", plugins_url("/Slideshow/js/mootools-1.3.1-core.js", __FILE__), false, "1.3.1");
+				wp_enqueue_script("mootools");
+			}
+		}
+	
+		/**
+		 * The remaining scripts can be loaded in the footer, only if they are needed
+		 */
+		function add_footer_scripts() {
+			if ( $this->slideshow_ready ) {
+				
+				// register Slideshow stylesheet
+				wp_register_style( "slideshow2", plugins_url("/Slideshow/css/slideshow.css", __FILE__), false, "1.3.1.110417");
+				wp_print_styles( "slideshow2");
+
+				// register optional, user-customized Blip-Slideshow stylesheet
+				if(file_exists(get_theme_root() . "/" . get_template() . "/blip-slideshow.css")) {
+					wp_register_style( "blip-slideshow", get_bloginfo("stylesheet_directory") . "/blip-slideshow.css", array("slideshow2"), null);
+					wp_print_styles( "blip-slideshow" );
+				}
+
+				// register MooTools More script
+				wp_register_script( "mootools-more", plugins_url("/Slideshow/js/mootools-1.3.1.1-more.js", __FILE__), array("mootools"), "1.3.1.1");
+				wp_print_scripts( "mootools-more" );
+
+				// register Slideshow script
+				wp_register_script( "slideshow2", plugins_url("/Slideshow/js/slideshow.js", __FILE__), array("mootools-more"), "1.3.1.110417");
+				wp_print_scripts( "slideshow2" );
+
+				// register Slideshow Flash script
+				if($this->flash_slideshow) {
+					wp_register_script( "slideshow2-flash", plugins_url("/Slideshow/js/slideshow.flash.js", __FILE__), array("slideshow2"), "1.3.1.110417");
+					wp_print_scripts( "slideshow2-flash" );
+				}
+
+				// register Slideshow Fold script
+				if($this->fold_slideshow) {
+					wp_register_script( "slideshow2-fold", plugins_url("/Slideshow/js/slideshow.fold.js", __FILE__), array("slideshow2"), "1.3.1.110417");
+					wp_print_scripts( "slideshow2-fold" );
+				}
+
+				// register Slideshow Ken Burns script
+				if($this->kenburns_slideshow) {
+					wp_register_script( "slideshow2-kenburns", plugins_url("/Slideshow/js/slideshow.kenburns.js", __FILE__), array("slideshow2"), "1.3.1.110417");
+					wp_print_scripts( "slideshow2-kenburns" );
+				}
+
+				// register Slideshow Push script
+				if($this->push_slideshow) {
+					wp_register_script( "slideshow2-push", plugins_url("/Slideshow/js/slideshow.push.js", __FILE__), array("slideshow2"), "1.3.1.110417");
+					wp_print_scripts( "slideshow2-push" );
+				}
+
+				// register Blip script
+				wp_register_script( "blip-mootools", plugins_url("/blip-mootools.js", __FILE__), array("slideshow2"), $this->version);
+				wp_print_scripts( "blip-mootools" );
+			}
+		}
+
+		/**
+		 * Builds the slideshow.
+		 *
+		 * @return string The Slideshow script HTML
+		 */
+		function create_slideshow($atts) {
+
+			// check if prototype is loaded
+			if(wp_script_is("prototype", "queue")) {
+				print "<strong>".__("Error", BLIP_SLIDESHOW_DOMAIN).":</strong> ".__(PROTOTYPE_ERROR_MESSAGE, BLIP_SLIDESHOW_DOMAIN);
+				return;
+			}
+	
+			$this->counter++;
+			$this->slideshow_ready = true;
+
+			// retrieve saved options
+			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
+
+			// extract rss from shortcode attributes
+			$sample_feed = plugins_url("/sample_feed.php", __FILE__);
+			extract(shortcode_atts(array(
+				"captions" => "true",
+				"center" => "true",
+				"color" => "#FFF",
+				"controller" => "true",
+				"delay" => "2000",
+				"duration" => "1000",
+				"fast" => "false",
+				"height" => "false",
+				"id" => "show-" . $this->counter,
+				"link" => "full",
+				"loader" => "true",
+				"loop" => "true",
+				"overlap" => "true",
+				"pan" => "100, 100",
+				"paused" => "false",
+				"random" => "false",
+				"resize" => "fill",
+				"rss" => $sample_feed,
+				"slide" => 0,
+				"thumbnails" => "true",
+				"titles" => "false",
+				"transition" => "sine:in:out",
+				"type" => "",
+				"width" => "false",
+				"zoom" => "50, 50"
+			), $atts));
+
+			// determine which alternative Slideshow, if any, are to be used
+			if($type == "flash") {
+				$this->flash_slideshow = true;
+			} else if ($type == "fold") {
+				$this->fold_slideshow = true;
+			} else if($type =="kenburns") {
+				$this->kenburns_slideshow = true;
+			} else if($type == "push") {
+				$this->push_slideshow = true;
+			}
+	
+			// wordpress has encoded the HTML entities
+			$decoded_rss = html_entity_decode($rss);
+
+			// enable caching for this file?
+			if(Blip_Slideshow_Cache::is_cache_enabled($options)) {
+				Blip_Slideshow_Cache::prep_cache($options, $decoded_rss);
+			}
+			
+			// massage the rss url - apache mod_rewrite gets grumpy unless the URL is encoded twice
+			$callback_url = plugins_url("/blip.php/rss/", __FILE__) . rawurlencode(rawurlencode($decoded_rss));
+			
+			// massage link option
+			if($link == "lightbox" && (function_exists("slimbox") || function_exists("wp_slimbox_activate"))) {
+				$link = "slimbox";
+			} else if($link == "lightbox" && (class_exists("wp_lightboxplus") || class_exists("GameplorersWPColorBox") || class_exists("jQueryLightboxForNativeGalleries") || function_exists("jQueryColorbox"))) {
+				$link = "colorbox";
+			} else if($link == "lightbox") {
+				// no supported lightbox plugins
+				$link = "full";
+			}
+	
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![if !IE]>";
+			}
+	
+			// build Javascript output
+			$output .= '<script type="text/javascript">
+			//<![CDATA[
+			';
+		
+			//
+			$output .= "if(document.observe){pErr();}";
+		
+			// build remainder of script options
+			$output .= "else if(window.addEvent){window.addEvent('domready', function(){" . "var options = {";
+	
+			// build resize option (handle string and boolean)
+			if($resize == "true") {
+				$output .= "resize:true,";
+			} else if($resize == "false" || $resize == "none") {
+				$output .= "resize:false,";
+			} else {
+				$output .= "resize:'$resize',";
+			}
+			
+			if($this->flash_slideshow) {
+				// massage the colour option
+				$output .= "color:['" . preg_replace("/,/","','",$color) . "'],";
+			}
+			
+			if($this->kenburns_slideshow) {
+				$output .= "pan:[$pan],zoom:[$zoom],";
+			}
+	
+			// build remainder of script options
+			$output .= "captions:$captions," ;
+			$output .= "center:$center,";
+			$output .= "controller:$controller,";
+			$output .= "delay:$delay,";
+			$output .= "duration:$duration,";
+			$output .= "fast:$fast,";
+			$output .= "height:$height,";
+			$output .= "loader:$loader,";
+			$output .= "loop:$loop,";
+			$output .= "overlap:$overlap,";
+			$output .= "paused:$paused,";
+			$output .= "random:$random,";
+			$output .= "slide:$slide,";
+			$output .= "transition:'$transition',";
+			$output .= "thumbnails:$thumbnails,";
+			$output .= "titles:$titles,";
+			$output .= "width:$width};";
+
+			$output .= "new Blip(" . json_encode($id) . ", " . json_encode($callback_url) . ", " . json_encode($link) . ", " . json_encode($type) . ", options); });}";
+			$output .= "else { gErr(); }
+			//]] >
+			</script>";
+
+			// Slideshow.Fold is broken in IE8
+			if($type == "fold") {
+				$output .= "<![endif]>";
+			}
+			
+			return $output;
+		}
+
+	}
+
+}
+
 if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 	
 	/**
@@ -257,309 +560,6 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			}
 
 	}
-}
-
-if(!class_exists("Blip_Slideshow")) {
-
-	/**
-	 * Blip_Slideshow handles the generation of the slideshow HTML script.
-	 */
-	class Blip_Slideshow {
-		var $counter = 0;
-		var $slideshow_ready = false;
-		var $version;
-		
-		var $flash_slideshow = false;
-		var $fold_slideshow = false;
-		var $kenburns_slideshow = false;
-		var $push_slideshow = false;
-			
-		function Blip_Slideshow() {
-			add_shortcode( "slideshow", array( $this, "slideshow_shortcode") );
-			add_shortcode( "blip-version", array( $this, "version_shortcode") );
-			add_action( "wp_footer", array( $this, "add_footer_scripts") );
-			$this->add_header_scripts();
-			$this->version = $this->get_version();
-		}
-	
-		/**
-		 * Shortcode to return the current plugin version.
-		 * From http://code.garyjones.co.uk/get-wordpress-plugin-version/
-		 *
-		 * @return string Plugin version
-		 */
-		function version_shortcode() {
-			return $this->version;
-		}
-
-		/**
-		 * Shortcode to return the current plugin version.
-		 * From http://code.garyjones.co.uk/get-wordpress-plugin-version/
-		 *
-		 * @return string Plugin version
-		 */
-		function get_version() {
-			if ( ! function_exists( "get_plugins" ) ) {
-				require_once( ABSPATH . "wp-admin/includes/plugin.php" );
-			}
-			$plugin_folder = get_plugins( "/" . plugin_basename( dirname( __FILE__ ) ) );
-			$plugin_file = basename( ( __FILE__ ) );
-			return $plugin_folder[$plugin_file]["Version"];
-		}
-
-		/**
-		 * External function to build the slideshow.
-		 * The DIV HTML must be coded externally.
-		 */
-		public function slideshow($atts) {
-			print $this->create_slideshow($atts);
-		}
-
-		/**
-		 * Shortcode to build the slideshow.
-		 *
-		 * @return string The Slideshow script HTML, including the DIV HTML
-		 */
-		function slideshow_shortcode($atts, $content) {
-			$script = $this->create_slideshow($atts, $content);
-			extract(shortcode_atts(array(
-				"id" => "show-" . $this->counter,
-			), $atts));
-
-			// if the script output was successful
-			if ( $this->slideshow_ready ) {
-				$script .= '<div id="' . $id . '" class="slideshow">';
-			
-				// the contents of the shortcode
-				if(!empty( $content )) {
-					$script .= '<span class="slideshow-content">' . $content . "</span>";
-				}
-
-				$script .= "</div>";
-			}
-			return $script;
-		}
-
-		/**
-		 * Builds the slideshow.
-		 *
-		 * @return string The Slideshow script HTML
-		 */
-		function create_slideshow($atts) {
-
-			// check if prototype is loaded
-			if(wp_script_is("prototype", "queue")) {
-				print "<strong>".__("Error", BLIP_SLIDESHOW_DOMAIN).":</strong> ".__(PROTOTYPE_ERROR_MESSAGE, BLIP_SLIDESHOW_DOMAIN);
-				return;
-			}
-	
-			$this->counter++;
-			$this->slideshow_ready = true;
-
-			// retrieve saved options
-			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
-
-			// extract rss from shortcode attributes
-			$sample_feed = plugins_url("/sample_feed.php", __FILE__);
-			extract(shortcode_atts(array(
-				"captions" => "true",
-				"center" => "true",
-				"color" => "#FFF",
-				"controller" => "true",
-				"delay" => "2000",
-				"duration" => "1000",
-				"fast" => "false",
-				"height" => "false",
-				"id" => "show-" . $this->counter,
-				"link" => "full",
-				"loader" => "true",
-				"loop" => "true",
-				"overlap" => "true",
-				"pan" => "100, 100",
-				"paused" => "false",
-				"random" => "false",
-				"resize" => "fill",
-				"rss" => $sample_feed,
-				"slide" => 0,
-				"thumbnails" => "true",
-				"titles" => "false",
-				"transition" => "sine:in:out",
-				"type" => "",
-				"width" => "false",
-				"zoom" => "50, 50"
-			), $atts));
-
-			// determine which alternative Slideshow, if any, are to be used
-			if($type == "flash") {
-				$this->flash_slideshow = true;
-			} else if ($type == "fold") {
-				$this->fold_slideshow = true;
-			} else if($type =="kenburns") {
-				$this->kenburns_slideshow = true;
-			} else if($type == "push") {
-				$this->push_slideshow = true;
-			}
-	
-			// wordpress has encoded the HTML entities
-			$decoded_rss = html_entity_decode($rss);
-
-			// enable caching for this file?
-			if(Blip_Slideshow_Cache::is_cache_enabled($options)) {
-				Blip_Slideshow_Cache::prep_cache($options, $decoded_rss);
-			}
-			
-			// massage the rss url - apache mod_rewrite gets grumpy unless the URL is encoded twice
-			$callback_url = plugins_url("/blip.php/rss/", __FILE__) . rawurlencode(rawurlencode($decoded_rss));
-			
-			// massage link option
-			if($link == "lightbox" && (function_exists("slimbox") || function_exists("wp_slimbox_activate"))) {
-				$link = "slimbox";
-			} else if($link == "lightbox" && (class_exists("wp_lightboxplus") || class_exists("GameplorersWPColorBox") || class_exists("jQueryLightboxForNativeGalleries") || function_exists("jQueryColorbox"))) {
-				$link = "colorbox";
-			} else if($link == "lightbox") {
-				// no supported lightbox plugins
-				$link = "full";
-			}
-	
-			// Slideshow.Fold is broken in IE8
-			if($type == "fold") {
-				$output .= "<![if !IE]>";
-			}
-	
-			// build Javascript output
-			$output .= '<script type="text/javascript">
-			//<![CDATA[
-			';
-		
-			//
-			$output .= "if(document.observe){pErr();}";
-		
-			// build remainder of script options
-			$output .= "else if(window.addEvent){window.addEvent('domready', function(){" . "var options = {";
-	
-			// build resize option (handle string and boolean)
-			if($resize == "true") {
-				$output .= "resize:true,";
-			} else if($resize == "false" || $resize == "none") {
-				$output .= "resize:false,";
-			} else {
-				$output .= "resize:'$resize',";
-			}
-			
-			if($this->flash_slideshow) {
-				// massage the colour option
-				$output .= "color:['" . preg_replace("/,/","','",$color) . "'],";
-			}
-			
-			if($this->kenburns_slideshow) {
-				$output .= "pan:[$pan],zoom:[$zoom],";
-			}
-	
-			// build remainder of script options
-			$output .= "captions:$captions," ;
-			$output .= "center:$center,";
-			$output .= "controller:$controller,";
-			$output .= "delay:$delay,";
-			$output .= "duration:$duration,";
-			$output .= "fast:$fast,";
-			$output .= "height:$height,";
-			$output .= "loader:$loader,";
-			$output .= "loop:$loop,";
-			$output .= "overlap:$overlap,";
-			$output .= "paused:$paused,";
-			$output .= "random:$random,";
-			$output .= "slide:$slide,";
-			$output .= "transition:'$transition',";
-			$output .= "thumbnails:$thumbnails,";
-			$output .= "titles:$titles,";
-			$output .= "width:$width};";
-
-			$output .= "new Blip(" . json_encode($id) . ", " . json_encode($callback_url) . ", " . json_encode($link) . ", " . json_encode($type) . ", options); });}";
-			$output .= "else { gErr(); }
-			//]] >
-			</script>";
-
-			// Slideshow.Fold is broken in IE8
-			if($type == "fold") {
-				$output .= "<![endif]>";
-			}
-			
-			return $output;
-		}
-
-		/**
-		 * The scripts that must be ready to run before page load
-		 */
-		function add_header_scripts() {
-
-			// register Blip script
-			wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url("/blip.js", __FILE__), false, $this->version);
-			wp_enqueue_script( BLIP_SLIDESHOW_DOMAIN );
-
-			// check that this is not an admin page and that prototype, the mootools nemesis, is not loaded
-			if (!is_admin() && !wp_script_is('prototype', 'queue')) {
-				// register MooTools script
-				wp_register_script("mootools", plugins_url("/Slideshow/js/mootools-1.3.1-core.js", __FILE__), false, "1.3.1");
-				wp_enqueue_script("mootools");
-			}
-		}
-	
-		/**
-		 * The remaining scripts can be loaded in the footer, only if they are needed
-		 */
-		function add_footer_scripts() {
-			if ( $this->slideshow_ready ) {
-				
-				// register Slideshow stylesheet
-				wp_register_style( "slideshow2", plugins_url("/Slideshow/css/slideshow.css", __FILE__), false, "1.3.1.110417");
-				wp_print_styles( "slideshow2");
-
-				// register optional, user-customized Blip-Slideshow stylesheet
-				if(file_exists(get_theme_root() . "/" . get_template() . "/blip-slideshow.css")) {
-					wp_register_style( "blip-slideshow", get_bloginfo("stylesheet_directory") . "/blip-slideshow.css", array("slideshow2"), null);
-					wp_print_styles( "blip-slideshow" );
-				}
-
-				// register MooTools More script
-				wp_register_script( "mootools-more", plugins_url("/Slideshow/js/mootools-1.3.1.1-more.js", __FILE__), array("mootools"), "1.3.1.1");
-				wp_print_scripts( "mootools-more" );
-
-				// register Slideshow script
-				wp_register_script( "slideshow2", plugins_url("/Slideshow/js/slideshow.js", __FILE__), array("mootools-more"), "1.3.1.110417");
-				wp_print_scripts( "slideshow2" );
-
-				// register Slideshow Flash script
-				if($this->flash_slideshow) {
-					wp_register_script( "slideshow2-flash", plugins_url("/Slideshow/js/slideshow.flash.js", __FILE__), array("slideshow2"), "1.3.1.110417");
-					wp_print_scripts( "slideshow2-flash" );
-				}
-
-				// register Slideshow Fold script
-				if($this->fold_slideshow) {
-					wp_register_script( "slideshow2-fold", plugins_url("/Slideshow/js/slideshow.fold.js", __FILE__), array("slideshow2"), "1.3.1.110417");
-					wp_print_scripts( "slideshow2-fold" );
-				}
-
-				// register Slideshow Ken Burns script
-				if($this->kenburns_slideshow) {
-					wp_register_script( "slideshow2-kenburns", plugins_url("/Slideshow/js/slideshow.kenburns.js", __FILE__), array("slideshow2"), "1.3.1.110417");
-					wp_print_scripts( "slideshow2-kenburns" );
-				}
-
-				// register Slideshow Push script
-				if($this->push_slideshow) {
-					wp_register_script( "slideshow2-push", plugins_url("/Slideshow/js/slideshow.push.js", __FILE__), array("slideshow2"), "1.3.1.110417");
-					wp_print_scripts( "slideshow2-push" );
-				}
-
-				// register Blip script
-				wp_register_script( "blip-mootools", plugins_url("/blip-mootools.js", __FILE__), array("slideshow2"), $this->version);
-				wp_print_scripts( "blip-mootools" );
-			}
-		}
-	
-	}
-
 }
 
 if(!class_exists("Blip_Slideshow_Cache")) {
