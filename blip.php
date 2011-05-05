@@ -55,7 +55,10 @@ if(!class_exists("Blip_Slideshow")) {
 			
 		function Blip_Slideshow() {
 			add_shortcode( "slideshow", array( $this, "slideshow_shortcode") );
+			add_shortcode( "blip-slideshow", array( $this, "slideshow_shortcode") ); // in case of collissions
+			add_shortcode( "blip_slideshow", array( $this, "slideshow_shortcode") ); // for WordPress older than v3
 			add_shortcode( "blip-version", array( $this, "version_shortcode") );
+			add_shortcode( "blip_version", array( $this, "version_shortcode") ); // for WordPress older than v3
 			add_action( "wp_footer", array( $this, "add_footer_scripts") );
 			$this->add_header_scripts();
 			$this->version = $this->get_version();
