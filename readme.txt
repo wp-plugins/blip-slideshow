@@ -15,7 +15,7 @@ Blip does not hardcode what it finds into your blog. Instead the most recent ima
 
 See it in live use at my <a href="http://www.ambientphotography.ca/" alt="Toronto Wedding Photographer">wedding photography</a> website.
 
-> Please note that Blip is [*not* compatible with the Javascript framework Prototype](http://mootorial.com/wiki/mootorial/00a-mootoolsvsothers). Please check for "prototype.js" in your webpage, included by your theme or other plugin, before writing me for help.
+> Please note that Blip is [*not* compatible with the Javascript framework Prototype](http://mootorial.com/wiki/mootorial/00a-mootoolsvsothers). Please check for "prototype.js" in your webpage, included by your theme or other plugin, before contacting me for help.
 
 Requires WordPress 2.7 and PHP 5.
 
@@ -64,7 +64,7 @@ RSS news feed, media RSS lists pictures instead of articles from photo-sharing w
 
 = Known Issues =
 
-* Blip is [*not* compatible with the Javascript framework Prototype](http://mootorial.com/wiki/mootorial/00a-mootoolsvsothers). Please check for "prototype.js" in your webpage, included by your theme or other plugin, before writing me for help.
+* Blip is [*not* compatible with the Javascript framework Prototype](http://mootorial.com/wiki/mootorial/00a-mootoolsvsothers). Please check for "prototype.js" in your webpage, included by your theme or other plugin, before contacting me for help.
 * Although multiple slideshows per page are possible, only Colorbox plugins support two or more of those slideshows having a Lightbox.
 * [Slideshow type "Fold" does not work in Internet Explorer](http://code.google.com/p/slideshow/issues/detail?id=195).
 
