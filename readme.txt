@@ -81,7 +81,9 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 == Changelog ==
 
 = 1.2.5 =
-* Release date: 2011-05-04
+* Release date: 2011-05-05
+* Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 4/WinXP, IE 8/WinXP
+* Next-Gen Gallery also uses the shortcode [slideshow]. Added shortcodes [blip-slideshow] (for collisions) and [blip_slideshow] (for WordPress installations older than v3)
 * Blip will attempt to detect if another extension has loaded Prototype or if Prototype has been hardcoded in a theme or post, or if MooTools has otherwise failed to load and display an error message accordingly.
 * In debug mode, the unencoded Media RSS URL is displayed instead of the encoded URL
 
