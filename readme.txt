@@ -205,7 +205,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 == Upgrade Notice ==
 
 = 1.2.5 =
-Will display an error if Prototype is detected.
+Will display an error if Prototype is detected. Added shortcode [blip-slideshow] in case of collisions with other extensions.
 
 = 1.2.4 =
 Fixed a bug that made some SmugMug images not appear. Compatible with jQuery Colorbox.
