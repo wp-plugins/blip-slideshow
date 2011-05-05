@@ -4,7 +4,7 @@ Donate link: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Tags: slideshow, media, rss, mrss, feed, feeds, photograph, picture, photo, gallery, image, smugmug, flickr, mobileme, picasa, photobucket, javascript, mootools, slideshow2, lightbox, slimbox, colorbox
 Requires at least: 2.7
 Tested up to: 3.1.2
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 
 A WordPress slideshow plugin fed from a SmugMug, Flickr, MobileMe, Picasa or Photobucket RSS feed and displayed using pure Javascript.
 
@@ -205,7 +205,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 == Upgrade Notice ==
 
 = 1.2.5 =
-Will display an error if Prototype is detected.
+Will display an error if Prototype is detected. Added shortcode [blip-slideshow] in case of collisions with other extensions.
 
 = 1.2.4 =
 Fixed a bug that made some SmugMug images not appear. Compatible with jQuery Colorbox.
