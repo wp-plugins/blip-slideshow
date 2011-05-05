@@ -1,32 +1,32 @@
 <?php
 /*
 
-		Plugin Name: Blip Slideshow
-		Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
-		Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
-		Version: 1.2.4
-		Author: Jason Hendriks
-		Author URI: http://jasonhendriks.com/
-		License: GPL version 3 or any later version
-		
-		** Requires WordPress 2.7 **
-		
-		Copyright (C) 2011  Jason Hendriks
-		
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
-		the Free Software Foundation, either version 3 of the License, or
-		(at your option) any later version.
-		
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU General Public License for more details.
-		
-		You should have received a copy of the GNU General Public License
-		along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Plugin Name: Blip Slideshow
+Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
+Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
+Version: 1.2.4
+Author: Jason Hendriks
+Author URI: http://jasonhendriks.com/
+License: GPL version 3 or any later version
 
- */
+** Requires WordPress 2.7 **
+
+Copyright (C) 2011  Jason Hendriks
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
 if (!defined("BLIP_SLIDESHOW_NAME")) {
     define("BLIP_SLIDESHOW_NAME", "Blip Slideshow");
