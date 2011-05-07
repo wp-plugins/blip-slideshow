@@ -45,13 +45,9 @@ if(!class_exists("Blip_Slideshow")) {
 	 */
 	class Blip_Slideshow {
 		var $counter = 0;
-		var $slideshow_ready = false;
 		var $version;
-		
-		var $flash_slideshow = false;
-		var $fold_slideshow = false;
-		var $kenburns_slideshow = false;
-		var $push_slideshow = false;
+
+		var $scripts = array();
 			
 		function Blip_Slideshow() {
 			add_shortcode( "slideshow", array( $this, "slideshow_shortcode") );
@@ -109,7 +105,7 @@ if(!class_exists("Blip_Slideshow")) {
 			), $atts));
 
 			// if the script output was successful
-			if ( $this->slideshow_ready ) {
+			if ( $this->scripts["slideshow"] ) {
 				$script .= '<div id="' . $id . '" class="slideshow">';
 			
 				// the contents of the shortcode
@@ -143,7 +139,7 @@ if(!class_exists("Blip_Slideshow")) {
 		 * The remaining scripts can be loaded in the footer, only if they are needed
 		 */
 		function add_footer_scripts() {
-			if ( $this->slideshow_ready ) {
+			if ( $this->scripts["slideshow"] ) {
 				
 				// register Slideshow stylesheet
 				wp_register_style( "slideshow2", plugins_url("/Slideshow/css/slideshow.css", __FILE__), false, "1.3.1.110417");
@@ -164,25 +160,25 @@ if(!class_exists("Blip_Slideshow")) {
 				wp_print_scripts( "slideshow2" );
 
 				// register Slideshow Flash script
-				if($this->flash_slideshow) {
+				if($this->scripts["flash"]) {
 					wp_register_script( "slideshow2-flash", plugins_url("/Slideshow/js/slideshow.flash.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-flash" );
 				}
 
 				// register Slideshow Fold script
-				if($this->fold_slideshow) {
+				if($this->scripts["fold"]) {
 					wp_register_script( "slideshow2-fold", plugins_url("/Slideshow/js/slideshow.fold.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-fold" );
 				}
 
 				// register Slideshow Ken Burns script
-				if($this->kenburns_slideshow) {
+				if($this->scripts["kenburns"]) {
 					wp_register_script( "slideshow2-kenburns", plugins_url("/Slideshow/js/slideshow.kenburns.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-kenburns" );
 				}
 
 				// register Slideshow Push script
-				if($this->push_slideshow) {
+				if($this->scripts["push"]) {
 					wp_register_script( "slideshow2-push", plugins_url("/Slideshow/js/slideshow.push.js", __FILE__), array("slideshow2"), "1.3.1.110417");
 					wp_print_scripts( "slideshow2-push" );
 				}
@@ -208,6 +204,7 @@ if(!class_exists("Blip_Slideshow")) {
 	
 			$this->counter++;
 			$this->slideshow_ready = true;
+			$this->scripts["slideshow"] = true;
 
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
@@ -243,14 +240,8 @@ if(!class_exists("Blip_Slideshow")) {
 			), $atts));
 
 			// determine which alternative Slideshow, if any, are to be used
-			if($type == "flash") {
-				$this->flash_slideshow = true;
-			} else if ($type == "fold") {
-				$this->fold_slideshow = true;
-			} else if($type =="kenburns") {
-				$this->kenburns_slideshow = true;
-			} else if($type == "push") {
-				$this->push_slideshow = true;
+			if($type == "flash" || $type == "fold" || $type =="kenburns" || $type == "push") {
+				$this->scripts[$type] = true;
 			}
 	
 			// wordpress has encoded the HTML entities
@@ -299,12 +290,13 @@ if(!class_exists("Blip_Slideshow")) {
 				$output .= "resize:'$resize',";
 			}
 			
-			if($this->flash_slideshow) {
+			if($type == "flash") {
 				// massage the colour option
 				$output .= "color:['" . preg_replace("/,/","','",$color) . "'],";
 			}
 			
-			if($this->kenburns_slideshow) {
+			if($type == "kenburns") {
+				// output the pan and zoom options
 				$output .= "pan:[$pan],zoom:[$zoom],";
 			}
 	
