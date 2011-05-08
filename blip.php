@@ -44,12 +44,11 @@ if(!class_exists("Blip_Slideshow")) {
 	 * Blip_Slideshow handles the generation of the slideshow HTML script.
 	 */
 	class Blip_Slideshow {
-		var $counter = 0;
-		var $version;
-
 		var $scripts = array();
 			
 		function Blip_Slideshow() {
+			$this->version = $this->get_version();
+			$this->counter = 0;
 			add_shortcode( "slideshow", array( $this, "slideshow_shortcode") );
 			add_shortcode( "blip-slideshow", array( $this, "slideshow_shortcode") ); // in case of collissions
 			add_shortcode( "blip_slideshow", array( $this, "slideshow_shortcode") ); // for WordPress older than v3
@@ -57,7 +56,6 @@ if(!class_exists("Blip_Slideshow")) {
 			add_shortcode( "blip_version", array( $this, "version_shortcode") ); // for WordPress older than v3
 			add_action( "wp_footer", array( $this, "add_footer_scripts") );
 			$this->add_header_scripts();
-			$this->version = $this->get_version();
 		}
 	
 		/**
@@ -122,7 +120,6 @@ if(!class_exists("Blip_Slideshow")) {
 		 * The scripts that must be ready to run before page load
 		 */
 		function add_header_scripts() {
-
 			// register Blip script
 			wp_register_script( BLIP_SLIDESHOW_DOMAIN, plugins_url("/blip.js", __FILE__), false, $this->version);
 			wp_enqueue_script( BLIP_SLIDESHOW_DOMAIN );
@@ -205,6 +202,7 @@ if(!class_exists("Blip_Slideshow")) {
 			$this->counter++;
 			$this->slideshow_ready = true;
 			$this->scripts["slideshow"] = true;
+			print $this->version;
 
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);

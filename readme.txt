@@ -82,6 +82,7 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 
 = 1.3.0 =
 
+
 = 1.2.5 =
 * Release date: 2011-05-05
 * Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 4/WinXP, IE 8/WinXP
