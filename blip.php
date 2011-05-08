@@ -202,7 +202,6 @@ if(!class_exists("Blip_Slideshow")) {
 			$this->counter++;
 			$this->slideshow_ready = true;
 			$this->scripts["slideshow"] = true;
-			print $this->version;
 
 			// retrieve saved options
 			$options = get_option(BLIP_SLIDESHOW_DOMAIN);
