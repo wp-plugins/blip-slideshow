@@ -4,7 +4,7 @@
 Plugin Name: Blip Slideshow
 Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
-Version: 1.2.5.1
+Version: 1.2.6
 Author: Jason Hendriks
 Author URI: http://jasonhendriks.com/
 License: GPL version 3 or any later version
@@ -146,7 +146,8 @@ if(!class_exists("Blip_Slideshow")) {
 					// link MooTools script
 					wp_enqueue_script("mootools");
 				}
-			
+
+				// test if the user wants the scripts output in the footer
 				if(!$this->options["optimize_scripts"]) {
 					// link Slideshow stylesheet
 					wp_enqueue_style( "slideshow2");
@@ -705,10 +706,10 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 				<tr valign="top">
 				<th scope="row">Compatibility</th>
 				<td>
-					<span class="description"> Depending on your host's configuration, enabling the following options may break Blip Slideshow:</span>
+					<span class="description"> Warning, enabling these settings on some hosts (eg. antagonist.nl) may cause Blip to fail:</span>
 					<fieldset><legend class="screen-reader-text"><span>Compatibility</span></legend>
 					<label for="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]">
-						<?php if($options["optimize_scripts"]){ $sb = 'checked="checked"'; } ?><input name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]" type="checkbox" id="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]" value="1" <?php echo $sb ?>/> Only load scripts and styles as neccessary
+						<?php if($options["optimize_scripts"]){ $sb = 'checked="checked"'; } ?><input name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]" type="checkbox" id="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]" value="1" <?php echo $sb ?>/> Only load scripts and styles when neccessary
 					</label><br />
 					<label for="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[curl_redirects_enabled]">
 						<?php if($options["curl_redirects_enabled"]){ $sc = 'checked="checked"'; } ?><input name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[curl_redirects_enabled]" type="checkbox" id="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[curl_redirects_enabled]" value="1" <?php echo $sc ?>/> Enable Media RSS redirects (required for MobileMe)
