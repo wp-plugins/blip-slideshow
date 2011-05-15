@@ -27,8 +27,9 @@ var Blip = new Class({
 		this.setOptions(options);
 		new Request({
 			url: rss,
-			onSuccess: this.processRequest.bind(this)
-		}).get();
+			method: 'get',
+    	onSuccess: this.processRequest.bind(this)
+		}).send();
 	},
 	processRequest: function(newResponseText, newResponseXml){
 		var lightboxHelper = LightboxHelper.createLightboxHelper(this.link);
