@@ -4,7 +4,7 @@
 Plugin Name: Blip Slideshow
 Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
 Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
-Version: 1.2.5
+Version: 1.2.5.1
 Author: Jason Hendriks
 Author URI: http://jasonhendriks.com/
 License: GPL version 3 or any later version
@@ -689,7 +689,6 @@ if(!class_exists("Blip_Slideshow_Admin")) {
 			<form method="post" id="next_page_form" action="options.php"><?php settings_fields(BLIP_SLIDESHOW_DOMAIN); $options = get_option(BLIP_SLIDESHOW_DOMAIN); ?>
 			<input type="hidden" name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[cache_dir]" value="<?php echo $options["cache_dir"]; ?>" style="width:50px"/>
 			<h2><?php echo BLIP_SLIDESHOW_NAME ?> Options</h2>
-			<p>Caching is disabled by default and must be enabled here.</p>
 			<table class="form-table">
 				<tr valign="top">
 				<th scope="row">Cache</th>
