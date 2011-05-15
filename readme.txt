@@ -249,7 +249,7 @@ The first version. Yay!
 * [Simple Cbox](http://wordpress.org/extend/plugins/simple-cbox/): failed - does not use jQuery in compatibility mode
 * [jQuery Lightbox For Native Galleries](http://wordpress.org/extend/plugins/jquery-lightbox-for-native-galleries/): OK
 * [Slimbox](http://wordpress.org/extend/plugins/slimbox/): OK
-* [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - coded for MooTools 1.2, not MooTools 1.3
+* [WP Slimbox Reloaded](http://wordpress.org/extend/plugins/wp-slimbox-reloaded/): failed - compatible with MooTools 1.2, not 1.3
 * [Slimbox Plugin](http://wordpress.org/extend/plugins/slimbox-plugin/): failed - hardcoded the MooTools API, which is a no-no
 * [WP-Slimbox2 Plugin](http://wordpress.org/extend/plugins/wp-slimbox2/): OK
 * [SlimBox2 for WordPress](http://wordpress.org/extend/plugins/slimbox2-for-wordpress/): failed - uses jQuery, but doesn't load it
