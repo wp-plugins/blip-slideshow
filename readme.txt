@@ -80,8 +80,11 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 
 == Changelog ==
 
-= 1.3.0 =
-
+= 1.2.6 =
+* Release date: 2011-05-15
+* Tested in Safari 5/OS X, Firefox 3/OS X, Firefox 4/WinXP, IE 8/WinXP
+* Bug: some WordPress hosts can not handle curl redirects. Fix: Added an option in the settings menu to control this behavior
+* Bug: some WordPress hosts do not support add_footer_scripts(). Fix: Added an option in the settings menu to control this behavior
 
 = 1.2.5 =
 * Release date: 2011-05-05
@@ -206,6 +209,9 @@ Send me a [question or comment](http://www.jasonhendriks.com/contact/ "Contact J
 * Bundled with Slideshow-1.3.1
 
 == Upgrade Notice ==
+
+= 1.2.6 =
+Compatibility fixes (especially for host 'antagonist.nl').
 
 = 1.2.5 =
 Will display an error if Prototype is detected. Added shortcode [blip-slideshow] in case of collisions with other extensions.
