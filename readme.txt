@@ -25,13 +25,13 @@ Requires WordPress 2.7 and PHP 5.
 1. Unzip and upload the resulting folder to the '/wp-content/plugins/' directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. *(Optional)* Enable caching in the 'Settings' menu in WordPress under 'Blip Slideshow'
-1. Place the [slideshow] shortcode in your posts and/or pages. A theme template function call is also available.
+1. Place the [blip-slideshow] shortcode in your posts and/or pages. A theme template function call is also available.
 
 **Detailed examples for use can be found at [the Blip homepage](http://www.jasonhendriks.com/programmer/blip-slideshow/)**.
 
 *A simple SmugMug slideshow example:*
 
-> [slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
+> [blip-slideshow thumbnails=false rss=feed://www.smugmug.com/hack/feed.mg?Type=popular&Data=all&format=rss200&Size=Medium]
 
 == Frequently Asked Questions ==
 
