@@ -76,8 +76,9 @@ if(!class_exists("Blip_Slideshow")) {
 		 * @return string Plugin version
 		 */
 		function get_version() {
-			if ( ! function_exists( "get_plugins" ) ) {
-				require_once( ABSPATH . "wp-admin/includes/plugin.php" );
+			$path = ABSPATH . "wp-admin/includes/plugin.php";
+			if (!function_exists("get_plugins") && file_exists($path)) {
+				require_once( $path );
 			}
 			$plugin_folder = get_plugins( "/" . plugin_basename( dirname( __FILE__ ) ) );
 			$plugin_file = basename( ( __FILE__ ) );
@@ -377,6 +378,8 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 
 			// check if we can talk to wordpress
 			if(function_exists("get_option")) {
+				$this->version = Blip_Slideshow::get_version();
+				$this->word_press = true;
 				// retrieve saved options
 				$this->options = get_option(BLIP_SLIDESHOW_DOMAIN);
 				// attempt to get the content from the cache
@@ -396,6 +399,12 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 			// sometimes the protocol is given as feed://, but this media type is not recognize by curl or php
 			$url = preg_replace("/^feed\:\/\//", "http://", $url);
 
+			// the user agent
+			$user_agent = BLIP_SLIDESHOW_NAME;
+			if($this->word_press) {
+				$user_agent .= "/" . $this->version;
+			}
+
 			// if curl exists, use it to make the http request
 			if(function_exists("curl_init")) {
 				// make the http request via curl
@@ -404,7 +413,7 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 					CURLOPT_HEADER         => false,    // don't return headers 
 					CURLOPT_FOLLOWLOCATION => $this->options["curl_redirects_enabled"],     // follow redirects 
 					CURLOPT_ENCODING       => "",       // handle all encodings 
-					CURLOPT_USERAGENT      => BLIP_SLIDESHOW_NAME . "/" . Blip_Slideshow::get_version(), // who am i 
+					CURLOPT_USERAGENT      => $user_agent, // who am i 
 					CURLOPT_AUTOREFERER    => true,     // set referer on redirect 
 					CURLOPT_CONNECTTIMEOUT => 30,       // timeout on connect 
 					CURLOPT_TIMEOUT        => 30,       // timeout on response 
@@ -542,18 +551,24 @@ if(!class_exists("Blip_Slideshow_Rss_Reader")) {
 		function print_document($content, $url) {
 
 				// http://www.php.net/manual/en/function.header.php#77028
+
+				// do we have wordpress data?
+				if($this->word_press) {
+					$user_agent = $this->version . " ";
+					header("Last-Modified: " . date(DATE_RFC1123, $content["date"]));
+					header("Expires: " .date(DATE_RFC1123, ($content["expires"])));
+				}
+				$user_agent .= BLIP_SLIDESHOW_NAME;
+
 				
 				// push headers
-				header("Via: " . Blip_Slideshow::get_version() . " " . BLIP_SLIDESHOW_NAME);
+				header("Via: " . $user_agent);
 				header("Content-Location: " . $url);
-				header("Last-Modified: " . date(DATE_RFC1123, $content["date"]));
 				if($content["304"]) {
 					header("HTTP/1.1 304 Not Modified");
 				} else {
 					header("HTTP/1.1 200 OK");
 				}
-				header("Expires: " .date(DATE_RFC1123, ($content["expires"])));
-				header("Pragma: " . $pragma);
 
 				if($content["cache"]) {
 					header("ETag: " . preg_replace("/.*[\\/]/","",$content["cache"]));
@@ -753,18 +768,25 @@ if(!class_exists("Blip_Slideshow_Admin")) {
  * And this is where code execution starts
  */
 
+/** Sets up WordPress vars and included files. */
+require_once('blip-wp-settings.php');
+
 // check if the request is to read a Media RSS URL
 if(substr($_SERVER["PATH_INFO"], 0, 5) == "/rss/" && class_exists("Blip_Slideshow_Rss_Reader")) {
-	
+
 	// attempt to talk to Wordpress
-	$blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
-	if (file_exists($blog_header_path)) {
-		require_once($blog_header_path);
+	$guessed_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
+	$absolute_header_path = ABSPATH . "wp-blog-header.php";
+	if (file_exists($guessed_header_path)) {
+		require_once($guessed_header_path);
+	} else if (file_exists($absolute_header_path)) {
+		require_once($absolute_header_path);
 	}
 	// initiate the Media RSS reading
 	$blip_rss_reader = new Blip_Slideshow_Rss_Reader();
 
-} else {
+// test if we were called from WordPress
+} else if (function_exists("register_activation_hook")) {
 
 	// start the maintenance
 	if (class_exists("Blip_Slideshow_Admin")) {

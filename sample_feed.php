@@ -19,6 +19,7 @@
 
 // attempt to talk to Wordpress
 $blog_header_path = preg_replace("/wp-content\/.*/", "wp-blog-header.php", getcwd());
+$blog_header_path = "/Users/jason/Sites/wordpress/wp-blog-header.php";
 if (file_exists($blog_header_path)) {
 	require_once($blog_header_path);
 
