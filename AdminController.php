@@ -1,32 +1,32 @@
 <?php
 if (! class_exists ( "Blip_Slideshow_Admin" )) {
-
+	
 	/**
 	 * Blip_Slideshow_Admin provides the installation, removal and settings functions
 	 */
 	class Blip_Slideshow_Admin {
 		function Blip_Slideshow_Admin() {
 			register_activation_hook ( __FILE__, array (
-			$this,
-			"create_options"
-					) );
-					add_action ( "admin_init", array (
 					$this,
-					"register_options"
-							) );
-							add_action ( "admin_menu", array (
-							$this,
-							"add_admin_menu_item"
-									) );
+					"create_options" 
+			) );
+			add_action ( "admin_init", array (
+					$this,
+					"register_options" 
+			) );
+			add_action ( "admin_menu", array (
+					$this,
+					"add_admin_menu_item" 
+			) );
 		}
-
+		
 		/**
 		 * Register the Settings page
 		 */
 		function register_options() {
 			register_setting ( BLIP_SLIDESHOW_DOMAIN, BLIP_SLIDESHOW_DOMAIN );
 		}
-
+		
 		/**
 		 * When Blip is activated, set up the default values in the database
 		 */
@@ -39,7 +39,7 @@ if (! class_exists ( "Blip_Slideshow_Admin" )) {
 			$options ["curl_redirects_enabled"] = false;
 			add_option ( BLIP_SLIDESHOW_DOMAIN, $options, "", "yes" );
 		}
-
+		
 		/**
 		 * Output the HTML for the Settings page
 		 */
@@ -88,7 +88,7 @@ if (! class_exists ( "Blip_Slideshow_Admin" )) {
 							<span>Compatibility</span>
 						</legend>
 						<label for="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]">
-						<?php if($options["optimize_scripts"]){ $sb = 'checked="checked"'; } ?><input
+						<?php if($options['optimize_scripts']){ $sb = 'checked="checked"'; } ?><input
 							name="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]"
 							type="checkbox"
 							id="<?php echo BLIP_SLIDESHOW_DOMAIN ?>[optimize_scripts]"

@@ -4,7 +4,7 @@
  * Plugin Name: Blip Slideshow
  * Plugin URI: http://www.jasonhendriks.com/programmer/blip-slideshow/
  * Description: A WordPress slideshow plugin fed from a SmugMug, Flickr or MobileMe RSS feed and displayed using pure Javascript.
- * Version: 2.0
+ * Version: 1.99
  * Author: Jason Hendriks
  * Author URI: http://jasonhendriks.com/
  * License: GPL version 3 or any later version
@@ -346,27 +346,11 @@ if (! class_exists ( "Blip_Slideshow" )) {
 			
 			$container = '<script type="text/javascript">
 					//<![CDATA[
-					
-						jQuery(document).ready(function($) {
-';
+						jQuery(document).ready(function($) {';
 			$container .= "var data = {'action': 'my_action','feed': '" . $decoded_rss . "'};";
-			$container .= '
-							jQuery.post(ajax_object.ajax_url, data, function(response) {
-';
-			$container .= "		alert('Got this from the server: ' + response);
-					
-
-					
-					
-					
-";
+			$container .= 'jQuery.post(ajax_object.ajax_url, data, function(response) {';
 			$container .= $output;
-			$container .= '
-		
-		
-		
-		
-		});';
+			$container .= '});';
 			$container .= '});';
 			// ]] >
 			$container .= '</script>';
