@@ -20,20 +20,17 @@
 
 var Blip = new Class({
   Implements: [Options],
-  initialize: function(element, rss, link, type, options){
+  initialize: function(element, data, link, type, options){
 		this.element = element;
+		this.data = data;
 		this.link = new Link(link, options.width, options.height);
 		this.type = type;
 		this.setOptions(options);
-		new Request({
-			url: rss,
-			method: 'get',
-    	onSuccess: this.processRequest.bind(this)
-		}).send();
+		this.processRequest();
 	},
-	processRequest: function(newResponseText, newResponseXml){
+	processRequest: function(){
 		var lightboxHelper = LightboxHelper.createLightboxHelper(this.link);
-		var parser = MediaRssParser.createParser(this.link, newResponseText, newResponseXml);
+		var parser = MediaRssParser.createParser(this.link, '', this.data);
 		if(parser) {
 			var slideshowData = SlideshowHelper.createSlideshowData(parser.slideshowImages);
 			if(this.type == "flash") {
